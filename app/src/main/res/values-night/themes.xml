@@ -3,5 +3,18 @@
     <style name="Base.Theme.NotesApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+        <!-- status bar color -->
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+
+        <!--primary brand color-->
+        <item name="colorPrimary">#051008</item>
+        <item name="colorPrimaryVariant">#153E20</item>
+        <item name="colorOnPrimary">#29703C</item>
     </style>
 </resources>

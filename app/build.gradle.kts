@@ -71,7 +71,6 @@ dependencies {
 
     /*room-database*/
     implementation(libs.androidx.room.runtime)
-//    annotationProcessor(libs.androidx.room.compiler.v250)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler.v250)
 

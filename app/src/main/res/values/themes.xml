@@ -3,6 +3,15 @@
     <style name="Base.Theme.NotesApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowTranslucentStatus">true</item>
+
+        <!-- status bar color -->
+        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
+
+        <!--primary brand color-->
+        <item name="colorPrimary">#051008</item>
+        <item name="colorPrimaryVariant">#153E20</item>
+        <item name="colorOnPrimary">#29703C</item>
     </style>
 
     <style name="Theme.NotesApp" parent="Base.Theme.NotesApp" />
