@@ -15,7 +15,9 @@
             app:destination="@id/note" />
         <action
             android:id="@+id/action_login_to_registration"
-            app:destination="@id/registration" />
+            app:destination="@id/registration"
+            app:popUpTo="@id/registration"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/registration"
@@ -24,7 +26,12 @@
         tools:layout="@layout/registration">
         <action
             android:id="@+id/action_registration_to_note"
-            app:destination="@id/note" />
+            app:destination="@id/note"
+            app:popUpTo="@id/registration"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_registration_to_login"
+            app:destination="@id/login" />
     </fragment>
     <fragment
         android:id="@+id/note"

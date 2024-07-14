@@ -53,6 +53,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    /*ksp*/
+    ksp(libs.symbol.processing.api)
+
     /*dagger-hilt*/
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
@@ -68,6 +71,7 @@ dependencies {
 
     /*room-database*/
     implementation(libs.androidx.room.runtime)
+//    annotationProcessor(libs.androidx.room.compiler.v250)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler.v250)
 
@@ -79,4 +83,10 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
+}
+
+kotlin {
+    jvmToolchain {
+        this.languageVersion.set(JavaLanguageVersion.of(8))
+    }
 }
