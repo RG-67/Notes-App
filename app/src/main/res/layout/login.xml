@@ -7,10 +7,12 @@
     android:orientation="vertical"
     tools:context=".ui.authentication.Login">
 
-    <!-- Splash design start -->
+    <!-- Splash page design start -->
     <RelativeLayout
+        android:id="@+id/welcomeRel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/takeNoteTextView"
@@ -29,14 +31,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/takeNoteTextView"
-            android:layout_marginHorizontal="80dp"
+            android:layout_marginHorizontal="50dp"
             android:backgroundTint="@color/button_bg"
-            android:text="@string/sign_in"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"/>
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/sign_in"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/createAccBtn"
@@ -52,6 +54,39 @@
             android:textStyle="normal" />
 
     </RelativeLayout>
-    <!-- Splash design end -->
+    <!-- Splash page design end -->
+
+    <!-- Login page design start -->
+    <RelativeLayout
+        android:id="@+id/loginRel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/image"
+            android:backgroundTint="@color/white">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+
+    </RelativeLayout>
+    <!-- Login page design end -->
 
 </LinearLayout>
