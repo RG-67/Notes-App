@@ -1,10 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/layout_back_bg"
     android:orientation="vertical"
     tools:context=".ui.authentication.Registration">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/signUpBtn">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginVertical="50dp"
+                android:background="@drawable/back_btn_bg"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/back_img"
+                    app:tint="@color/colorOnPrimary" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:text="@string/register"
+                android:textColor="@color/colorOnPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/create_your_account"
+                android:textColor="@color/grey"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="50dp"
+                android:autofillHints="true"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/person"
+                android:drawablePadding="10dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:hint="@string/hint_full_name"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/colorOnPrimary"
+                android:textColorHint="@color/colorOnPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="20dp"
+                android:autofillHints="true"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/mail"
+                android:drawablePadding="10dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/colorOnPrimary"
+                android:textColorHint="@color/colorOnPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="20dp"
+                android:autofillHints="true"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/lock"
+                android:drawableEnd="@drawable/open_eye"
+                android:drawablePadding="10dp"
+                android:drawableTint="#075B2C"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/colorOnPrimary"
+                android:textColorHint="@color/colorOnPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/loginBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorOnPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="@string/register"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.9"
+                    android:background="@color/grey" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.2"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:letterSpacing="0.01"
+                    android:text="Or Continue With"
+                    android:textColor="@color/deep_grey"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.9"
+                    android:background="@color/grey" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_marginHorizontal="50dp">
+
+                <ImageView
+                    android:id="@+id/twitter"
+                    android:layout_toStartOf="@+id/google"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/twitter"/>
+
+                <ImageView
+                    android:id="@+id/google"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/google"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginHorizontal="80dp"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/linkedin"
+                    android:layout_toEndOf="@+id/google"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/signUpBtn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="sans-serif"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_horizontal"
+        android:text="@string/already_have_account_sign_in"
+        android:textSize="14sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"/>
+
+</RelativeLayout>

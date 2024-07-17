@@ -3,4 +3,17 @@
     <string name="splash_heading">Take your note.</string>
     <string name="sign_in">Sign in</string>
     <string name="create_an_account">Create an account</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="hint_full_name">Full Name</string>
+    <string name="login_to_your_account">Login to your account</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot Password ?</string>
+    <string name="image_description">Image description</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="don_t_have_account_sign_up"><b><font color="#AAA8A8">Don\'t have account?</font> <u><font color="#153E20">Sign up</font></u></b></string>
+    <string name="already_have_account_sign_in"><b><font color="#AAA8A8">Already have an account?</font> <u><font color="#153E20">Sign In</font></u></b></string>
+    <string name="register">Register</string>
+    <string name="create_your_account">Create your account</string>
+    <string name="email">Email</string>
 </resources>
