@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:headerLayout="@layout/header_navigation_drawer"
+        app:itemIconSize="15dp"
         app:itemTextColor="@color/black"
         app:menu="@menu/menu">
 
