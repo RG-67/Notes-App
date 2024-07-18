@@ -8,4 +8,5 @@
     <color name="colorOnPrimary">#29703C</color>
     <color name="grey">#AAA8A8</color>
     <color name="deep_grey">#817F7F</color>
+    <color name="transparent_green">#ddffdd</color>
 </resources>
