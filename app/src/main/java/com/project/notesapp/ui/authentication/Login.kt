@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.project.notesapp.R
 import com.project.notesapp.databinding.LoginBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,9 +35,11 @@ class Login : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         binding.signBtn.setOnClickListener {
             activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        }
+        binding.loginBtn.setOnClickListener {
+            findNavController().navigate(R.id.note)
         }
     }
 
