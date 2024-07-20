@@ -24,7 +24,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
-                android:text="Note"
+                android:text="@string/note"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
