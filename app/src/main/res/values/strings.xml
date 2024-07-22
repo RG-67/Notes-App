@@ -19,4 +19,5 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="note">Note</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

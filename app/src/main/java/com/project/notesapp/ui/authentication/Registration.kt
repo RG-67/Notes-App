@@ -24,8 +24,12 @@ class Registration : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.registerBtn.setOnClickListener {
-
+            validation()
         }
+    }
+
+    private fun validation() {
+
     }
 
     override fun onDestroyView() {
