@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class UserRepo @Inject constructor(private val userDao: UserDao) {
 
-    @WorkerThread
+
     suspend fun insertUser(authModel: AuthModel) = withContext(Dispatchers.IO) {
         userDao.insertUser(authModel)
     }

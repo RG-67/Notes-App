@@ -11,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.project.notesapp.R
 import com.project.notesapp.databinding.NoteBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class Note : Fragment() {
 
     private var _binding: NoteBinding? = null

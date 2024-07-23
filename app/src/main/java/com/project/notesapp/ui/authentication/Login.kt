@@ -41,6 +41,9 @@ class Login : Fragment() {
         binding.loginBtn.setOnClickListener {
             findNavController().navigate(R.id.note)
         }
+        binding.signUpBtn.setOnClickListener {
+            findNavController().navigate(R.id.registration)
+        }
     }
 
     override fun onDestroyView() {
