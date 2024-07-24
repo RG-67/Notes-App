@@ -1,12 +1,16 @@
 package com.project.notesapp.ui.authentication
 
 import android.text.TextUtils
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.project.notesapp.model.AuthModel
 import com.project.notesapp.repository.UserRepo
 import com.project.notesapp.utils.Helper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,6 +22,10 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
             userRepo.insertUser(authModel)
         }
     }
+
+    val getUser: LiveData<List<AuthModel>>
+        get() = userRepo.getUser.flowOn(Dispatchers.Main)
+            .asLiveData(context = viewModelScope.coroutineContext)
 
     fun validateRegister(
         name: String,
