@@ -12,8 +12,10 @@ import javax.inject.Inject
 class UserRepo @Inject constructor(private val userDao: UserDao) {
 
 
-    suspend fun insertUser(authModel: AuthModel) = withContext(Dispatchers.IO) {
-        userDao.insertUser(authModel)
+    suspend fun insertUser(authModel: AuthModel): () -> Int = withContext(Dispatchers.IO) {
+        return@withContext(Dispatchers.IO) {
+            userDao.insertUser(authModel)
+        }
     }
 
     val getUser: Flow<List<AuthModel>> = userDao.getUser()

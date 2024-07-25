@@ -35,7 +35,7 @@ class Registration : Fragment() {
             val validationResult = validation()
             if (validationResult.first) {
                 val getUserData = getUserCred()
-                authViewModel.register(getUserData)
+                if (authViewModel.register(getUserData))
             } else {
                 showError(validationResult.second)
             }

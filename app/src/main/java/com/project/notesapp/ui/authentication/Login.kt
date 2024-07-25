@@ -47,7 +47,7 @@ class Login : Fragment() {
         }
         binding.loginBtn.setOnClickListener {
 //            findNavController().navigate(R.id.note)
-            authViewModel.getUser.observe(requireActivity()) { response ->
+            /*authViewModel.getUser.observe(requireActivity()) { response ->
                 val userList = response as ArrayList<AuthModel>
                 if (userList.size > 0) {
                     Log.d("UserListData ==>", userList.toString())
@@ -55,7 +55,7 @@ class Login : Fragment() {
                     Snackbar.make(binding.root, userList.size.toString(), Snackbar.LENGTH_SHORT)
                         .show()
                 }
-            }
+            }*/
         }
         binding.signUpBtn.setOnClickListener {
             findNavController().navigate(R.id.registration)
