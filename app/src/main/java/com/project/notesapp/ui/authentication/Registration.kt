@@ -2,17 +2,21 @@ package com.project.notesapp.ui.authentication
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.project.notesapp.R
 import com.project.notesapp.databinding.RegistrationBinding
 import com.project.notesapp.model.AuthModel
 import com.project.notesapp.utils.Helper.Companion.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class Registration : Fragment() {
@@ -42,16 +46,22 @@ class Registration : Fragment() {
             val validationResult = validation()
             if (validationResult.first) {
                 val getUserData = getUserCred()
-                val isExists = authViewModel.checkUserExists(binding.email.text.toString())
-                if (isExists == 0) {
-                    authViewModel.register(getUserData)
-                } else {
-                    Snackbar.make(binding.root, "Email already exists", Snackbar.LENGTH_SHORT)
-                        .show()
+                lifecycleScope.launch {
+                    val isExists = authViewModel.checkUserExists(binding.email.text.toString())
+                    if (isExists == 0) {
+                        authViewModel.register(getUserData)
+                        findNavController().navigate(R.id.action_registration_to_login)
+                    } else {
+                        Snackbar.make(binding.root, "Email already exists", Snackbar.LENGTH_SHORT)
+                            .show()
+                    }
                 }
             } else {
                 showError(validationResult.second)
             }
+        }
+        binding.signInBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_registration_to_login)
         }
     }
 

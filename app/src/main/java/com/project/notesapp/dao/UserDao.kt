@@ -20,4 +20,7 @@ interface UserDao {
     @Query("Select * from authentication")
     fun getUser(): Flow<List<AuthModel>>
 
+    @Query("Select * from authentication where userName = :userName and password = :password")
+    suspend fun getUserLogin(userName: String, password: String): List<AuthModel>
+
 }

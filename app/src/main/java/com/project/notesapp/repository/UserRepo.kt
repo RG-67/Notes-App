@@ -21,4 +21,9 @@ class UserRepo @Inject constructor(private val userDao: UserDao) {
 
     val getUser: Flow<List<AuthModel>> = userDao.getUser()
 
+    suspend fun getUserLogin(userName: String, password: String): List<AuthModel> =
+        withContext(Dispatchers.IO) {
+            userDao.getUserLogin(userName, password)
+        }
+
 }

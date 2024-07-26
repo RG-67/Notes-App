@@ -12,12 +12,12 @@
         tools:layout="@layout/login">
         <action
             android:id="@+id/action_login_to_note"
-            app:destination="@id/note" />
+            app:destination="@id/note"
+            app:popUpTo="@id/login"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_login_to_registration"
-            app:destination="@id/registration"
-            app:popUpTo="@id/registration"
-            app:popUpToInclusive="true" />
+            app:destination="@id/registration" />
     </fragment>
     <fragment
         android:id="@+id/registration"
@@ -25,13 +25,10 @@
         android:label="registration"
         tools:layout="@layout/registration">
         <action
-            android:id="@+id/action_registration_to_note"
-            app:destination="@id/note"
+            android:id="@+id/action_registration_to_login"
+            app:destination="@id/login"
             app:popUpTo="@id/registration"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_registration_to_login"
-            app:destination="@id/login" />
     </fragment>
     <fragment
         android:id="@+id/note"
