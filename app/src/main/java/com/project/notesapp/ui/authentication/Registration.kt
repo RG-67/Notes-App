@@ -1,5 +1,6 @@
 package com.project.notesapp.ui.authentication
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,13 @@ class Registration : Fragment() {
 
     private var _binding: RegistrationBinding? = null
     private val binding get() = _binding!!
+    private var context: Context? = null
     private val authViewModel by activityViewModels<AuthViewModel>()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        this.context = context
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +42,13 @@ class Registration : Fragment() {
             val validationResult = validation()
             if (validationResult.first) {
                 val getUserData = getUserCred()
-                if (authViewModel.register(getUserData))
+                val isExists = authViewModel.checkUserExists(binding.email.text.toString())
+                if (isExists == 0) {
+                    authViewModel.register(getUserData)
+                } else {
+                    Snackbar.make(binding.root, "Email already exists", Snackbar.LENGTH_SHORT)
+                        .show()
+                }
             } else {
                 showError(validationResult.second)
             }

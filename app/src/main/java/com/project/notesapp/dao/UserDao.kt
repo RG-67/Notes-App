@@ -1,5 +1,6 @@
 package com.project.notesapp.dao
 
+import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -10,10 +11,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserDao {
 
-    /*@Insert
-    suspend fun insertUser(authModel: AuthModel)*/
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insertUser(authModel: AuthModel): Int
+    @Query("Select count(*) from authentication where userName = :userName")
+    suspend fun checkIsExists(userName: String): Int
+
+    @Insert
+    suspend fun insertUser(authModel: AuthModel)
 
     @Query("Select * from authentication")
     fun getUser(): Flow<List<AuthModel>>

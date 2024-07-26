@@ -17,12 +17,18 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewModel() {
 
-    fun register(authModel: AuthModel): Int {
-        var value = 0
+    fun checkUserExists(userName: String): Int {
+        var isExists = 0
         viewModelScope.launch {
-            value = userRepo.insertUser(authModel).invoke()
+            isExists = userRepo.isExists(userName)
         }
-        return value
+        return isExists
+    }
+
+    fun register(authModel: AuthModel) {
+        viewModelScope.launch {
+            userRepo.insertUser(authModel)
+        }
     }
 
     val getUser: LiveData<List<AuthModel>>
