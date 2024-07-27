@@ -93,7 +93,6 @@ class Note : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.note -> {
-                        Toast.makeText(context, "Toast", Toast.LENGTH_SHORT).show()
                         true
                     }
 
@@ -128,21 +127,12 @@ class Note : Fragment() {
             }
 
             3 -> {
-                heading
+                heading = "Label"
             }
 
             4 -> {
-
+                heading = "Bin"
             }
-        }
-        heading = if (flag == 1) {
-            "Notes"
-        } else if (flag == 2) {
-            "Reminder"
-        } else if (flag == 3) {
-            "Label"
-        } else {
-            "Bin"
         }
         return heading
     }
