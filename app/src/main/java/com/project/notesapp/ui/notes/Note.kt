@@ -18,11 +18,17 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.project.notesapp.R
 import com.project.notesapp.databinding.NoteBinding
+import com.project.notesapp.ui.bin_menu.BinFragment
+import com.project.notesapp.ui.label_menu.LabelFragment
 import com.project.notesapp.ui.note_menu.NotesFragment
+import com.project.notesapp.ui.reminder_menu.RemindersFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,8 +61,36 @@ class Note : Fragment() {
             val fragmentTransaction = childFragmentManager.beginTransaction()
             when (menuItem.itemId) {
                 R.id.note -> {
+                    flag = 1
                     binding.heading.text = setHeading()
                     fragmentTransaction.replace(R.id.frameLayout, NotesFragment())
+                    fragmentTransaction.addToBackStack(null)
+                    fragmentTransaction.commit()
+                    true
+                }
+
+                R.id.reminder -> {
+                    flag = 2
+                    binding.heading.text = setHeading()
+                    fragmentTransaction.replace(R.id.frameLayout, RemindersFragment())
+                    fragmentTransaction.addToBackStack(null)
+                    fragmentTransaction.commit()
+                    true
+                }
+
+                R.id.label -> {
+                    flag = 3
+                    binding.heading.text = setHeading()
+                    fragmentTransaction.replace(R.id.frameLayout, LabelFragment())
+                    fragmentTransaction.addToBackStack(null)
+                    fragmentTransaction.commit()
+                    true
+                }
+
+                R.id.bin -> {
+                    flag = 4
+                    binding.heading.text = setHeading()
+                    fragmentTransaction.replace(R.id.frameLayout, BinFragment())
                     fragmentTransaction.addToBackStack(null)
                     fragmentTransaction.commit()
                     true
@@ -73,6 +107,7 @@ class Note : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val actionToggleBar = ActionBarDrawerToggle(
             requireActivity(),
             binding.noteDrawer,
