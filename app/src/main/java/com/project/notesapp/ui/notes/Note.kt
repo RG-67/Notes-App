@@ -62,42 +62,33 @@ class Note : Fragment() {
             when (menuItem.itemId) {
                 R.id.note -> {
                     flag = 1
-                    binding.heading.text = setHeading()
                     fragmentTransaction.replace(R.id.frameLayout, NotesFragment())
-                    fragmentTransaction.addToBackStack(null)
-                    fragmentTransaction.commit()
                     true
                 }
 
                 R.id.reminder -> {
                     flag = 2
-                    binding.heading.text = setHeading()
                     fragmentTransaction.replace(R.id.frameLayout, RemindersFragment())
-                    fragmentTransaction.addToBackStack(null)
-                    fragmentTransaction.commit()
                     true
                 }
 
                 R.id.label -> {
                     flag = 3
-                    binding.heading.text = setHeading()
                     fragmentTransaction.replace(R.id.frameLayout, LabelFragment())
-                    fragmentTransaction.addToBackStack(null)
-                    fragmentTransaction.commit()
                     true
                 }
 
                 R.id.bin -> {
                     flag = 4
-                    binding.heading.text = setHeading()
                     fragmentTransaction.replace(R.id.frameLayout, BinFragment())
-                    fragmentTransaction.addToBackStack(null)
-                    fragmentTransaction.commit()
                     true
                 }
 
                 else -> false
             }.also {
+                binding.heading.text = setHeading()
+                fragmentTransaction.addToBackStack(null)
+                fragmentTransaction.commit()
                 binding.noteDrawer.closeDrawer(GravityCompat.START)
             }
         }
@@ -154,7 +145,7 @@ class Note : Fragment() {
         var heading = ""
         when (flag) {
             1 -> {
-                heading = "Notes"
+                heading = "Note"
             }
 
             2 -> {
