@@ -30,4 +30,6 @@
     <string name="sample_heading"><u>Notes Hello World..</u></string>
     <string name="sample_date">25th July, 2024</string>
     <string name="sample_time">10:00 PM</string>
+    <string name="title">Title</string>
+    <string name="type_here">Type here..</string>
 </resources>

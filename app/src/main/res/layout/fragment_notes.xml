@@ -8,42 +8,160 @@
     tools:context=".ui.note_menu.NotesFragment">
 
     <!-- Notes list layout start -->
-    <EditText
-        android:id="@+id/edtSearch"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="10dp"
-        android:autofillHints="false"
-        android:background="@drawable/green_stroke_bg"
-        android:drawableEnd="@drawable/search"
-        android:hint="@string/search_here"
-        android:inputType="text"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:textColor="@color/black"
-        android:textSize="15sp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notesRecycler"
+    <RelativeLayout
+        android:id="@+id/noteListRel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/edtSearch"
-        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-        app:spanCount="2"
-        tools:listitem="@layout/note_item_layout"/>
+        android:visibility="gone">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabBtn"
-        app:shapeAppearanceOverlay="@style/FabStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorOnPrimary"
-        android:src="@drawable/add"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"
-        android:contentDescription="@string/image_description"/>
+        <EditText
+            android:id="@+id/edtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:autofillHints="false"
+            android:background="@drawable/green_stroke_bg"
+            android:drawableEnd="@drawable/search"
+            android:hint="@string/search_here"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notesRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/edtSearch"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/note_item_layout" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"
+            android:backgroundTint="@color/colorOnPrimary"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/add"
+            app:shapeAppearanceOverlay="@style/FabStyle" />
+    </RelativeLayout>
     <!-- Notes list layout end -->
+
+    <!-- Add note layout start -->
+    <RelativeLayout
+        android:id="@+id/addNoteRel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:autofillHints="false"
+                android:background="@null"
+                android:fontFamily="sans-serif"
+                android:hint="@string/title"
+                android:inputType="textMultiLine"
+                android:maxLines="2"
+                android:paddingStart="10dp"
+                android:paddingEnd="5dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:autofillHints="false"
+                        android:background="@null"
+                        android:fontFamily="sans-serif"
+                        android:gravity="start"
+                        android:hint="@string/type_here"
+                        android:inputType="textMultiLine"
+                        android:maxHeight="400dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="normal" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/edt_bg"
+                        android:backgroundTint="@color/transparent_green"
+                        android:padding="5dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp">
+                        <ImageView
+                            android:id="@+id/palette"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/palette"
+                            android:contentDescription="@string/image_description"/>
+                        <ImageView
+                            android:id="@+id/pin"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/pin"
+                            android:contentDescription="@string/image_description"
+                            android:layout_marginHorizontal="10dp"/>
+                        <ImageView
+                            android:id="@+id/threeDots"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/three_dots"
+                            android:contentDescription="@string/image_description"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+    </RelativeLayout>
+    <!-- Add note layout end -->
 
 </RelativeLayout>
