@@ -32,4 +32,6 @@
     <string name="sample_time">10:00 PM</string>
     <string name="title">Title</string>
     <string name="type_here">Type here..</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 </resources>
