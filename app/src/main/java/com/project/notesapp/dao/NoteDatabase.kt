@@ -10,4 +10,6 @@ abstract class NoteDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
 
+    abstract fun noteDao(): NoteDao
+
 }

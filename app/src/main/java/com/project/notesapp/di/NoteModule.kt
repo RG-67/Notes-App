@@ -2,8 +2,10 @@ package com.project.notesapp.di
 
 import android.content.Context
 import androidx.room.Room
+import com.project.notesapp.dao.NoteDao
 import com.project.notesapp.dao.NoteDatabase
 import com.project.notesapp.dao.UserDao
+import com.project.notesapp.repository.NoteRepo
 import com.project.notesapp.repository.UserRepo
 import dagger.Module
 import dagger.Provides
@@ -23,9 +25,15 @@ object NoteModule {
             .allowMainThreadQueries().build()
 
     @Provides
-    fun provideNoteDao(noteDatabase: NoteDatabase): UserDao = noteDatabase.userDao()
+    fun provideUserDao(noteDatabase: NoteDatabase): UserDao = noteDatabase.userDao()
 
     @Provides
-    fun provideNoteRepo(userDao: UserDao): UserRepo = UserRepo(userDao)
+    fun provideUserRepo(userDao: UserDao): UserRepo = UserRepo(userDao)
+
+    @Provides
+    fun provideNoteDao(noteDatabase: NoteDatabase): NoteDao = noteDatabase.noteDao()
+
+    @Provides
+    fun provideNoteRepo(noteDao: NoteDao): NoteRepo = NoteRepo(noteDao)
 
 }
