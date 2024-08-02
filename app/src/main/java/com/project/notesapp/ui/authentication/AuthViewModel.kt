@@ -34,6 +34,17 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
     suspend fun getUserLogin(userName: String, password: String): List<AuthModel> =
         userRepo.getUserLogin(userName, password)
 
+    fun getUserId() = userRepo.getUserId()
+
+    fun setUserId(userId: String) = userRepo.setUserId(userId)
+
+    fun getUserName() = userRepo.getUserName()
+
+    fun setUserName(userName: String) = userRepo.getUserName()
+
+    fun getUserEmail() = userRepo.getUserEmail()
+
+    fun setUserEmail(userEmail: String) = userRepo.setUserEmail(userEmail)
 
     fun validateRegister(
         name: String,

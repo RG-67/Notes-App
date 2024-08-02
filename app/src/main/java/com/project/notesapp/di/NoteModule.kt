@@ -7,6 +7,7 @@ import com.project.notesapp.dao.NoteDatabase
 import com.project.notesapp.dao.UserDao
 import com.project.notesapp.repository.NoteRepo
 import com.project.notesapp.repository.UserRepo
+import com.project.notesapp.utils.PreferenceHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,7 +29,7 @@ object NoteModule {
     fun provideUserDao(noteDatabase: NoteDatabase): UserDao = noteDatabase.userDao()
 
     @Provides
-    fun provideUserRepo(userDao: UserDao): UserRepo = UserRepo(userDao)
+    fun provideUserRepo(userDao: UserDao, preferenceHelper: PreferenceHelper): UserRepo = UserRepo(preferenceHelper, userDao)
 
     @Provides
     fun provideNoteDao(noteDatabase: NoteDatabase): NoteDao = noteDatabase.noteDao()
