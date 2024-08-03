@@ -6,7 +6,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 
-class PreferenceHelper @Inject constructor(context: Context) {
+class PreferenceHelper @Inject constructor(@ApplicationContext context: Context) {
 
     companion object {
         private const val USER_ID = "userId"

@@ -23,13 +23,15 @@ object NoteModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): NoteDatabase =
         Room.databaseBuilder(context, NoteDatabase::class.java, "NoteDatabase")
+            .fallbackToDestructiveMigration()
             .allowMainThreadQueries().build()
 
     @Provides
     fun provideUserDao(noteDatabase: NoteDatabase): UserDao = noteDatabase.userDao()
 
     @Provides
-    fun provideUserRepo(userDao: UserDao, preferenceHelper: PreferenceHelper): UserRepo = UserRepo(preferenceHelper, userDao)
+    fun provideUserRepo(userDao: UserDao, preferenceHelper: PreferenceHelper): UserRepo =
+        UserRepo(preferenceHelper, userDao)
 
     @Provides
     fun provideNoteDao(noteDatabase: NoteDatabase): NoteDao = noteDatabase.noteDao()

@@ -40,7 +40,7 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
 
     fun getUserName() = userRepo.getUserName()
 
-    fun setUserName(userName: String) = userRepo.getUserName()
+    fun setUserName(userName: String) = userRepo.setUserName(userName)
 
     fun getUserEmail() = userRepo.getUserEmail()
 

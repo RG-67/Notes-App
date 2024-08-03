@@ -46,6 +46,11 @@ class Login : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (authViewModel.getUserId() != "") {
+            findNavController().navigate(R.id.action_login_to_note)
+        }
+
         binding.signBtn.setOnClickListener {
             activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }
@@ -72,13 +77,7 @@ class Login : Fragment() {
                         authViewModel.setUserId(user[0].id.toString())
                         authViewModel.setUserName(user[0].name)
                         authViewModel.setUserEmail(user[0].userName)
-
-                        Log.d(
-                            TAG,
-                            authViewModel.getUserId() + ", " + authViewModel.getUserName() + ", " + authViewModel.getUserEmail()
-                        )
-
-//                        findNavController().navigate(R.id.action_login_to_note)
+                        findNavController().navigate(R.id.action_login_to_note)
                     } else {
                         Snackbar.make(binding.root, "Invalid credentials", Snackbar.LENGTH_SHORT)
                             .show()
