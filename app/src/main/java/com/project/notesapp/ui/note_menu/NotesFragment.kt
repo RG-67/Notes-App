@@ -28,6 +28,7 @@ class NotesFragment : Fragment() {
     private val noteViewModel by activityViewModels<NoteViewModel>()
     private var context: Context? = null
     private val authViewModel by activityViewModels<AuthViewModel>()
+    private var noteAdapter: NoteAdapter? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -47,6 +48,7 @@ class NotesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        noteAdapter = NoteAdapter(::onNoteClicked)
         binding.fabBtn.setOnClickListener {
             showHide()
         }
@@ -99,6 +101,10 @@ class NotesFragment : Fragment() {
             binding.addNoteRel.visibility = View.GONE
             binding.noteListRel.visibility = View.VISIBLE
         }
+    }
+
+    private fun onNoteClicked(noteModel: NoteModel) {
+
     }
 
     override fun onDestroyView() {
