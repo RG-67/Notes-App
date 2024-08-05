@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.notesapp.databinding.NoteItemLayoutBinding
 import com.project.notesapp.model.NoteModel
 
-class NoteAdapter(private val onNoteClicked: (NoteModel) -> Unit) :
+class NoteAdapter(private val onNoteClicked: (NoteModel) -> Unit, private val noteList: List<NoteModel>) :
     ListAdapter<NoteModel, NoteAdapter.NoteViewHolder>(ComparatorDifUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteAdapter.NoteViewHolder {
         return NoteViewHolder(

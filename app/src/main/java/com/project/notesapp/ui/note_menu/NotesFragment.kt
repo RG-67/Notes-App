@@ -17,6 +17,7 @@ import com.project.notesapp.R
 import com.project.notesapp.databinding.FragmentNotesBinding
 import com.project.notesapp.model.NoteModel
 import com.project.notesapp.ui.authentication.AuthViewModel
+import com.project.notesapp.utils.Helper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -48,7 +49,22 @@ class NotesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        noteAdapter = NoteAdapter(::onNoteClicked)
+        lifecycleScope.launch {
+            noteViewModel.getNotes(
+                authViewModel.getUserId()?.toInt()!!,
+                authViewModel.getUserEmail()!!
+            )
+                .observe(requireActivity()) {
+                    noteAdapter = NoteAdapter(::onNoteClicked, it)
+                    val noteList = it as ArrayList<NoteModel>
+                    if (noteList.size > 0) {
+                        Log.d(TAG, noteList.toString())
+                        binding.notesRecycler.adapter = noteAdapter
+                    } else {
+                        Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
         binding.fabBtn.setOnClickListener {
             showHide()
         }
@@ -84,7 +100,9 @@ class NotesFragment : Fragment() {
                 authViewModel.getUserName()!!,
                 authViewModel.getUserEmail()!!,
                 binding.title.text.toString(),
-                binding.note.text.toString()
+                binding.note.text.toString(),
+                Helper.getDate(),
+                Helper.getCurrentTime()
             )
         }
     }

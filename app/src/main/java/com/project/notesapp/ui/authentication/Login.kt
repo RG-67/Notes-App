@@ -47,7 +47,7 @@ class Login : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (authViewModel.getUserId() != "") {
+        if (authViewModel.getUserId() != "" && authViewModel.getUserId() != null) {
             findNavController().navigate(R.id.action_login_to_note)
         }
 

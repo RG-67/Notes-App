@@ -11,5 +11,7 @@ data class NoteModel(
     val userName: String,
     val userEmail: String,
     val noteTitle: String,
-    val note: String
+    val note: String,
+    val noteDate: String,
+    val noteTime: String,
 )
