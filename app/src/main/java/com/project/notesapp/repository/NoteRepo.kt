@@ -21,4 +21,17 @@ class NoteRepo @Inject constructor(
             noteDao.getNotes(userId, userEmail)
         }
 
+    suspend fun updateNotes(
+        noteDate: String,
+        noteTime: String,
+        noteTitle: String,
+        note: String,
+        userId: Int,
+        noteId: Int
+    ) {
+        withContext(Dispatchers.IO) {
+            noteDao.updateNote(noteDate, noteTime, noteTitle, note, userId, noteId)
+        }
+    }
+
 }

@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.project.notesapp.R
 import com.project.notesapp.databinding.FragmentNotesBinding
 import com.project.notesapp.model.NoteModel
@@ -30,6 +31,11 @@ class NotesFragment : Fragment() {
     private var context: Context? = null
     private val authViewModel by activityViewModels<AuthViewModel>()
     private var noteAdapter: NoteAdapter? = null
+    private var date = ""
+    private var time = ""
+    private var userId = ""
+    private var noteId = ""
+    private var flag = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -66,6 +72,7 @@ class NotesFragment : Fragment() {
                 }
         }
         binding.fabBtn.setOnClickListener {
+            flag = 1
             showHide()
         }
         binding.cancelBtn.setOnClickListener {
@@ -73,15 +80,35 @@ class NotesFragment : Fragment() {
         }
         binding.saveBtn.setOnClickListener {
             val getValidation = getValidation()
-            val getNoteData = getNoteData()
-            if (getValidation.second) {
-                lifecycleScope.launch {
-                    Log.d(TAG, getNoteData.toString())
-                    noteViewModel.insertNoteData(getNoteData)
-                    showHide()
+            if (binding.saveBtn.text == "Save") {
+                val getNoteData = getNoteData()
+                if (getValidation.second) {
+                    lifecycleScope.launch {
+                        Log.d(TAG, getNoteData.toString())
+                        noteViewModel.insertNoteData(getNoteData)
+                        showHide()
+                        Helper.hideKeyboard(binding.root)
+                    }
+                } else {
+                    showError(getValidation.first)
                 }
             } else {
-                showError(getValidation.first)
+                if (getValidation.second) {
+                    lifecycleScope.launch {
+                        noteViewModel.updateNotes(
+                            date,
+                            time,
+                            binding.title.text.toString(),
+                            binding.note.text.toString(),
+                            userId.toInt(),
+                            noteId.toInt()
+                        )
+                        showHide()
+                        Helper.hideKeyboard(binding.root)
+                    }
+                } else {
+                    showError(getValidation.first)
+                }
             }
         }
     }
@@ -115,6 +142,15 @@ class NotesFragment : Fragment() {
         if (binding.noteListRel.visibility == View.VISIBLE) {
             binding.noteListRel.visibility = View.GONE
             binding.addNoteRel.visibility = View.VISIBLE
+            if (flag == 1) {
+                val saveText = "Save"
+                binding.saveBtn.text = saveText
+                binding.saveBtn.setIconResource(R.drawable.save)
+            } else {
+                val updateText = "Update"
+                binding.saveBtn.text = updateText
+                binding.saveBtn.setIconResource(R.drawable.update)
+            }
         } else {
             binding.addNoteRel.visibility = View.GONE
             binding.noteListRel.visibility = View.VISIBLE
@@ -122,7 +158,14 @@ class NotesFragment : Fragment() {
     }
 
     private fun onNoteClicked(noteModel: NoteModel) {
-
+        flag = 2
+        showHide()
+        date = Helper.getDate()
+        time = Helper.getCurrentTime()
+        userId = noteModel.userId.toString()
+        noteId = noteModel.noteId.toString()
+        binding.title.setText(noteModel.noteTitle)
+        binding.note.setText(noteModel.note)
     }
 
     override fun onDestroyView() {

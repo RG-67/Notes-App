@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.notesapp.databinding.NoteItemLayoutBinding
 import com.project.notesapp.model.NoteModel
 
-class NoteAdapter(private val onNoteClicked: (NoteModel) -> Unit, private val noteList: List<NoteModel>) :
-    ListAdapter<NoteModel, NoteAdapter.NoteViewHolder>(ComparatorDifUtil()) {
+class NoteAdapter(
+    private val onNoteClicked: (NoteModel) -> Unit,
+    private val noteList: List<NoteModel>
+) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteAdapter.NoteViewHolder {
         return NoteViewHolder(
             NoteItemLayoutBinding.inflate(
@@ -21,8 +23,12 @@ class NoteAdapter(private val onNoteClicked: (NoteModel) -> Unit, private val no
         )
     }
 
+    override fun getItemCount(): Int {
+        return noteList.size
+    }
+
     override fun onBindViewHolder(holder: NoteAdapter.NoteViewHolder, position: Int) {
-        val note = getItem(position)
+        val note = noteList[position]
         note.let {
             holder.bind(it)
         }
@@ -31,8 +37,8 @@ class NoteAdapter(private val onNoteClicked: (NoteModel) -> Unit, private val no
     inner class NoteViewHolder(private val binding: NoteItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(noteModel: NoteModel) {
-            binding.date.text = ""
-            binding.time.text = ""
+            binding.date.text = noteModel.noteDate
+            binding.time.text = noteModel.noteTime
             binding.title.text = noteModel.noteTitle
             binding.note.text = noteModel.note
             binding.root.setOnClickListener {

@@ -32,9 +32,10 @@ class Helper {
 
         fun getDate(): String {
             val currentDate = Calendar.getInstance().time
-            val simpleDateFormat = SimpleDateFormat("d'st' MMMM, yyyy", Locale.getDefault())
             val dayWithSuffix = getDayWithSuffix(currentDate)
-            return simpleDateFormat.format(currentDate).replace("st", dayWithSuffix)
+            val simpleDateFormat = SimpleDateFormat("MMMM, yyyy", Locale.getDefault())
+            val dateWithoutDay = simpleDateFormat.format(currentDate)
+            return "$dayWithSuffix $dateWithoutDay"
         }
 
         private fun getDayWithSuffix(date: Date): String {

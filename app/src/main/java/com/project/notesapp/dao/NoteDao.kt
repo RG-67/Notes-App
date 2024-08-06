@@ -3,6 +3,7 @@ package com.project.notesapp.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.project.notesapp.model.NoteModel
 import kotlinx.coroutines.flow.Flow
 
@@ -14,5 +15,8 @@ interface NoteDao {
 
     @Query("Select * from notes where userId = :userId and userEmail = :userEmail")
     fun getNotes(userId: Int, userEmail: String): Flow<List<NoteModel>>
+
+    @Query("Update notes set noteDate = :noteDate, noteTime = :noteTime, noteTitle = :noteTitle, note = :note where userId = :userId and noteId = :noteId")
+    suspend fun updateNote(noteDate: String, noteTime: String, noteTitle: String, note: String, userId: Int, noteId: Int)
 
 }

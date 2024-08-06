@@ -28,6 +28,19 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
             .asLiveData(context = coroutineContext)
     }
 
+    suspend fun updateNotes(
+        noteDate: String,
+        noteTime: String,
+        noteTitle: String,
+        note: String,
+        userId: Int,
+        noteId: Int
+    ) {
+        viewModelScope.launch {
+            noteRepo.updateNotes(noteDate, noteTime, noteTitle, note, userId, noteId)
+        }
+    }
+
     fun validateNoteData(title: String, note: String): Pair<String, Boolean> {
         var result = Pair("", true)
         if (TextUtils.isEmpty(title)) {
