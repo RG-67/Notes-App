@@ -13,17 +13,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.project.notesapp.R
 import com.project.notesapp.databinding.FragmentNotesBinding
 import com.project.notesapp.model.NoteModel
 import com.project.notesapp.ui.authentication.AuthViewModel
 import com.project.notesapp.utils.Helper
+import com.project.notesapp.utils.ItemClickListener
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class NotesFragment : Fragment() {
+class NotesFragment : Fragment(), ItemClickListener {
 
     private var _binding: FragmentNotesBinding? = null
     private val binding get() = _binding!!
@@ -36,6 +40,7 @@ class NotesFragment : Fragment() {
     private var userId = ""
     private var noteId = ""
     private var flag = 0
+    private var balloon: Balloon? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,6 +55,28 @@ class NotesFragment : Fragment() {
         binding.fabBtn.setImageResource(R.drawable.add)
         binding.fabBtn.imageTintList =
             ColorStateList.valueOf(Color.WHITE)
+        balloon = Balloon.Builder(requireContext())
+            .setWidth(BalloonSizeSpec.WRAP)
+            .setHeight(BalloonSizeSpec.WRAP)
+            .setText("Edit")
+            .setText("Delete")
+            .setTextColorResource(R.color.black)
+            .setTextSize(15f)
+            .setIconDrawableResource(R.drawable.edit)
+            .setIconDrawableResource(R.drawable.delete)
+            .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+            .setArrowSize(10)
+            .setArrowPosition(1f)
+            .setCornerRadius(5f)
+            .setPadding(10)
+            .setBackgroundColorResource(R.color.white)
+            .setBalloonAnimation(BalloonAnimation.ELASTIC)
+            .setOnBalloonClickListener {
+                lifecycleScope.launch {
+                    noteViewModel.deleteNote(noteId.toInt(), authViewModel.getUserId()?.toInt()!!)
+                }
+            }
+            .build()
         return binding.root
     }
 
@@ -61,7 +88,7 @@ class NotesFragment : Fragment() {
                 authViewModel.getUserEmail()!!
             )
                 .observe(requireActivity()) {
-                    noteAdapter = NoteAdapter(::onNoteClicked, it)
+                    noteAdapter = NoteAdapter(::onNoteClicked, it, this@NotesFragment)
                     val noteList = it as ArrayList<NoteModel>
                     if (noteList.size > 0) {
                         Log.d(TAG, noteList.toString())
@@ -71,6 +98,7 @@ class NotesFragment : Fragment() {
                     }
                 }
         }
+
         binding.fabBtn.setOnClickListener {
             flag = 1
             showHide()
@@ -158,19 +186,24 @@ class NotesFragment : Fragment() {
     }
 
     private fun onNoteClicked(noteModel: NoteModel) {
-        flag = 2
+        /*flag = 2
         showHide()
         date = Helper.getDate()
         time = Helper.getCurrentTime()
         userId = noteModel.userId.toString()
         noteId = noteModel.noteId.toString()
         binding.title.setText(noteModel.noteTitle)
-        binding.note.setText(noteModel.note)
+        binding.note.setText(noteModel.note)*/
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onItemClick(view: View, position: Int, userNoteId: Int) {
+        noteId = userNoteId.toString()
+        balloon?.showAlignBottom(view)
     }
 
 
