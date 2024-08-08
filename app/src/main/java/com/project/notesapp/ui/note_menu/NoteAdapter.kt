@@ -10,7 +10,6 @@ import com.project.notesapp.utils.ItemClickListener
 import kotlinx.coroutines.CoroutineScope
 
 class NoteAdapter(
-    private val onNoteClicked: (NoteModel) -> Unit,
     private val noteList: List<NoteModel>,
     private val itemClickListener: ItemClickListener
 ) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
@@ -44,8 +43,7 @@ class NoteAdapter(
             binding.title.text = noteModel.noteTitle
             binding.note.text = noteModel.note
             binding.root.setOnClickListener {
-                onNoteClicked(noteModel)
-                itemClickListener.onItemClick(it, position, noteModel.noteId)
+                itemClickListener.onItemClick(it, position, noteModel.noteId, noteModel.noteTitle, noteModel.note)
             }
         }
     }

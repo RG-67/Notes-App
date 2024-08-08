@@ -37,7 +37,8 @@
             android:layout_below="@+id/edtSearch"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:spanCount="2"
-            tools:listitem="@layout/note_item_layout" />
+            tools:listitem="@layout/note_item_layout"
+            android:layout_marginVertical="10dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabBtn"
