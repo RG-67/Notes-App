@@ -12,7 +12,7 @@
         android:id="@+id/noteListRel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/edtSearch"
@@ -35,10 +35,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/edtSearch"
+            android:layout_marginVertical="10dp"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:spanCount="2"
-            tools:listitem="@layout/note_item_layout"
-            android:layout_marginVertical="10dp"/>
+            tools:listitem="@layout/note_item_layout" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabBtn"
@@ -59,11 +59,13 @@
         android:id="@+id/addNoteRel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/btnLin"
+            android:layout_alignParentTop="true"
             android:orientation="vertical"
             android:padding="5dp">
 
@@ -116,6 +118,7 @@
                         android:hint="@string/type_here"
                         android:inputType="textMultiLine"
                         android:maxHeight="400dp"
+                        android:minHeight="200dp"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp"
                         android:textColor="@color/black"
