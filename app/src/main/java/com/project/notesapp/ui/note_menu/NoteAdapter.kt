@@ -1,5 +1,7 @@
 package com.project.notesapp.ui.note_menu
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +12,7 @@ import com.project.notesapp.utils.ItemClickListener
 import kotlinx.coroutines.CoroutineScope
 
 class NoteAdapter(
-    private val noteList: List<NoteModel>,
+    private var noteList: List<NoteModel>,
     private val itemClickListener: ItemClickListener
 ) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
@@ -43,7 +45,13 @@ class NoteAdapter(
             binding.title.text = noteModel.noteTitle
             binding.note.text = noteModel.note
             binding.root.setOnClickListener {
-                itemClickListener.onItemClick(it, position, noteModel.noteId, noteModel.noteTitle, noteModel.note)
+                itemClickListener.onItemClick(
+                    it,
+                    position,
+                    noteModel.noteId,
+                    noteModel.noteTitle,
+                    noteModel.note
+                )
             }
         }
     }

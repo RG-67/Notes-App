@@ -42,6 +42,7 @@ class NotesFragment : Fragment(), ItemClickListener {
     private var context: Context? = null
     private val authViewModel by activityViewModels<AuthViewModel>()
     private var noteAdapter: NoteAdapter? = null
+    private var noteItemPosition = 0
     private var userNoteId = ""
     private var title = ""
     private var noteContent = ""
@@ -87,8 +88,24 @@ class NotesFragment : Fragment(), ItemClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        getAllNotes()
         super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            noteViewModel.getNotes(
+                authViewModel.getUserId()?.toInt()!!,
+                authViewModel.getUserEmail()!!
+            )
+                .observe(requireActivity()) {
+                    noteAdapter = NoteAdapter(it, this@NotesFragment)
+                    val noteList = it as ArrayList<NoteModel>
+                    binding.notesRecycler.adapter = noteAdapter
+                    binding.notesRecycler.smoothScrollToPosition(noteAdapter!!.itemCount)
+                    if (noteList.size > 0) {
+                        Log.d(TAG, noteList.toString())
+                    } else {
+                        Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
         editBtn?.setOnClickListener {
             balloon?.dismiss()
             flag = 2
@@ -101,7 +118,6 @@ class NotesFragment : Fragment(), ItemClickListener {
             balloon?.dismiss()
             lifecycleScope.launch {
                 noteViewModel.deleteNote(userNoteId.toInt(), authViewModel.getUserId()?.toInt()!!)
-                getAllNotes()
             }
         }
 
@@ -144,26 +160,6 @@ class NotesFragment : Fragment(), ItemClickListener {
                     showError(getValidation.first)
                 }
             }
-        }
-    }
-
-    private fun getAllNotes() {
-        lifecycleScope.launch {
-            noteViewModel.getNotes(
-                authViewModel.getUserId()?.toInt()!!,
-                authViewModel.getUserEmail()!!
-            )
-                .observe(requireActivity()) {
-                    noteAdapter = NoteAdapter(it, this@NotesFragment)
-                    val noteList = it as ArrayList<NoteModel>
-                    if (noteList.size > 0) {
-                        Log.d(TAG, noteList.toString())
-                        binding.notesRecycler.adapter = noteAdapter
-                        binding.notesRecycler.smoothScrollToPosition(noteAdapter!!.itemCount)
-                    } else {
-                        Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
-                    }
-                }
         }
     }
 
@@ -225,6 +221,7 @@ class NotesFragment : Fragment(), ItemClickListener {
         noteTitle: String,
         note: String
     ) {
+        noteItemPosition = position
         userNoteId = noteId.toString()
         balloon?.showAlignBottom(view)
         title = noteTitle
