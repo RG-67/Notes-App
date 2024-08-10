@@ -4,9 +4,10 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    app:cardBackgroundColor="@color/button_bg">
+    app:cardBackgroundColor="@color/light_green">
     
     <RadioGroup
+        android:id="@+id/paletteRadioGr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -15,40 +16,59 @@
         android:padding="5dp">
 
         <RadioButton
+            android:id="@+id/noneRdBtn"
             android:layout_width="65dp"
             android:layout_height="50dp"
             android:background="@drawable/no_image"
-            android:button="@android:color/transparent"/>
+            android:button="@drawable/radio_selector"
+            android:buttonTint="@null"
+            android:padding="10dp"/>
 
         <RadioButton
+            android:id="@+id/back1"
             android:layout_width="65dp"
             android:layout_height="50dp"
             android:background="@drawable/pic1"
-            android:button="@android:color/transparent"/>
+            android:button="@drawable/radio_selector"
+            android:buttonTint="@null"
+            android:padding="10dp"
+            android:checked="true"/>
 
         <RadioButton
+            android:id="@+id/back2"
             android:layout_width="65dp"
             android:layout_height="50dp"
             android:background="@drawable/pic2"
-            android:button="@android:color/transparent"/>
+            android:button="@drawable/radio_selector"
+            android:buttonTint="@null"
+            android:padding="10dp"/>
 
         <RadioButton
+            android:id="@+id/back3"
             android:layout_width="65dp"
             android:layout_height="50dp"
             android:background="@drawable/pic3"
-            android:button="@android:color/transparent"/>
+            android:button="@drawable/radio_selector"
+            android:buttonTint="@null"
+            android:padding="10dp"/>
 
         <RadioButton
+            android:id="@+id/back4"
             android:layout_width="65dp"
             android:layout_height="50dp"
             android:background="@drawable/pic4"
-            android:button="@android:color/transparent"/>
+            android:button="@drawable/radio_selector"
+            android:buttonTint="@null"
+            android:padding="10dp"/>
 
         <RadioButton
+            android:id="@+id/back5"
             android:layout_width="65dp"
             android:layout_height="50dp"
             android:background="@drawable/pic5"
-            android:button="@android:color/transparent"/>
+            android:button="@drawable/radio_selector"
+            android:buttonTint="@null"
+            android:padding="10dp"/>
     </RadioGroup>
 
 </androidx.cardview.widget.CardView>

@@ -6,12 +6,15 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -20,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.project.notesapp.R
 import com.project.notesapp.databinding.FragmentNotesBinding
+import com.project.notesapp.databinding.PaletteLayoutBinding
 import com.project.notesapp.model.NoteModel
 import com.project.notesapp.ui.authentication.AuthViewModel
 import com.project.notesapp.utils.Helper
@@ -48,8 +52,15 @@ class NotesFragment : Fragment(), ItemClickListener {
     private var noteContent = ""
     private var flag = 0
     private var balloon: Balloon? = null
+    private var paletteBalloon: Balloon? = null
     private var editBtn: LinearLayout? = null
     private var deleteBtn: LinearLayout? = null
+    private var noteOptionLayout: View? = null
+    private var paletteOptionLayout: View? = null
+
+    private var paletteBinding: PaletteLayoutBinding? = null
+    private var paletteRadioGr: RadioGroup? = null
+    private var back1: RadioButton? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -63,13 +74,30 @@ class NotesFragment : Fragment(), ItemClickListener {
     ): View {
         _binding = FragmentNotesBinding.inflate(inflater, container, false)
 
-        val noteOptionLayout = layoutInflater.inflate(R.layout.note_option_layout, null)
+        noteOptionLayout = layoutInflater.inflate(R.layout.note_option_layout, null)
+        paletteOptionLayout = layoutInflater.inflate(R.layout.palette_layout, null)
+
+        paletteBalloon = Balloon.Builder(requireContext())
+            .setLayout(paletteOptionLayout!!)
+            .setArrowSize(10)
+            .setArrowOrientation(ArrowOrientation.TOP)
+            .setArrowPosition(0.1f)
+            .setWidthRatio(1.0f)
+            .setWidth(BalloonSizeSpec.WRAP)
+            .setHeight(BalloonSizeSpec.WRAP)
+            .setArrowColor(ContextCompat.getColor(requireContext(), R.color.light_green))
+            .setBalloonAnimation(BalloonAnimation.FADE)
+            .build()
+        paletteBinding = PaletteLayoutBinding.inflate(layoutInflater, container, false)
+        paletteRadioGr = paletteBalloon!!.getContentView().findViewById(R.id.paletteRadioGr)
+        back1 = paletteBalloon!!.getContentView().findViewById(R.id.back1)
 
         binding.fabBtn.setImageResource(R.drawable.add)
         binding.fabBtn.imageTintList =
             ColorStateList.valueOf(Color.WHITE)
+
         balloon = Balloon.Builder(requireContext())
-            .setLayout(noteOptionLayout)
+            .setLayout(noteOptionLayout!!)
             .setArrowSize(10)
             .setArrowOrientation(ArrowOrientation.TOP)
             .setArrowPosition(0.5f)
@@ -77,10 +105,14 @@ class NotesFragment : Fragment(), ItemClickListener {
             .setHeight(BalloonSizeSpec.WRAP)
             .setCornerRadius(5f)
             .setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
-            .setArrowColor(ContextCompat.getColor(requireContext(), R.color.transparent_green))
+            .setArrowColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.transparent_green
+                )
+            )
             .setBalloonAnimation(BalloonAnimation.ELASTIC)
             .build()
-
         editBtn = balloon!!.getContentView().findViewById(R.id.editBtn)
         deleteBtn = balloon!!.getContentView().findViewById(R.id.deleteBtn)
 
@@ -161,6 +193,14 @@ class NotesFragment : Fragment(), ItemClickListener {
                 }
             }
         }
+        binding.palette.setOnClickListener {
+            showPopUp("palette", it)
+        }
+        paletteRadioGr!!.setOnCheckedChangeListener { _, _ ->
+            if (back1!!.isChecked) {
+                Toast.makeText(context, "Radio checked..", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun getValidation(): Pair<String, Boolean> {
@@ -223,9 +263,51 @@ class NotesFragment : Fragment(), ItemClickListener {
     ) {
         noteItemPosition = position
         userNoteId = noteId.toString()
-        balloon?.showAlignBottom(view)
         title = noteTitle
         noteContent = note
+        showPopUp("note", view)
+    }
+
+    private fun showPopUp(from: String, view: View) {
+        when (from) {
+            "note" -> {
+                balloon = Balloon.Builder(requireContext())
+                    .setLayout(noteOptionLayout!!)
+                    .setArrowSize(10)
+                    .setArrowOrientation(ArrowOrientation.TOP)
+                    .setArrowPosition(0.5f)
+                    .setWidthRatio(0.5f)
+                    .setHeight(BalloonSizeSpec.WRAP)
+                    .setCornerRadius(5f)
+                    .setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+                    .setArrowColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.transparent_green
+                        )
+                    )
+                    .setBalloonAnimation(BalloonAnimation.ELASTIC)
+                    .build()
+                balloon?.showAlignBottom(view)
+            }
+
+            "palette" -> {
+                paletteBalloon = Balloon.Builder(requireContext())
+                    .setLayout(paletteOptionLayout!!)
+                    .setArrowSize(10)
+                    .setArrowOrientation(ArrowOrientation.TOP)
+                    .setArrowPosition(0.1f)
+                    .setWidthRatio(1.0f)
+                    .setWidth(BalloonSizeSpec.WRAP)
+                    .setHeight(BalloonSizeSpec.WRAP)
+                    .setArrowColor(ContextCompat.getColor(requireContext(), R.color.light_green))
+                    .setBalloonAnimation(BalloonAnimation.FADE)
+                    .build()
+                paletteBalloon?.showAlignBottom(view)
+            }
+
+            else -> Toast.makeText(context, "Invalid selection", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
