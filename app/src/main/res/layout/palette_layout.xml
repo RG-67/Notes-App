@@ -12,63 +12,122 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="5dp">
+        android:gravity="center">
 
-        <RadioButton
-            android:id="@+id/noneRdBtn"
-            android:layout_width="65dp"
-            android:layout_height="50dp"
-            android:background="@drawable/no_image"
-            android:button="@drawable/radio_selector"
-            android:buttonTint="@null"
-            android:padding="10dp"/>
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="70dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/no_image"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/image_description"/>
+
+            <RadioButton
+                android:id="@+id/noneRdBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:button="@null"
+                android:background="@drawable/radio_selector"
+                android:checked="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="70dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/pic1"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/image_description"/>
 
         <RadioButton
             android:id="@+id/back1"
-            android:layout_width="65dp"
-            android:layout_height="50dp"
-            android:background="@drawable/pic1"
-            android:button="@drawable/radio_selector"
-            android:buttonTint="@null"
-            android:padding="10dp"
-            android:checked="true"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:button="@null"
+            android:background="@drawable/radio_selector"/>
+        </RelativeLayout>
 
-        <RadioButton
-            android:id="@+id/back2"
-            android:layout_width="65dp"
-            android:layout_height="50dp"
-            android:background="@drawable/pic2"
-            android:button="@drawable/radio_selector"
-            android:buttonTint="@null"
-            android:padding="10dp"/>
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="70dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/pic2"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/image_description"/>
 
-        <RadioButton
-            android:id="@+id/back3"
-            android:layout_width="65dp"
-            android:layout_height="50dp"
-            android:background="@drawable/pic3"
-            android:button="@drawable/radio_selector"
-            android:buttonTint="@null"
-            android:padding="10dp"/>
+            <RadioButton
+                android:id="@+id/back2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:button="@null"
+                android:background="@drawable/radio_selector"/>
+        </RelativeLayout>
 
-        <RadioButton
-            android:id="@+id/back4"
-            android:layout_width="65dp"
-            android:layout_height="50dp"
-            android:background="@drawable/pic4"
-            android:button="@drawable/radio_selector"
-            android:buttonTint="@null"
-            android:padding="10dp"/>
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="70dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/pic3"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/image_description"/>
 
-        <RadioButton
-            android:id="@+id/back5"
-            android:layout_width="65dp"
-            android:layout_height="50dp"
-            android:background="@drawable/pic5"
-            android:button="@drawable/radio_selector"
-            android:buttonTint="@null"
-            android:padding="10dp"/>
+            <RadioButton
+                android:id="@+id/back3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:button="@null"
+                android:background="@drawable/radio_selector"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="70dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/pic4"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/image_description"/>
+
+            <RadioButton
+                android:id="@+id/back4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:button="@null"
+                android:background="@drawable/radio_selector"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="70dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/pic5"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/image_description"/>
+
+            <RadioButton
+                android:id="@+id/back5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:button="@null"
+                android:background="@drawable/radio_selector"/>
+        </RelativeLayout>
     </RadioGroup>
 
 </androidx.cardview.widget.CardView>
