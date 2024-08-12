@@ -1,10 +1,15 @@
 package com.project.notesapp.ui.note_menu
 
+import android.content.Context
+import android.graphics.drawable.Drawable
 import android.text.TextUtils
+import android.widget.RadioButton
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.project.notesapp.R
 import com.project.notesapp.model.NoteModel
 import com.project.notesapp.repository.NoteRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -55,6 +60,14 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
             result = Pair("Note should not empty", false)
         }
         return result
+    }
+
+    fun setPalette(
+        context: Context,
+        type: String,
+        radioButton: RadioButton
+    ): Pair<Drawable, Boolean> {
+        return Pair(ContextCompat.getDrawable(context, R.drawable.radio_check_design)!!, true)
     }
 
 }
