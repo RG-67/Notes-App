@@ -1,6 +1,7 @@
 package com.project.notesapp.ui.note_menu
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.widget.RadioButton
@@ -63,11 +64,70 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
     }
 
     fun setPalette(
-        context: Context,
         type: String,
-        radioButton: RadioButton
-    ): Pair<Drawable, Boolean> {
-        return Pair(ContextCompat.getDrawable(context, R.drawable.radio_check_design)!!, true)
+        radioButtonId: Int
+    ): List<Boolean> {
+        val drawableList = ArrayList<Boolean>()
+        when (type) {
+            "palette" -> {
+                when (radioButtonId) {
+                    R.id.noneRdBtn -> {
+                        drawableList.add(true)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                    }
+
+                    R.id.back1 -> {
+                        drawableList.add(false)
+                        drawableList.add(true)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                    }
+
+                    R.id.back2 -> {
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(true)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                    }
+
+                    R.id.back3 -> {
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(true)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                    }
+
+                    R.id.back4 -> {
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(true)
+                        drawableList.add(false)
+                    }
+
+                    R.id.back5 -> {
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(false)
+                        drawableList.add(true)
+                    }
+                }
+            }
+        }
+        return drawableList
     }
 
 }

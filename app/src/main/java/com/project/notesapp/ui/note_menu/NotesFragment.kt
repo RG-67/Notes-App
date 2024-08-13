@@ -60,7 +60,12 @@ class NotesFragment : Fragment(), ItemClickListener {
 
     private var paletteBinding: PaletteLayoutBinding? = null
     private var paletteRadioGr: RadioGroup? = null
+    private var noneRdBtn: RadioButton? = null
     private var back1: RadioButton? = null
+    private var back2: RadioButton? = null
+    private var back3: RadioButton? = null
+    private var back4: RadioButton? = null
+    private var back5: RadioButton? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -196,10 +201,45 @@ class NotesFragment : Fragment(), ItemClickListener {
         binding.palette.setOnClickListener {
             showPopUp("palette", it)
         }
-        paletteRadioGr!!.setOnCheckedChangeListener { _, _ ->
-            if (back1!!.isChecked) {
-                Toast.makeText(context, "Radio checked..", Toast.LENGTH_SHORT).show()
+        paletteRadioGr?.setOnCheckedChangeListener { _, _ ->
+            if (noneRdBtn?.isChecked == true) {
+                back1?.isChecked = false
+                back2?.isChecked = false
+                back3?.isChecked = false
+                back4?.isChecked = false
+                back5?.isChecked = false
+            } else if (back1?.isChecked == true) {
+                noneRdBtn?.isChecked = false
+                back2?.isChecked = false
+                back3?.isChecked = false
+                back4?.isChecked = false
+                back5?.isChecked = false
+            } else if (back2?.isChecked == true) {
+                noneRdBtn?.isChecked = false
+                back1?.isChecked = false
+                back3?.isChecked = false
+                back4?.isChecked = false
+                back5?.isChecked = false
+            } else if (back3?.isChecked == true) {
+                noneRdBtn?.isChecked = false
+                back1?.isChecked = false
+                back2?.isChecked = false
+                back4?.isChecked = false
+                back5?.isChecked = false
+            } else if (back4?.isChecked == true) {
+                noneRdBtn?.isChecked = false
+                back1?.isChecked = false
+                back2?.isChecked = false
+                back3?.isChecked = false
+                back5?.isChecked = false
+            } else if (back5?.isChecked == true) {
+                noneRdBtn?.isChecked = false
+                back1?.isChecked = false
+                back2?.isChecked = false
+                back3?.isChecked = false
+                back4?.isChecked = false
             }
+
         }
     }
 
