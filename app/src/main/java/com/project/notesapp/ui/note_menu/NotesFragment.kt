@@ -95,7 +95,12 @@ class NotesFragment : Fragment(), ItemClickListener {
             .build()
         paletteBinding = PaletteLayoutBinding.inflate(layoutInflater, container, false)
         paletteRadioGr = paletteBalloon!!.getContentView().findViewById(R.id.paletteRadioGr)
+        noneRdBtn = paletteBalloon!!.getContentView().findViewById(R.id.noneRdBtn)
         back1 = paletteBalloon!!.getContentView().findViewById(R.id.back1)
+        back2 = paletteBalloon!!.getContentView().findViewById(R.id.back2)
+        back3 = paletteBalloon!!.getContentView().findViewById(R.id.back3)
+        back4 = paletteBalloon!!.getContentView().findViewById(R.id.back4)
+        back5 = paletteBalloon!!.getContentView().findViewById(R.id.back5)
 
         binding.fabBtn.setImageResource(R.drawable.add)
         binding.fabBtn.imageTintList =
@@ -201,46 +206,27 @@ class NotesFragment : Fragment(), ItemClickListener {
         binding.palette.setOnClickListener {
             showPopUp("palette", it)
         }
-        paletteRadioGr?.setOnCheckedChangeListener { _, _ ->
-            if (noneRdBtn?.isChecked == true) {
-                back1?.isChecked = false
-                back2?.isChecked = false
-                back3?.isChecked = false
-                back4?.isChecked = false
-                back5?.isChecked = false
-            } else if (back1?.isChecked == true) {
-                noneRdBtn?.isChecked = false
-                back2?.isChecked = false
-                back3?.isChecked = false
-                back4?.isChecked = false
-                back5?.isChecked = false
-            } else if (back2?.isChecked == true) {
-                noneRdBtn?.isChecked = false
-                back1?.isChecked = false
-                back3?.isChecked = false
-                back4?.isChecked = false
-                back5?.isChecked = false
-            } else if (back3?.isChecked == true) {
-                noneRdBtn?.isChecked = false
-                back1?.isChecked = false
-                back2?.isChecked = false
-                back4?.isChecked = false
-                back5?.isChecked = false
-            } else if (back4?.isChecked == true) {
-                noneRdBtn?.isChecked = false
-                back1?.isChecked = false
-                back2?.isChecked = false
-                back3?.isChecked = false
-                back5?.isChecked = false
-            } else if (back5?.isChecked == true) {
-                noneRdBtn?.isChecked = false
-                back1?.isChecked = false
-                back2?.isChecked = false
-                back3?.isChecked = false
-                back4?.isChecked = false
-            }
 
+        noneRdBtn?.setOnClickListener {
+            setPaletteRadio(R.id.noneRdBtn)
         }
+        back1?.setOnClickListener {
+            setPaletteRadio(R.id.back1)
+        }
+        back2?.setOnClickListener {
+            setPaletteRadio(R.id.back2)
+        }
+        back3?.setOnClickListener {
+            setPaletteRadio(R.id.back3)
+        }
+        back4?.setOnClickListener {
+            setPaletteRadio(R.id.back4)
+        }
+        back5?.setOnClickListener {
+            setPaletteRadio(R.id.back5)
+        }
+
+
     }
 
     private fun getValidation(): Pair<String, Boolean> {
@@ -348,6 +334,15 @@ class NotesFragment : Fragment(), ItemClickListener {
 
             else -> Toast.makeText(context, "Invalid selection", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setPaletteRadio(radioBtn: Int) {
+        noneRdBtn?.isChecked = noteViewModel.setPalette("palette", radioBtn)[0]
+        back1?.isChecked = noteViewModel.setPalette("palette", radioBtn)[1]
+        back2?.isChecked = noteViewModel.setPalette("palette", radioBtn)[2]
+        back3?.isChecked = noteViewModel.setPalette("palette", radioBtn)[3]
+        back4?.isChecked = noteViewModel.setPalette("palette", radioBtn)[4]
+        back5?.isChecked = noteViewModel.setPalette("palette", radioBtn)[5]
     }
 
 
