@@ -226,7 +226,6 @@ class NotesFragment : Fragment(), ItemClickListener {
             setPaletteRadio(R.id.back5)
         }
 
-
     }
 
     private fun getValidation(): Pair<String, Boolean> {
@@ -261,13 +260,13 @@ class NotesFragment : Fragment(), ItemClickListener {
             if (flag == 1) {
                 val saveText = "Save"
                 binding.saveBtn.text = saveText
-                binding.saveBtn.setIconResource(R.drawable.save)
+                binding.saveBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.save, 0, 0, 0)
                 binding.title.setText("")
                 binding.note.setText("")
             } else {
                 val updateText = "Update"
                 binding.saveBtn.text = updateText
-                binding.saveBtn.setIconResource(R.drawable.update)
+                binding.saveBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.update, 0, 0, 0)
             }
         } else {
             binding.addNoteRel.visibility = View.GONE
@@ -337,12 +336,13 @@ class NotesFragment : Fragment(), ItemClickListener {
     }
 
     private fun setPaletteRadio(radioBtn: Int) {
-        noneRdBtn?.isChecked = noteViewModel.setPalette("palette", radioBtn)[0]
-        back1?.isChecked = noteViewModel.setPalette("palette", radioBtn)[1]
-        back2?.isChecked = noteViewModel.setPalette("palette", radioBtn)[2]
-        back3?.isChecked = noteViewModel.setPalette("palette", radioBtn)[3]
-        back4?.isChecked = noteViewModel.setPalette("palette", radioBtn)[4]
-        back5?.isChecked = noteViewModel.setPalette("palette", radioBtn)[5]
+        val drawableList = noteViewModel.setPalette("palette", radioBtn)
+        noneRdBtn?.isChecked = drawableList[0]
+        back1?.isChecked = drawableList[1]
+        back2?.isChecked = drawableList[2]
+        back3?.isChecked = drawableList[3]
+        back4?.isChecked = drawableList[4]
+        back5?.isChecked = drawableList[5]
     }
 
 

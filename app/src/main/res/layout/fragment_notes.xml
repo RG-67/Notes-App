@@ -134,13 +134,13 @@
                         android:background="@drawable/edt_bg"
                         android:backgroundTint="@color/transparent_green"
                         android:orientation="horizontal"
-                        android:padding="5dp">
+                        android:padding="10dp">
 
                         <ImageView
                             android:id="@+id/palette"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_marginStart="5dp"
+                            android:layout_marginStart="10dp"
                             android:contentDescription="@string/image_description"
                             android:src="@drawable/palette" />
 
@@ -148,25 +148,25 @@
                             android:id="@+id/pin"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginHorizontal="10dp"
                             android:contentDescription="@string/image_description"
                             android:src="@drawable/pin" />
 
                         <ImageView
-                            android:id="@+id/emoji"
+                            android:id="@+id/font"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_marginEnd="5dp"
+                            android:layout_marginEnd="10dp"
                             android:contentDescription="@string/image_description"
-                            android:src="@drawable/emoji" />
+                            android:src="@drawable/font" />
 
                         <ImageView
-                            android:id="@+id/threeDots"
+                            android:id="@+id/underline"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_marginEnd="5dp"
+                            android:layout_marginEnd="10dp"
                             android:contentDescription="@string/image_description"
-                            android:src="@drawable/three_dots" />
+                            android:src="@drawable/underline" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
@@ -184,39 +184,43 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <TextView
                 android:id="@+id/cancelBtn"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginVertical="10dp"
                 android:layout_marginEnd="2dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/transparent_green"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/cancel"
-                android:textColor="@color/colorOnPrimary"
-                android:textSize="18sp"
+                android:textColor="@color/transparent_green"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                app:icon="@drawable/cancel"
-                app:iconSize="30dp"
-                app:iconTint="@color/colorOnPrimary" />
+                android:background="@drawable/text_button_bg"
+                android:backgroundTint="@color/sallow_green"
+                android:gravity="center"
+                app:drawableStartCompat="@drawable/cancel"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:drawableTint="@color/transparent_green"/>
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <TextView
                 android:id="@+id/saveBtn"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginVertical="10dp"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/colorOnPrimary"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/save"
                 android:textColor="@color/transparent_green"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                app:icon="@drawable/save"
-                app:iconSize="30dp"
-                app:iconTint="@color/transparent_green" />
+                app:drawableStartCompat="@drawable/save"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:drawableTint="@color/transparent_green"
+                android:background="@drawable/text_button_bg"
+                android:backgroundTint="@color/colorOnPrimary"
+                android:gravity="center"/>
         </LinearLayout>
     </RelativeLayout>
     <!-- Add note layout end -->
