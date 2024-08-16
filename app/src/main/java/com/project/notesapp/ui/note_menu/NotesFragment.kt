@@ -51,14 +51,14 @@ class NotesFragment : Fragment(), ItemClickListener {
     private var title = ""
     private var noteContent = ""
     private var flag = 0
+
     private var balloon: Balloon? = null
-    private var paletteBalloon: Balloon? = null
     private var editBtn: LinearLayout? = null
     private var deleteBtn: LinearLayout? = null
     private var noteOptionLayout: View? = null
-    private var paletteOptionLayout: View? = null
 
-    private var paletteBinding: PaletteLayoutBinding? = null
+    private var paletteBalloon: Balloon? = null
+    private var paletteOptionLayout: View? = null
     private var paletteRadioGr: RadioGroup? = null
     private var noneRdBtn: RadioButton? = null
     private var back1: RadioButton? = null
@@ -66,6 +66,18 @@ class NotesFragment : Fragment(), ItemClickListener {
     private var back3: RadioButton? = null
     private var back4: RadioButton? = null
     private var back5: RadioButton? = null
+
+    private var fontBalloon: Balloon? = null
+    private var fontOptionLayout: View? = null
+    private var fontRadioGr: RadioGroup? = null
+    private var font1: RadioButton? = null
+    private var font2: RadioButton? = null
+    private var font3: RadioButton? = null
+    private var font4: RadioButton? = null
+    private var font5: RadioButton? = null
+    private var font6: RadioButton? = null
+    private var font7: RadioButton? = null
+    private var font8: RadioButton? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -81,26 +93,7 @@ class NotesFragment : Fragment(), ItemClickListener {
 
         noteOptionLayout = layoutInflater.inflate(R.layout.note_option_layout, null)
         paletteOptionLayout = layoutInflater.inflate(R.layout.palette_layout, null)
-
-        paletteBalloon = Balloon.Builder(requireContext())
-            .setLayout(paletteOptionLayout!!)
-            .setArrowSize(10)
-            .setArrowOrientation(ArrowOrientation.TOP)
-            .setArrowPosition(0.1f)
-            .setWidthRatio(1.0f)
-            .setWidth(BalloonSizeSpec.WRAP)
-            .setHeight(BalloonSizeSpec.WRAP)
-            .setArrowColor(ContextCompat.getColor(requireContext(), R.color.light_green))
-            .setBalloonAnimation(BalloonAnimation.FADE)
-            .build()
-        paletteBinding = PaletteLayoutBinding.inflate(layoutInflater, container, false)
-        paletteRadioGr = paletteBalloon!!.getContentView().findViewById(R.id.paletteRadioGr)
-        noneRdBtn = paletteBalloon!!.getContentView().findViewById(R.id.noneRdBtn)
-        back1 = paletteBalloon!!.getContentView().findViewById(R.id.back1)
-        back2 = paletteBalloon!!.getContentView().findViewById(R.id.back2)
-        back3 = paletteBalloon!!.getContentView().findViewById(R.id.back3)
-        back4 = paletteBalloon!!.getContentView().findViewById(R.id.back4)
-        back5 = paletteBalloon!!.getContentView().findViewById(R.id.back5)
+        fontOptionLayout = layoutInflater.inflate(R.layout.font_selection_layout, null)
 
         binding.fabBtn.setImageResource(R.drawable.add)
         binding.fabBtn.imageTintList =
@@ -125,6 +118,42 @@ class NotesFragment : Fragment(), ItemClickListener {
             .build()
         editBtn = balloon!!.getContentView().findViewById(R.id.editBtn)
         deleteBtn = balloon!!.getContentView().findViewById(R.id.deleteBtn)
+
+        paletteBalloon = Balloon.Builder(requireContext())
+            .setLayout(paletteOptionLayout!!)
+            .setArrowSize(10)
+            .setArrowOrientation(ArrowOrientation.TOP)
+            .setArrowPosition(0.1f)
+            .setWidthRatio(0.8f)
+            .setHeight(BalloonSizeSpec.WRAP)
+            .setArrowColor(ContextCompat.getColor(requireContext(), R.color.light_green))
+            .setBalloonAnimation(BalloonAnimation.FADE)
+            .build()
+        paletteRadioGr = paletteBalloon!!.getContentView().findViewById(R.id.paletteRadioGr)
+        noneRdBtn = paletteBalloon!!.getContentView().findViewById(R.id.noneRdBtn)
+        back1 = paletteBalloon!!.getContentView().findViewById(R.id.back1)
+        back2 = paletteBalloon!!.getContentView().findViewById(R.id.back2)
+        back3 = paletteBalloon!!.getContentView().findViewById(R.id.back3)
+        back4 = paletteBalloon!!.getContentView().findViewById(R.id.back4)
+        back5 = paletteBalloon!!.getContentView().findViewById(R.id.back5)
+
+        fontBalloon = Balloon.Builder(requireContext())
+            .setLayout(fontOptionLayout!!)
+            .setArrowSize(10)
+            .setArrowOrientation(ArrowOrientation.TOP)
+            .setArrowPosition(0.5f)
+            .setWidth(BalloonSizeSpec.WRAP)
+            .setHeight(BalloonSizeSpec.WRAP)
+            .setCornerRadius(5f)
+            .setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            .setArrowColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.transparent_green
+                )
+            )
+            .setBalloonAnimation(BalloonAnimation.ELASTIC)
+            .build()
 
         return binding.root
     }
@@ -203,6 +232,7 @@ class NotesFragment : Fragment(), ItemClickListener {
                 }
             }
         }
+
         binding.palette.setOnClickListener {
             showPopUp("palette", it)
         }
@@ -224,6 +254,10 @@ class NotesFragment : Fragment(), ItemClickListener {
         }
         back5?.setOnClickListener {
             setPaletteRadio(R.id.back5)
+        }
+
+        binding.font.setOnClickListener {
+            showPopUp("font", it)
         }
 
     }
@@ -321,14 +355,34 @@ class NotesFragment : Fragment(), ItemClickListener {
                     .setLayout(paletteOptionLayout!!)
                     .setArrowSize(10)
                     .setArrowOrientation(ArrowOrientation.TOP)
-                    .setArrowPosition(0.1f)
-                    .setWidthRatio(1.0f)
-                    .setWidth(BalloonSizeSpec.WRAP)
+                    .setArrowPosition(0.2f)
+                    .setWidthRatio(0.8f)
                     .setHeight(BalloonSizeSpec.WRAP)
                     .setArrowColor(ContextCompat.getColor(requireContext(), R.color.light_green))
                     .setBalloonAnimation(BalloonAnimation.FADE)
                     .build()
                 paletteBalloon?.showAlignBottom(view)
+            }
+
+            "font" -> {
+                fontBalloon = Balloon.Builder(requireContext())
+                    .setLayout(fontOptionLayout!!)
+                    .setArrowSize(10)
+                    .setArrowOrientation(ArrowOrientation.TOP)
+                    .setArrowPosition(0.5f)
+                    .setWidth(BalloonSizeSpec.WRAP)
+                    .setHeight(BalloonSizeSpec.WRAP)
+                    .setCornerRadius(5f)
+                    .setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+                    .setArrowColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.light_green
+                        )
+                    )
+                    .setBalloonAnimation(BalloonAnimation.ELASTIC)
+                    .build()
+                fontBalloon?.showAlignBottom(view)
             }
 
             else -> Toast.makeText(context, "Invalid selection", Toast.LENGTH_SHORT).show()
@@ -343,6 +397,7 @@ class NotesFragment : Fragment(), ItemClickListener {
         back3?.isChecked = drawableList[3]
         back4?.isChecked = drawableList[4]
         back5?.isChecked = drawableList[5]
+        paletteBalloon?.dismiss()
     }
 
 
