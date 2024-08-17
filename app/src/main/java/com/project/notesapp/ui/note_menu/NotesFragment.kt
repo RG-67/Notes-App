@@ -154,6 +154,15 @@ class NotesFragment : Fragment(), ItemClickListener {
             )
             .setBalloonAnimation(BalloonAnimation.ELASTIC)
             .build()
+        fontRadioGr = fontBalloon!!.getContentView().findViewById(R.id.fontRadioBtn)
+        font1 = fontBalloon!!.getContentView().findViewById(R.id.font1)
+        font2 = fontBalloon!!.getContentView().findViewById(R.id.font2)
+        font3 = fontBalloon!!.getContentView().findViewById(R.id.font3)
+        font4 = fontBalloon!!.getContentView().findViewById(R.id.font4)
+        font5 = fontBalloon!!.getContentView().findViewById(R.id.font5)
+        font6 = fontBalloon!!.getContentView().findViewById(R.id.font6)
+        font7 = fontBalloon!!.getContentView().findViewById(R.id.font7)
+        font8 = fontBalloon!!.getContentView().findViewById(R.id.font8)
 
         return binding.root
     }
@@ -258,6 +267,9 @@ class NotesFragment : Fragment(), ItemClickListener {
 
         binding.font.setOnClickListener {
             showPopUp("font", it)
+        }
+        fontRadioGr?.setOnCheckedChangeListener { p0, p1 ->
+            val radioButton: RadioButton = fontOptionLayout?.findViewById(p1)!!
         }
 
     }
