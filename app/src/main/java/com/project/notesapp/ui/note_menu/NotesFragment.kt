@@ -5,8 +5,11 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Editable
 import android.text.Layout
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -70,14 +73,28 @@ class NotesFragment : Fragment(), ItemClickListener {
     private var fontBalloon: Balloon? = null
     private var fontOptionLayout: View? = null
     private var fontRadioGr: RadioGroup? = null
-    private var font1: RadioButton? = null
-    private var font2: RadioButton? = null
-    private var font3: RadioButton? = null
-    private var font4: RadioButton? = null
-    private var font5: RadioButton? = null
-    private var font6: RadioButton? = null
-    private var font7: RadioButton? = null
-    private var font8: RadioButton? = null
+    private var sansDef: RadioButton? = null
+    private var sansBlack: RadioButton? = null
+    private var cardoReg: RadioButton? = null
+    private var cardoBold: RadioButton? = null
+    private var cardoItalic: RadioButton? = null
+    private var fanwoodReg: RadioButton? = null
+    private var fanwoodItalic: RadioButton? = null
+    private var honkReg: RadioButton? = null
+    private var notoColorReg: RadioButton? = null
+    private var poppinsReg: RadioButton? = null
+    private var poppinsMedium: RadioButton? = null
+    private var poppinsSemibold: RadioButton? = null
+    private var poppinsItalic: RadioButton? = null
+    private var robotoReg: RadioButton? = null
+    private var robotoMedium: RadioButton? = null
+    private var robotoItalic: RadioButton? = null
+    private var titilliReg: RadioButton? = null
+    private var titilliSemibold: RadioButton? = null
+    private var titilliBold: RadioButton? = null
+    private var titilliItalic: RadioButton? = null
+
+    private var selectedFaceType: Typeface? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -155,14 +172,26 @@ class NotesFragment : Fragment(), ItemClickListener {
             .setBalloonAnimation(BalloonAnimation.ELASTIC)
             .build()
         fontRadioGr = fontBalloon!!.getContentView().findViewById(R.id.fontRadioBtn)
-        font1 = fontBalloon!!.getContentView().findViewById(R.id.font1)
-        font2 = fontBalloon!!.getContentView().findViewById(R.id.font2)
-        font3 = fontBalloon!!.getContentView().findViewById(R.id.font3)
-        font4 = fontBalloon!!.getContentView().findViewById(R.id.font4)
-        font5 = fontBalloon!!.getContentView().findViewById(R.id.font5)
-        font6 = fontBalloon!!.getContentView().findViewById(R.id.font6)
-        font7 = fontBalloon!!.getContentView().findViewById(R.id.font7)
-        font8 = fontBalloon!!.getContentView().findViewById(R.id.font8)
+        sansDef = fontBalloon!!.getContentView().findViewById(R.id.sansDef)
+        sansBlack = fontBalloon!!.getContentView().findViewById(R.id.sansBlack)
+        cardoReg = fontBalloon!!.getContentView().findViewById(R.id.cardoReg)
+        cardoBold = fontBalloon!!.getContentView().findViewById(R.id.cardoBold)
+        cardoItalic = fontBalloon!!.getContentView().findViewById(R.id.cardoItalic)
+        fanwoodReg = fontBalloon!!.getContentView().findViewById(R.id.fanwoodReg)
+        fanwoodItalic = fontBalloon!!.getContentView().findViewById(R.id.fanwoodItalic)
+        honkReg = fontBalloon!!.getContentView().findViewById(R.id.honkReg)
+        notoColorReg = fontBalloon!!.getContentView().findViewById(R.id.notoColorReg)
+        poppinsReg = fontBalloon!!.getContentView().findViewById(R.id.poppinsReg)
+        poppinsMedium = fontBalloon!!.getContentView().findViewById(R.id.poppinsMedium)
+        poppinsSemibold = fontBalloon!!.getContentView().findViewById(R.id.poppinsSemibold)
+        poppinsItalic = fontBalloon!!.getContentView().findViewById(R.id.poppinsItalic)
+        robotoReg = fontBalloon!!.getContentView().findViewById(R.id.robotoReg)
+        robotoMedium = fontBalloon!!.getContentView().findViewById(R.id.robotoMedium)
+        robotoItalic = fontBalloon!!.getContentView().findViewById(R.id.robotoItalic)
+        titilliReg = fontBalloon!!.getContentView().findViewById(R.id.titilliReg)
+        titilliSemibold = fontBalloon!!.getContentView().findViewById(R.id.titilliSemibold)
+        titilliBold = fontBalloon!!.getContentView().findViewById(R.id.titilliBold)
+        titilliItalic = fontBalloon!!.getContentView().findViewById(R.id.titilliItalic)
 
         return binding.root
     }
@@ -270,6 +299,115 @@ class NotesFragment : Fragment(), ItemClickListener {
         }
         fontRadioGr?.setOnCheckedChangeListener { p0, p1 ->
             val radioButton: RadioButton = fontOptionLayout?.findViewById(p1)!!
+            when (p1) {
+                R.id.sansDef -> {
+                    selectedFaceType = Typeface.SANS_SERIF
+                }
+
+                R.id.sansBlack -> {
+                    selectedFaceType = Typeface.create("sans-serif-black", Typeface.NORMAL)
+                }
+
+                R.id.cardoReg -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "cardo_regular.ttf")
+                }
+
+                R.id.cardoBold -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "cardo_bold.ttf")
+                }
+
+                R.id.cardoItalic -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "cardo_Italic.ttf")
+                }
+
+                R.id.fanwoodReg -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "fanwoodtext_regular.ttf")
+                }
+
+                R.id.fanwoodItalic -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "fanwoodtext_italic.ttf")
+                }
+
+                R.id.honkReg -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "honk_regular.ttf")
+                }
+
+                R.id.notoColorReg -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(
+                            requireContext().assets,
+                            "notocoloremoji_regular.ttf"
+                        )
+                }
+
+                R.id.poppinsReg -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "poppins_regular.ttf")
+                }
+
+                R.id.poppinsMedium -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "poppins_medium.ttf")
+                }
+
+                R.id.poppinsSemibold -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "poppins_semibold.ttf")
+                }
+
+                R.id.poppinsItalic -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "poppins_italic.ttf")
+                }
+
+                R.id.robotoReg -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "roboto_regular.ttf")
+                }
+
+                R.id.robotoMedium -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "roboto_medium.ttf")
+                }
+
+                R.id.robotoItalic -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "roboto_italic.ttf")
+                }
+
+                R.id.titilliReg -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(
+                            requireContext().assets,
+                            "titilliumweb_regular.ttf"
+                        )
+                }
+
+                R.id.titilliSemibold -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(
+                            requireContext().assets,
+                            "titilliumweb_semibold.ttf"
+                        )
+                }
+
+                R.id.titilliBold -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "titilliumweb_bold.ttf")
+                }
+
+                R.id.titilliItalic -> {
+                    selectedFaceType =
+                        Typeface.createFromAsset(requireContext().assets, "titilliumweb_italic.ttf")
+                }
+
+            }
         }
 
     }
@@ -381,15 +519,16 @@ class NotesFragment : Fragment(), ItemClickListener {
                     .setLayout(fontOptionLayout!!)
                     .setArrowSize(10)
                     .setArrowOrientation(ArrowOrientation.TOP)
-                    .setArrowPosition(0.5f)
+                    .setArrowPosition(0.4f)
+                    .setWidthRatio(0.8f)
                     .setWidth(BalloonSizeSpec.WRAP)
-                    .setHeight(BalloonSizeSpec.WRAP)
+                    .setHeight(400)
                     .setCornerRadius(5f)
                     .setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
                     .setArrowColor(
                         ContextCompat.getColor(
                             requireContext(),
-                            R.color.light_green
+                            R.color.black
                         )
                     )
                     .setBalloonAnimation(BalloonAnimation.ELASTIC)
@@ -410,6 +549,21 @@ class NotesFragment : Fragment(), ItemClickListener {
         back4?.isChecked = drawableList[4]
         back5?.isChecked = drawableList[5]
         paletteBalloon?.dismiss()
+    }
+
+    val textWatcher = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            TODO("Not yet implemented")
+        }
+
+        override fun afterTextChanged(p0: Editable?) {
+            TODO("Not yet implemented")
+        }
+
     }
 
 

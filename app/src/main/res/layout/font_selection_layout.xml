@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="180dp"
-    android:layout_height="wrap_content"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="@color/light_green">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,154 +16,387 @@
             android:orientation="vertical">
 
             <RadioButton
-                android:id="@+id/font1"
+                android:id="@+id/sansDef"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Default"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
                 android:button="@android:color/transparent"
-                android:textSize="15sp"
+                android:checked="false"
                 android:fontFamily="sans-serif"
-                android:textStyle="bold"
-                android:background="@drawable/font_radio_selector"
-                android:checked="false"
+                android:gravity="center"
+                android:text="Sans-sarif (Default)"
                 android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:gravity="center"/>
+                android:textSize="15sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
             <RadioButton
-                android:id="@+id/font2"
+                android:id="@+id/sansBlack"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cardo"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
                 android:button="@android:color/transparent"
-                android:textSize="15sp"
+                android:checked="false"
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:text="Sans-sarif-black"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/cardoReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
                 android:fontFamily="@font/cardo_regular"
-                android:textStyle="bold"
-                android:background="@drawable/font_radio_selector"
-                android:checked="false"
+                android:gravity="center"
+                android:text="Cardo Regular"
                 android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:gravity="center"/>
+                android:textSize="15sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
             <RadioButton
-                android:id="@+id/font3"
+                android:id="@+id/cardoBold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fanwood"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
                 android:button="@android:color/transparent"
+                android:checked="false"
+                android:fontFamily="@font/cardo_bold"
+                android:gravity="center"
+                android:text="Cardo Bold"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/cardoItalic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:fontFamily="@font/cardo_italic"
+                android:gravity="center"
+                android:text="Cardo Italic"
+                android:textColor="@color/white"
                 android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/fanwoodReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
                 android:fontFamily="@font/fanwoodtext_regular"
-                android:textStyle="bold"
-                android:background="@drawable/font_radio_selector"
-                android:checked="false"
+                android:gravity="center"
+                android:text="Fanwood Regular"
                 android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:gravity="center"/>
+                android:textSize="15sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
             <RadioButton
-                android:id="@+id/font4"
+                android:id="@+id/fanwoodItalic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Honk"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
                 android:button="@android:color/transparent"
-                android:textSize="15sp"
+                android:checked="false"
+                android:fontFamily="@font/fanwoodtext_italic"
+                android:gravity="center"
+                android:text="Fanwood Italic"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/honkReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
                 android:fontFamily="@font/honk_regular"
-                android:textStyle="bold"
-                android:background="@drawable/font_radio_selector"
-                android:checked="false"
+                android:gravity="center"
+                android:text="Honk Regular"
                 android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:gravity="center"/>
+                android:textSize="15sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
             <RadioButton
-                android:id="@+id/font5"
+                android:id="@+id/notoColorReg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="NotoColorEmoji"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
                 android:button="@android:color/transparent"
-                android:textSize="15sp"
+                android:checked="false"
                 android:fontFamily="@font/notocoloremoji_regular"
-                android:textStyle="bold"
-                android:background="@drawable/font_radio_selector"
-                android:checked="false"
+                android:gravity="center"
+                android:text="NotoColorEmoji Regular"
                 android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:gravity="center"/>
+                android:textSize="15sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
             <RadioButton
-                android:id="@+id/font6"
+                android:id="@+id/poppinsReg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Poppins"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
                 android:button="@android:color/transparent"
-                android:textSize="15sp"
+                android:checked="false"
                 android:fontFamily="@font/poppins_regular"
-                android:textStyle="bold"
-                android:background="@drawable/font_radio_selector"
-                android:checked="false"
+                android:gravity="center"
+                android:text="Poppins Regular"
                 android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:gravity="center"/>
+                android:textSize="15sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
             <RadioButton
-                android:id="@+id/font7"
+                android:id="@+id/poppinsMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Roboto"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
                 android:button="@android:color/transparent"
-                android:textSize="15sp"
+                android:checked="false"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="Poppins Medium"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/poppinsSemibold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:text="Poppins Semibold"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/poppinsItalic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:fontFamily="@font/poppins_italic"
+                android:gravity="center"
+                android:text="Poppins Italic"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/robotoReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
                 android:fontFamily="@font/roboto_regular"
-                android:textStyle="bold"
-                android:background="@drawable/font_radio_selector"
-                android:checked="false"
+                android:gravity="center"
+                android:text="Roboto Regular"
                 android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:gravity="center"/>
+                android:textSize="15sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
             <RadioButton
-                android:id="@+id/font8"
+                android:id="@+id/robotoMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Titilliumweb"
-                android:button="@android:color/transparent"
-                android:textSize="15sp"
-                android:fontFamily="@font/titilliumweb_regular"
-                android:textStyle="bold"
-                android:background="@drawable/font_radio_selector"
-                android:checked="false"
-                android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:gravity="center"/>
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="Roboto Medium"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/robotoItalic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:fontFamily="@font/roboto_italic"
+                android:gravity="center"
+                android:text="Roboto Italic"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/titilliReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:fontFamily="@font/titilliumweb_regular"
+                android:gravity="center"
+                android:text="Titilliumweb Regular"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/titilliSemibold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:fontFamily="@font/titilliumweb_semibold"
+                android:gravity="center"
+                android:text="Titilliumweb Semibold"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/titilliBold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:fontFamily="@font/titilliumweb_bold"
+                android:gravity="center"
+                android:text="Titilliumweb Bold"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
+
+            <RadioButton
+                android:id="@+id/titilliItalic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/font_radio_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:fontFamily="@font/titilliumweb_italic"
+                android:gravity="center"
+                android:text="Titilliumweb Italic"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white" />
 
         </RadioGroup>
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</androidx.core.widget.NestedScrollView>
