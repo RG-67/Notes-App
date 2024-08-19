@@ -12,4 +12,5 @@
     <color name="red">#FF0000</color>
     <color name="light_green">#D1EDB2</color>
     <color name="sallow_green">#758E5A</color>
+    <color name="icon_color">#37D07B</color>
 </resources>

@@ -6,10 +6,16 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.Layout
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.TextWatcher
+import android.text.style.TypefaceSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,7 +25,9 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
@@ -95,6 +103,9 @@ class NotesFragment : Fragment(), ItemClickListener {
     private var titilliItalic: RadioButton? = null
 
     private var selectedFaceType: Typeface? = null
+    private var underlineEnable: Boolean = false
+
+    private var underlineFlag = 1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -271,6 +282,42 @@ class NotesFragment : Fragment(), ItemClickListener {
             }
         }
 
+        binding.note.addTextChangedListener(textWatcher)
+
+        binding.underline.setOnClickListener {
+            if (underlineFlag == 1) {
+                underlineFlag = 2
+                underlineEnable = true
+                binding.underline.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorOnPrimary
+                    )
+                )
+                binding.underline.setColorFilter(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.white
+                    ), android.graphics.PorterDuff.Mode.MULTIPLY
+                )
+            } else {
+                underlineFlag = 1
+                underlineEnable = false
+                binding.underline.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.transparent_green
+                    )
+                )
+                binding.underline.setColorFilter(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.icon_color
+                    ), android.graphics.PorterDuff.Mode.MULTIPLY
+                )
+            }
+        }
+
         binding.palette.setOnClickListener {
             showPopUp("palette", it)
         }
@@ -299,115 +346,81 @@ class NotesFragment : Fragment(), ItemClickListener {
         }
         fontRadioGr?.setOnCheckedChangeListener { p0, p1 ->
             val radioButton: RadioButton = fontOptionLayout?.findViewById(p1)!!
-            when (p1) {
-                R.id.sansDef -> {
-                    selectedFaceType = Typeface.SANS_SERIF
-                }
+            selectedFaceType = when (p1) {
+                R.id.sansDef -> Typeface.SANS_SERIF
 
-                R.id.sansBlack -> {
-                    selectedFaceType = Typeface.create("sans-serif-black", Typeface.NORMAL)
-                }
+                R.id.sansBlack -> Typeface.create("sans-serif-black", Typeface.NORMAL)
 
-                R.id.cardoReg -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "cardo_regular.ttf")
-                }
+                R.id.cardoReg -> ResourcesCompat.getFont(requireContext(), R.font.cardo_regular)
 
-                R.id.cardoBold -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "cardo_bold.ttf")
-                }
+                R.id.cardoBold -> ResourcesCompat.getFont(requireContext(), R.font.cardo_bold)
 
-                R.id.cardoItalic -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "cardo_Italic.ttf")
-                }
+                R.id.cardoItalic -> ResourcesCompat.getFont(requireContext(), R.font.cardo_italic)
 
-                R.id.fanwoodReg -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "fanwoodtext_regular.ttf")
-                }
+                R.id.fanwoodReg -> ResourcesCompat.getFont(
+                    requireContext(),
+                    R.font.fanwoodtext_regular
+                )
 
-                R.id.fanwoodItalic -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "fanwoodtext_italic.ttf")
-                }
+                R.id.fanwoodItalic -> ResourcesCompat.getFont(
+                    requireContext(),
+                    R.font.fanwoodtext_italic
+                )
 
-                R.id.honkReg -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "honk_regular.ttf")
-                }
+                R.id.honkReg -> ResourcesCompat.getFont(requireContext(), R.font.honk_regular)
 
-                R.id.notoColorReg -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(
-                            requireContext().assets,
-                            "notocoloremoji_regular.ttf"
-                        )
-                }
+                R.id.notoColorReg -> ResourcesCompat.getFont(
+                    requireContext(),
+                    R.font.notocoloremoji_regular
+                )
 
-                R.id.poppinsReg -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "poppins_regular.ttf")
-                }
+                R.id.poppinsReg -> ResourcesCompat.getFont(requireContext(), R.font.poppins_regular)
 
-                R.id.poppinsMedium -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "poppins_medium.ttf")
-                }
+                R.id.poppinsMedium -> ResourcesCompat.getFont(
+                    requireContext(),
+                    R.font.poppins_medium
+                )
 
-                R.id.poppinsSemibold -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "poppins_semibold.ttf")
-                }
+                R.id.poppinsSemibold -> ResourcesCompat.getFont(
+                    requireContext(),
+                    R.font.poppins_semibold
+                )
 
-                R.id.poppinsItalic -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "poppins_italic.ttf")
-                }
+                R.id.poppinsItalic -> ResourcesCompat.getFont(
+                    requireContext(),
+                    R.font.poppins_italic
+                )
 
-                R.id.robotoReg -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "roboto_regular.ttf")
-                }
+                R.id.robotoReg -> ResourcesCompat.getFont(requireContext(), R.font.roboto_regular)
 
-                R.id.robotoMedium -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "roboto_medium.ttf")
-                }
+                R.id.robotoMedium -> ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)
 
-                R.id.robotoItalic -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "roboto_italic.ttf")
-                }
+                R.id.robotoItalic -> ResourcesCompat.getFont(requireContext(), R.font.roboto_italic)
 
-                R.id.titilliReg -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(
-                            requireContext().assets,
-                            "titilliumweb_regular.ttf"
-                        )
-                }
+                R.id.titilliReg -> ResourcesCompat.getFont(
+                    requireContext(),
+                    R.font.titilliumweb_regular
+                )
 
-                R.id.titilliSemibold -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(
-                            requireContext().assets,
-                            "titilliumweb_semibold.ttf"
-                        )
-                }
+                R.id.titilliSemibold -> ResourcesCompat.getFont(
+                    requireContext(),
+                    R.font.titilliumweb_semibold
+                )
 
-                R.id.titilliBold -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "titilliumweb_bold.ttf")
-                }
+                R.id.titilliBold -> ResourcesCompat.getFont(
+                    requireContext(),
+                    R.font.titilliumweb_bold
+                )
 
-                R.id.titilliItalic -> {
-                    selectedFaceType =
-                        Typeface.createFromAsset(requireContext().assets, "titilliumweb_italic.ttf")
-                }
+                R.id.titilliItalic -> ResourcesCompat.getFont(
+                    requireContext(),
+                    R.font.titilliumweb_italic
+                )
+
+                else -> Typeface.DEFAULT
 
             }
+            fontBalloon?.dismiss()
         }
 
     }
@@ -551,17 +564,41 @@ class NotesFragment : Fragment(), ItemClickListener {
         paletteBalloon?.dismiss()
     }
 
-    val textWatcher = object : TextWatcher {
+    private val textWatcher = object : TextWatcher {
+        private var startPos = 0
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            TODO("Not yet implemented")
+            startPos = p1
         }
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            TODO("Not yet implemented")
+
         }
 
+        @RequiresApi(Build.VERSION_CODES.P)
         override fun afterTextChanged(p0: Editable?) {
-            TODO("Not yet implemented")
+            p0?.let {
+                val endPos = startPos + it.length - startPos
+                val spannableString = SpannableStringBuilder(it)
+                if (selectedFaceType != null && endPos <= it.length) {
+                    spannableString.setSpan(
+                        TypefaceSpan(selectedFaceType!!),
+                        startPos, endPos,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+                if (underlineEnable && endPos <= it.length) {
+                    spannableString.setSpan(
+                        UnderlineSpan(),
+                        startPos,
+                        endPos,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+                binding.note.removeTextChangedListener(this)
+                binding.note.text = spannableString
+                binding.note.setSelection(endPos)
+                binding.note.addTextChangedListener(this)
+            }
         }
 
     }
