@@ -2,10 +2,13 @@ package com.project.notesapp.ui.note_menu
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.widget.RadioButton
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -128,6 +131,63 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
             }
         }
         return drawableList
+    }
+
+    fun getTypeface(viewId: Int, context: Context): Typeface? {
+        return when(viewId) {
+            R.id.sansDef -> Typeface.SANS_SERIF
+            R.id.sansDef -> Typeface.SANS_SERIF
+            R.id.sansBlack -> Typeface.create("sans-serif-black", Typeface.NORMAL)
+            R.id.cardoReg -> ResourcesCompat.getFont(context, R.font.cardo_regular)
+            R.id.cardoBold -> ResourcesCompat.getFont(context, R.font.cardo_bold)
+            R.id.cardoItalic -> ResourcesCompat.getFont(context, R.font.cardo_italic)
+            R.id.fanwoodReg -> ResourcesCompat.getFont(
+                context,
+                R.font.fanwoodtext_regular
+            )
+            R.id.fanwoodItalic -> ResourcesCompat.getFont(
+                context,
+                R.font.fanwoodtext_italic
+            )
+            R.id.honkReg -> ResourcesCompat.getFont(context, R.font.honk_regular)
+            R.id.notoColorReg -> ResourcesCompat.getFont(
+                context,
+                R.font.notocoloremoji_regular
+            )
+            R.id.poppinsReg -> ResourcesCompat.getFont(context, R.font.poppins_regular)
+            R.id.poppinsMedium -> ResourcesCompat.getFont(
+                context,
+                R.font.poppins_medium
+            )
+            R.id.poppinsSemibold -> ResourcesCompat.getFont(
+                context,
+                R.font.poppins_semibold
+            )
+            R.id.poppinsItalic -> ResourcesCompat.getFont(
+                context,
+                R.font.poppins_italic
+            )
+            R.id.robotoReg -> ResourcesCompat.getFont(context, R.font.roboto_regular)
+            R.id.robotoMedium -> ResourcesCompat.getFont(context, R.font.roboto_medium)
+            R.id.robotoItalic -> ResourcesCompat.getFont(context, R.font.roboto_italic)
+            R.id.titilliReg -> ResourcesCompat.getFont(
+                context,
+                R.font.titilliumweb_regular
+            )
+            R.id.titilliSemibold -> ResourcesCompat.getFont(
+                context,
+                R.font.titilliumweb_semibold
+            )
+            R.id.titilliBold -> ResourcesCompat.getFont(
+                context,
+                R.font.titilliumweb_bold
+            )
+            R.id.titilliItalic -> ResourcesCompat.getFont(
+                context,
+                R.font.titilliumweb_italic
+            )
+            else -> Typeface.DEFAULT
+        }
     }
 
 }

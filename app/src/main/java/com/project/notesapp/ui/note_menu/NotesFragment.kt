@@ -344,82 +344,8 @@ class NotesFragment : Fragment(), ItemClickListener {
         binding.font.setOnClickListener {
             showPopUp("font", it)
         }
-        fontRadioGr?.setOnCheckedChangeListener { p0, p1 ->
-            val radioButton: RadioButton = fontOptionLayout?.findViewById(p1)!!
-            selectedFaceType = when (p1) {
-                R.id.sansDef -> Typeface.SANS_SERIF
-
-                R.id.sansBlack -> Typeface.create("sans-serif-black", Typeface.NORMAL)
-
-                R.id.cardoReg -> ResourcesCompat.getFont(requireContext(), R.font.cardo_regular)
-
-                R.id.cardoBold -> ResourcesCompat.getFont(requireContext(), R.font.cardo_bold)
-
-                R.id.cardoItalic -> ResourcesCompat.getFont(requireContext(), R.font.cardo_italic)
-
-                R.id.fanwoodReg -> ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.fanwoodtext_regular
-                )
-
-                R.id.fanwoodItalic -> ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.fanwoodtext_italic
-                )
-
-                R.id.honkReg -> ResourcesCompat.getFont(requireContext(), R.font.honk_regular)
-
-                R.id.notoColorReg -> ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.notocoloremoji_regular
-                )
-
-                R.id.poppinsReg -> ResourcesCompat.getFont(requireContext(), R.font.poppins_regular)
-
-                R.id.poppinsMedium -> ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.poppins_medium
-                )
-
-                R.id.poppinsSemibold -> ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.poppins_semibold
-                )
-
-                R.id.poppinsItalic -> ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.poppins_italic
-                )
-
-                R.id.robotoReg -> ResourcesCompat.getFont(requireContext(), R.font.roboto_regular)
-
-                R.id.robotoMedium -> ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)
-
-                R.id.robotoItalic -> ResourcesCompat.getFont(requireContext(), R.font.roboto_italic)
-
-                R.id.titilliReg -> ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.titilliumweb_regular
-                )
-
-                R.id.titilliSemibold -> ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.titilliumweb_semibold
-                )
-
-                R.id.titilliBold -> ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.titilliumweb_bold
-                )
-
-                R.id.titilliItalic -> ResourcesCompat.getFont(
-                    requireContext(),
-                    R.font.titilliumweb_italic
-                )
-
-                else -> Typeface.DEFAULT
-
-            }
+        fontRadioGr?.setOnCheckedChangeListener { _, p1 ->
+            selectedFaceType = noteViewModel.getTypeface(p1, requireContext())
             fontBalloon?.dismiss()
         }
 
