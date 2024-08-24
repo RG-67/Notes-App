@@ -149,12 +149,9 @@ class NotesFragment : Fragment(), ItemClickListener {
 
         paletteBalloon = Balloon.Builder(requireContext())
             .setLayout(paletteOptionLayout!!)
-            .setArrowSize(10)
-            .setArrowOrientation(ArrowOrientation.TOP)
-            .setArrowPosition(0.1f)
+            .setIsVisibleArrow(false)
             .setWidthRatio(0.8f)
             .setHeight(BalloonSizeSpec.WRAP)
-            .setArrowColor(ContextCompat.getColor(requireContext(), R.color.light_green))
             .setBalloonAnimation(BalloonAnimation.FADE)
             .build()
         paletteRadioGr = paletteBalloon!!.getContentView().findViewById(R.id.paletteRadioGr)
@@ -167,19 +164,12 @@ class NotesFragment : Fragment(), ItemClickListener {
 
         fontBalloon = Balloon.Builder(requireContext())
             .setLayout(fontOptionLayout!!)
-            .setArrowSize(10)
-            .setArrowOrientation(ArrowOrientation.TOP)
-            .setArrowPosition(0.5f)
+            .setIsVisibleArrow(false)
+            .setWidthRatio(0.8f)
             .setWidth(BalloonSizeSpec.WRAP)
-            .setHeight(BalloonSizeSpec.WRAP)
+            .setHeight(400)
             .setCornerRadius(5f)
             .setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
-            .setArrowColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.transparent_green
-                )
-            )
             .setBalloonAnimation(BalloonAnimation.ELASTIC)
             .build()
         fontRadioGr = fontBalloon!!.getContentView().findViewById(R.id.fontRadioBtn)
@@ -419,59 +409,14 @@ class NotesFragment : Fragment(), ItemClickListener {
     private fun showPopUp(from: String, view: View) {
         when (from) {
             "note" -> {
-                balloon = Balloon.Builder(requireContext())
-                    .setLayout(noteOptionLayout!!)
-                    .setArrowSize(10)
-                    .setArrowOrientation(ArrowOrientation.TOP)
-                    .setArrowPosition(0.5f)
-                    .setWidthRatio(0.5f)
-                    .setHeight(BalloonSizeSpec.WRAP)
-                    .setCornerRadius(5f)
-                    .setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
-                    .setArrowColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.transparent_green
-                        )
-                    )
-                    .setBalloonAnimation(BalloonAnimation.ELASTIC)
-                    .build()
                 balloon?.showAlignBottom(view)
             }
 
             "palette" -> {
-                paletteBalloon = Balloon.Builder(requireContext())
-                    .setLayout(paletteOptionLayout!!)
-                    .setArrowSize(10)
-                    .setArrowOrientation(ArrowOrientation.TOP)
-                    .setArrowPosition(0.2f)
-                    .setWidthRatio(0.8f)
-                    .setHeight(BalloonSizeSpec.WRAP)
-                    .setArrowColor(ContextCompat.getColor(requireContext(), R.color.light_green))
-                    .setBalloonAnimation(BalloonAnimation.FADE)
-                    .build()
                 paletteBalloon?.showAlignBottom(view)
             }
 
             "font" -> {
-                fontBalloon = Balloon.Builder(requireContext())
-                    .setLayout(fontOptionLayout!!)
-                    .setArrowSize(10)
-                    .setArrowOrientation(ArrowOrientation.TOP)
-                    .setArrowPosition(0.4f)
-                    .setWidthRatio(0.8f)
-                    .setWidth(BalloonSizeSpec.WRAP)
-                    .setHeight(400)
-                    .setCornerRadius(5f)
-                    .setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
-                    .setArrowColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.black
-                        )
-                    )
-                    .setBalloonAnimation(BalloonAnimation.ELASTIC)
-                    .build()
                 fontBalloon?.showAlignBottom(view)
             }
 
