@@ -27,6 +27,9 @@ interface NoteDao {
         noteId: Int
     )
 
+    @Query("Update notes set isDelete = :isDelete where userId = :userId and noteId = :noteId")
+    suspend fun updateIsDelete(isDelete: Int, userId: Int, noteId: Int)
+
     @Query("Delete from notes where noteId = :noteId and userId =:userId")
     suspend fun deleteNote(noteId: Int, userId: Int)
 

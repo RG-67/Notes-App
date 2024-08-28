@@ -1,5 +1,6 @@
 package com.project.notesapp.model
 
+import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -14,4 +15,5 @@ data class NoteModel(
     val note: String,
     val noteDate: String,
     val noteTime: String,
+    val isDelete: Int
 )

@@ -227,7 +227,12 @@ class NotesFragment : Fragment(), ItemClickListener {
         deleteBtn?.setOnClickListener {
             balloon?.dismiss()
             lifecycleScope.launch {
-                noteViewModel.deleteNote(userNoteId.toInt(), authViewModel.getUserId()?.toInt()!!)
+//                noteViewModel.deleteNote(userNoteId.toInt(), authViewModel.getUserId()?.toInt()!!)
+                noteViewModel.updateIsDelete(
+                    1,
+                    authViewModel.getUserId()?.toInt()!!,
+                    userNoteId.toInt()
+                )
             }
         }
 
@@ -357,7 +362,8 @@ class NotesFragment : Fragment(), ItemClickListener {
                 binding.title.text.toString(),
                 binding.note.text.toString(),
                 Helper.getDate(),
-                Helper.getCurrentTime()
+                Helper.getCurrentTime(),
+                0
             )
         }
     }

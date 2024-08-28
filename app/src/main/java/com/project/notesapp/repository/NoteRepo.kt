@@ -34,6 +34,12 @@ class NoteRepo @Inject constructor(
         }
     }
 
+    suspend fun updateIsDelete(isDelete: Int, userId: Int, noteId: Int) {
+        withContext(Dispatchers.IO) {
+            noteDao.updateIsDelete(isDelete, userId, noteId)
+        }
+    }
+
     suspend fun deleteNote(noteId: Int, userId: Int) {
         withContext(Dispatchers.IO) {
             noteDao.deleteNote(noteId, userId)
