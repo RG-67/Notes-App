@@ -15,6 +15,10 @@ class BinAdapter(
     inner class BinViewHolder(private val binding: NoteItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(noteModel: NoteModel, position: Int) {
+            binding.date.text = noteModel.noteDate
+            binding.time.text = noteModel.noteTime
+            binding.title.text = noteModel.noteTitle
+            binding.note.text = noteModel.note
             binding.root.setOnClickListener {
                 itemClickListener.onItemClick(
                     it,

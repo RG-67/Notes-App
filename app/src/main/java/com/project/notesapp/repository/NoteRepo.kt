@@ -40,6 +40,11 @@ class NoteRepo @Inject constructor(
         }
     }
 
+    suspend fun getBinNotes(userId: Int, userEmail: String): Flow<List<NoteModel>> =
+        withContext(Dispatchers.IO) {
+            noteDao.getBinNotes(userId, userEmail)
+        }
+
     suspend fun deleteNote(noteId: Int, userId: Int) {
         withContext(Dispatchers.IO) {
             noteDao.deleteNote(noteId, userId)

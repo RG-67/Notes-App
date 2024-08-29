@@ -34,4 +34,5 @@
     <string name="type_here">Type here..</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="restore">Restore</string>
 </resources>

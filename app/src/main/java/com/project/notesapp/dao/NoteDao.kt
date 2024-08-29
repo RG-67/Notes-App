@@ -14,7 +14,7 @@ interface NoteDao {
     @Insert
     suspend fun insertNoteData(noteModel: NoteModel)
 
-    @Query("Select * from notes where userId = :userId and userEmail = :userEmail")
+    @Query("Select * from notes where userId = :userId and userEmail = :userEmail and isDelete = 0")
     fun getNotes(userId: Int, userEmail: String): Flow<List<NoteModel>>
 
     @Query("Update notes set noteDate = :noteDate, noteTime = :noteTime, noteTitle = :noteTitle, note = :note where userId = :userId and noteId = :noteId")
@@ -29,6 +29,9 @@ interface NoteDao {
 
     @Query("Update notes set isDelete = :isDelete where userId = :userId and noteId = :noteId")
     suspend fun updateIsDelete(isDelete: Int, userId: Int, noteId: Int)
+
+    @Query("Select * from notes where userId = :userId and userEmail = :uerEmail and isDelete = 1")
+    fun getBinNotes(userId: Int, uerEmail: String): Flow<List<NoteModel>>
 
     @Query("Delete from notes where noteId = :noteId and userId =:userId")
     suspend fun deleteNote(noteId: Int, userId: Int)

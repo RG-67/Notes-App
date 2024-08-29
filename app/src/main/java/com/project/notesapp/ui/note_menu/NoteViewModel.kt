@@ -56,6 +56,11 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         }
     }
 
+    suspend fun getBinNotes(userId: Int, userEmail: String): LiveData<List<NoteModel>> {
+        return noteRepo.getBinNotes(userId, userEmail).flowOn(Dispatchers.Main)
+            .asLiveData(context = coroutineContext)
+    }
+
     suspend fun deleteNote(noteId: Int, userId: Int) {
         viewModelScope.launch {
             noteRepo.deleteNote(noteId, userId)

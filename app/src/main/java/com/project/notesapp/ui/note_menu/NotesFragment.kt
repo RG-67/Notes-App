@@ -393,10 +393,10 @@ class NotesFragment : Fragment(), ItemClickListener {
         }
     }
 
-    override fun onDestroyView() {
+    /*override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
+    }*/
 
     override fun onItemClick(
         view: View,
