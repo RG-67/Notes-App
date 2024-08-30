@@ -106,6 +106,17 @@ class BinFragment : Fragment(), ItemClickListener {
             }
         }
 
+        restoreBtn?.setOnClickListener {
+            balloon?.dismiss()
+            lifecycleScope.launch {
+                noteViewModel.restoreBinNote(
+                    0,
+                    authViewModel.getUserId()?.toInt()!!,
+                    userNoteId.toInt()
+                )
+            }
+        }
+
     }
 
     /*override fun onDestroyView() {

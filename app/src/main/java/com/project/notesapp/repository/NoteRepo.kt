@@ -51,4 +51,10 @@ class NoteRepo @Inject constructor(
         }
     }
 
+    suspend fun restoreBinNote(isDelete: Int, userId: Int, noteId: Int) {
+        withContext(Dispatchers.IO) {
+            noteDao.restoreBinNote(isDelete, userId, noteId)
+        }
+    }
+
 }

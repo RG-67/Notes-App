@@ -227,7 +227,6 @@ class NotesFragment : Fragment(), ItemClickListener {
         deleteBtn?.setOnClickListener {
             balloon?.dismiss()
             lifecycleScope.launch {
-//                noteViewModel.deleteNote(userNoteId.toInt(), authViewModel.getUserId()?.toInt()!!)
                 noteViewModel.updateIsDelete(
                     1,
                     authViewModel.getUserId()?.toInt()!!,

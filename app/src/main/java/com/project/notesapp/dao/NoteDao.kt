@@ -36,4 +36,7 @@ interface NoteDao {
     @Query("Delete from notes where noteId = :noteId and userId =:userId")
     suspend fun deleteNote(noteId: Int, userId: Int)
 
+    @Query("Update notes set isDelete = :isDelete where noteId = :noteId and userId =:userId")
+    suspend fun restoreBinNote(isDelete: Int, userId: Int, noteId: Int,)
+
 }

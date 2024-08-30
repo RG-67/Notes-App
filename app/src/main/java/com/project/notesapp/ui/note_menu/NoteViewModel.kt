@@ -67,6 +67,12 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         }
     }
 
+    suspend fun restoreBinNote(isDelete: Int, userId: Int, noteId: Int) {
+        viewModelScope.launch {
+            noteRepo.restoreBinNote(isDelete, userId, noteId)
+        }
+    }
+
     fun validateNoteData(title: String, note: String): Pair<String, Boolean> {
         var result = Pair("", true)
         if (TextUtils.isEmpty(title)) {
