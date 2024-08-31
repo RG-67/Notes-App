@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -106,6 +108,7 @@ class NotesFragment : Fragment(), ItemClickListener {
     private var underlineEnable: Boolean = false
 
     private var underlineFlag = 1
+    private val density = Resources.getSystem().displayMetrics.density
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -317,22 +320,22 @@ class NotesFragment : Fragment(), ItemClickListener {
         }
 
         noneRdBtn?.setOnClickListener {
-            setPaletteRadio(R.id.noneRdBtn)
+            setPaletteRadio(R.id.noneRdBtn, R.drawable.no_image)
         }
         back1?.setOnClickListener {
-            setPaletteRadio(R.id.back1)
+            setPaletteRadio(R.id.back1, R.drawable.pic1_img)
         }
         back2?.setOnClickListener {
-            setPaletteRadio(R.id.back2)
+            setPaletteRadio(R.id.back2, R.drawable.pic2_img)
         }
         back3?.setOnClickListener {
-            setPaletteRadio(R.id.back3)
+            setPaletteRadio(R.id.back3, R.drawable.pic3_img)
         }
         back4?.setOnClickListener {
-            setPaletteRadio(R.id.back4)
+            setPaletteRadio(R.id.back4, R.drawable.pic4_img)
         }
         back5?.setOnClickListener {
-            setPaletteRadio(R.id.back5)
+            setPaletteRadio(R.id.back5, R.drawable.pic5_img)
         }
 
         binding.font.setOnClickListener {
@@ -429,7 +432,7 @@ class NotesFragment : Fragment(), ItemClickListener {
         }
     }
 
-    private fun setPaletteRadio(radioBtn: Int) {
+    private fun setPaletteRadio(radioBtn: Int, backImage: Int) {
         val drawableList = noteViewModel.setPalette("palette", radioBtn)
         noneRdBtn?.isChecked = drawableList[0]
         back1?.isChecked = drawableList[1]
@@ -437,6 +440,13 @@ class NotesFragment : Fragment(), ItemClickListener {
         back3?.isChecked = drawableList[3]
         back4?.isChecked = drawableList[4]
         back5?.isChecked = drawableList[5]
+        if (backImage != R.drawable.no_image) {
+            binding.noteBackImg.setImageResource(backImage)
+            binding.note.setTextColor(Color.WHITE)
+        } else {
+            binding.noteBackImg.setImageDrawable(null)
+            binding.note.setTextColor(Color.BLACK)
+        }
         paletteBalloon?.dismiss()
     }
 
@@ -475,6 +485,8 @@ class NotesFragment : Fragment(), ItemClickListener {
                 binding.note.setSelection(endPos)
                 binding.note.addTextChangedListener(this)
             }
+            val heightDp = binding.note.height
+
         }
 
     }
