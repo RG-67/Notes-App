@@ -441,10 +441,10 @@ class NotesFragment : Fragment(), ItemClickListener {
         back4?.isChecked = drawableList[4]
         back5?.isChecked = drawableList[5]
         if (backImage != R.drawable.no_image) {
-            binding.noteBackImg.setImageResource(backImage)
+            binding.noteRel.background = ContextCompat.getDrawable(requireContext(), backImage)
             binding.note.setTextColor(Color.WHITE)
         } else {
-            binding.noteBackImg.setImageDrawable(null)
+            binding.noteRel.background = null
             binding.note.setTextColor(Color.BLACK)
         }
         paletteBalloon?.dismiss()
@@ -485,8 +485,6 @@ class NotesFragment : Fragment(), ItemClickListener {
                 binding.note.setSelection(endPos)
                 binding.note.addTextChangedListener(this)
             }
-            val heightDp = binding.note.height
-
         }
 
     }
