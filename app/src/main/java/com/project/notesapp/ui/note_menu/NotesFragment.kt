@@ -108,7 +108,7 @@ class NotesFragment : Fragment(), ItemClickListener {
     private var underlineEnable: Boolean = false
 
     private var underlineFlag = 1
-    private val density = Resources.getSystem().displayMetrics.density
+    private var noteBackImg = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -240,6 +240,7 @@ class NotesFragment : Fragment(), ItemClickListener {
 
         binding.fabBtn.setOnClickListener {
             flag = 1
+            noteBackImg = 0
             showHide()
         }
         binding.cancelBtn.setOnClickListener {
@@ -268,7 +269,8 @@ class NotesFragment : Fragment(), ItemClickListener {
                             binding.title.text.toString(),
                             binding.note.text.toString(),
                             authViewModel.getUserId()!!.toInt(),
-                            userNoteId.toInt()
+                            userNoteId.toInt(),
+                            noteBackImg
                         )
                         showHide()
                         Helper.hideKeyboard(binding.root)
@@ -365,7 +367,8 @@ class NotesFragment : Fragment(), ItemClickListener {
                 binding.note.text.toString(),
                 Helper.getDate(),
                 Helper.getCurrentTime(),
-                0
+                0,
+                noteBackImg
             )
         }
     }
@@ -405,12 +408,21 @@ class NotesFragment : Fragment(), ItemClickListener {
         position: Int,
         noteId: Int,
         noteTitle: String,
-        note: String
+        note: String,
+        noteBackImage: Int
     ) {
         noteItemPosition = position
         userNoteId = noteId.toString()
         title = noteTitle
         noteContent = note
+        noteBackImg = noteBackImage
+        if (noteBackImage != 0) {
+            binding.noteRel.background = ContextCompat.getDrawable(requireContext(), noteBackImg)
+            binding.note.setTextColor(Color.WHITE)
+        } else {
+            binding.noteRel.background = null
+            binding.note.setTextColor(Color.BLACK)
+        }
         showPopUp("note", view)
     }
 
@@ -441,9 +453,11 @@ class NotesFragment : Fragment(), ItemClickListener {
         back4?.isChecked = drawableList[4]
         back5?.isChecked = drawableList[5]
         if (backImage != R.drawable.no_image) {
+            noteBackImg = backImage
             binding.noteRel.background = ContextCompat.getDrawable(requireContext(), backImage)
             binding.note.setTextColor(Color.WHITE)
         } else {
+            noteBackImg = 0
             binding.noteRel.background = null
             binding.note.setTextColor(Color.BLACK)
         }

@@ -1,5 +1,7 @@
 package com.project.notesapp.model
 
+import android.graphics.drawable.Drawable
+import android.media.Image
 import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -15,5 +17,6 @@ data class NoteModel(
     val note: String,
     val noteDate: String,
     val noteTime: String,
-    val isDelete: Int
+    val isDelete: Int,
+    val noteBackImage: Int
 )

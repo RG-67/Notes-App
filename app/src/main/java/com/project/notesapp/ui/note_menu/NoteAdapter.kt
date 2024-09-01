@@ -1,6 +1,7 @@
 package com.project.notesapp.ui.note_menu
 
 import android.content.ContentValues.TAG
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -40,6 +41,14 @@ class NoteAdapter(
     inner class NoteViewHolder(private val binding: NoteItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(noteModel: NoteModel, position: Int) {
+            if (noteModel.noteBackImage != 0) {
+                binding.noteBackImg.setImageResource(noteModel.noteBackImage)
+                binding.title.setTextColor(Color.WHITE)
+                binding.note.setTextColor(Color.WHITE)
+            } else {
+                binding.title.setTextColor(Color.BLACK)
+                binding.note.setTextColor(Color.BLACK)
+            }
             binding.date.text = noteModel.noteDate
             binding.time.text = noteModel.noteTime
             binding.title.text = noteModel.noteTitle
@@ -50,7 +59,8 @@ class NoteAdapter(
                     position,
                     noteModel.noteId,
                     noteModel.noteTitle,
-                    noteModel.note
+                    noteModel.note,
+                    noteModel.noteBackImage
                 )
             }
         }

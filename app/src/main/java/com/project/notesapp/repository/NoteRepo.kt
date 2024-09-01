@@ -27,10 +27,11 @@ class NoteRepo @Inject constructor(
         noteTitle: String,
         note: String,
         userId: Int,
-        noteId: Int
+        noteId: Int,
+        noteBackImage: Int
     ) {
         withContext(Dispatchers.IO) {
-            noteDao.updateNote(noteDate, noteTime, noteTitle, note, userId, noteId)
+            noteDao.updateNote(noteDate, noteTime, noteTitle, note, userId, noteId, noteBackImage)
         }
     }
 

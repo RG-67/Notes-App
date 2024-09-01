@@ -43,10 +43,11 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         noteTitle: String,
         note: String,
         userId: Int,
-        noteId: Int
+        noteId: Int,
+        noteBackImage: Int
     ) {
         viewModelScope.launch {
-            noteRepo.updateNotes(noteDate, noteTime, noteTitle, note, userId, noteId)
+            noteRepo.updateNotes(noteDate, noteTime, noteTitle, note, userId, noteId, noteBackImage)
         }
     }
 

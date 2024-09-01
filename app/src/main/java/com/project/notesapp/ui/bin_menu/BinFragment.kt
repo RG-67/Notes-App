@@ -129,7 +129,8 @@ class BinFragment : Fragment(), ItemClickListener {
         position: Int,
         noteId: Int,
         noteTitle: String,
-        note: String
+        note: String,
+        noteBackImage: Int
     ) {
         userNoteId = noteId.toString()
         balloon?.showAlignBottom(view)

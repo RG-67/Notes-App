@@ -2,6 +2,8 @@ package com.project.notesapp.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.project.notesapp.dao.NoteDao
 import com.project.notesapp.dao.NoteDatabase
 import com.project.notesapp.dao.UserDao
@@ -23,8 +25,14 @@ object NoteModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): NoteDatabase =
         Room.databaseBuilder(context, NoteDatabase::class.java, "NoteDatabase")
-            .fallbackToDestructiveMigration()
-            .allowMainThreadQueries().build()
+            .addMigrations(MIGRATION_2_3)
+            .build()
+
+    private val MIGRATION_2_3 = object : Migration(2, 3) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("ALTER TABLE notes ADD COLUMN noteBackImage INTEGER NOT NULL DEFAULT 0")
+        }
+    }
 
     @Provides
     fun provideUserDao(noteDatabase: NoteDatabase): UserDao = noteDatabase.userDao()

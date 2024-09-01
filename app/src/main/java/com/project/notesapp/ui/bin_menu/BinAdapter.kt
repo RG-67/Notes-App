@@ -1,5 +1,6 @@
 package com.project.notesapp.ui.bin_menu
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,14 @@ class BinAdapter(
     inner class BinViewHolder(private val binding: NoteItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(noteModel: NoteModel, position: Int) {
+            if (noteModel.noteBackImage != 0) {
+                binding.noteBackImg.setImageResource(noteModel.noteBackImage)
+                binding.title.setTextColor(Color.WHITE)
+                binding.note.setTextColor(Color.WHITE)
+            } else {
+                binding.title.setTextColor(Color.BLACK)
+                binding.note.setTextColor(Color.BLACK)
+            }
             binding.date.text = noteModel.noteDate
             binding.time.text = noteModel.noteTime
             binding.title.text = noteModel.noteTitle
@@ -25,7 +34,8 @@ class BinAdapter(
                     position,
                     noteModel.noteId,
                     noteModel.noteTitle,
-                    noteModel.note
+                    noteModel.note,
+                    noteModel.noteBackImage
                 )
             }
         }
