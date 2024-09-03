@@ -26,7 +26,6 @@ import com.google.android.material.navigation.NavigationView
 import com.project.notesapp.R
 import com.project.notesapp.databinding.NoteBinding
 import com.project.notesapp.ui.bin_menu.BinFragment
-import com.project.notesapp.ui.label_menu.LabelFragment
 import com.project.notesapp.ui.note_menu.NotesFragment
 import com.project.notesapp.ui.reminder_menu.RemindersFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,14 +71,8 @@ class Note : Fragment() {
                     true
                 }
 
-                R.id.label -> {
-                    flag = 3
-                    fragmentTransaction.replace(R.id.frameLayout, LabelFragment())
-                    true
-                }
-
                 R.id.bin -> {
-                    flag = 4
+                    flag = 3
                     fragmentTransaction.replace(R.id.frameLayout, BinFragment())
                     true
                 }
@@ -126,10 +119,6 @@ class Note : Fragment() {
                         true
                     }
 
-                    R.id.label -> {
-                        true
-                    }
-
                     R.id.bin -> {
                         true
                     }
@@ -153,10 +142,6 @@ class Note : Fragment() {
             }
 
             3 -> {
-                heading = "Label"
-            }
-
-            4 -> {
                 heading = "Bin"
             }
         }

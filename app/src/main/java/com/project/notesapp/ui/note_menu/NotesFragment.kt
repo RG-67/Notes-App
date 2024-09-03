@@ -26,6 +26,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -104,6 +105,11 @@ class NotesFragment : Fragment(), ItemClickListener {
     private var titilliBold: RadioButton? = null
     private var titilliItalic: RadioButton? = null
 
+    private var reminderBalloon: Balloon? = null
+    private var dateBtn: TextView? = null
+    private var timeBtn: TextView? = null
+    private var noteReminderOption: View? = null
+
     private var selectedFaceType: Typeface? = null
     private var underlineEnable: Boolean = false
 
@@ -125,6 +131,7 @@ class NotesFragment : Fragment(), ItemClickListener {
         noteOptionLayout = layoutInflater.inflate(R.layout.note_option_layout, null)
         paletteOptionLayout = layoutInflater.inflate(R.layout.palette_layout, null)
         fontOptionLayout = layoutInflater.inflate(R.layout.font_selection_layout, null)
+        noteReminderOption = layoutInflater.inflate(R.layout.note_reminder_option_layout, null)
 
         binding.fabBtn.setImageResource(R.drawable.add)
         binding.fabBtn.imageTintList =
@@ -196,6 +203,26 @@ class NotesFragment : Fragment(), ItemClickListener {
         titilliSemibold = fontBalloon!!.getContentView().findViewById(R.id.titilliSemibold)
         titilliBold = fontBalloon!!.getContentView().findViewById(R.id.titilliBold)
         titilliItalic = fontBalloon!!.getContentView().findViewById(R.id.titilliItalic)
+
+        reminderBalloon = Balloon.Builder(requireContext())
+            .setLayout(noteReminderOption!!)
+            .setArrowSize(10)
+            .setArrowOrientation(ArrowOrientation.TOP)
+            .setArrowPosition(0.5f)
+            .setWidthRatio(0.5f)
+            .setHeight(BalloonSizeSpec.WRAP)
+            .setCornerRadius(5f)
+            .setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            .setArrowColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.transparent_green
+                )
+            )
+            .setBalloonAnimation(BalloonAnimation.ELASTIC)
+            .build()
+        dateBtn = reminderBalloon!!.getContentView().findViewById(R.id.dateBtn)
+        timeBtn = reminderBalloon!!.getContentView().findViewById(R.id.timeBtn)
 
         return binding.root
     }
@@ -346,6 +373,13 @@ class NotesFragment : Fragment(), ItemClickListener {
         fontRadioGr?.setOnCheckedChangeListener { _, p1 ->
             selectedFaceType = noteViewModel.getTypeface(p1, requireContext())
             fontBalloon?.dismiss()
+        }
+
+        dateBtn?.setOnClickListener {
+
+        }
+        timeBtn?.setOnClickListener {
+
         }
 
     }
