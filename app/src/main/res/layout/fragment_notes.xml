@@ -70,47 +70,98 @@
             android:padding="5dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/edt_bg"
-                android:backgroundTint="@color/transparent_green"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:weightSum="2">
 
-                <ImageView
-                    android:id="@+id/palette"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:contentDescription="@string/image_description"
-                    android:src="@drawable/palette" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/edt_bg"
+                    android:backgroundTint="@color/transparent_green"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
-                <ImageView
-                    android:id="@+id/font"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="10dp"
-                    android:contentDescription="@string/image_description"
-                    android:src="@drawable/font" />
+                    <ImageView
+                        android:id="@+id/palette"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@string/image_description"
+                        android:src="@drawable/palette" />
 
-                <ImageView
-                    android:id="@+id/underline"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="10dp"
-                    android:contentDescription="@string/image_description"
-                    android:src="@drawable/underline" />
+                    <ImageView
+                        android:id="@+id/font"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@string/image_description"
+                        android:src="@drawable/font" />
 
-                <ImageView
-                    android:id="@+id/reminder"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="10dp"
-                    android:contentDescription="@string/image_description"
-                    android:src="@drawable/note_reminder" />
+                    <ImageView
+                        android:id="@+id/underline"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@string/image_description"
+                        android:src="@drawable/underline" />
+
+                    <ImageView
+                        android:id="@+id/reminder"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@string/image_description"
+                        android:src="@drawable/note_reminder" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="5dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.5"
+                        android:contentDescription="@string/image_description"
+                        android:src="@drawable/calendar"
+                        app:tint="@color/red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.5"
+                        android:contentDescription="@string/image_description"
+                        android:src="@drawable/clock"
+                        app:tint="@color/red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
 
             <EditText

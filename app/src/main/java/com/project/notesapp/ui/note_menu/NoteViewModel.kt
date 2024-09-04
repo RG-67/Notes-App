@@ -1,13 +1,11 @@
 package com.project.notesapp.ui.note_menu
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.text.TextUtils
-import android.widget.RadioButton
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
+import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -20,6 +18,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
 
@@ -216,6 +215,32 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
 
             else -> Typeface.DEFAULT
         }
+    }
+
+    fun getDate(context: Context): String {
+        var date = ""
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val datePickerDialog =
+            DatePickerDialog(context, { _, calendarYear, calendarMonth, calendarDay ->
+                date = "$calendarDay - $calendarMonth - $calendarYear"
+            }, year, month, day)
+        datePickerDialog.show()
+        return date
+    }
+
+    fun getTime(context: Context, view: View): String {
+        var time = ""
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+        val timePicker = TimePickerDialog(context, { _, hourOfDay, minuteOfDay ->
+            time = "$hourOfDay : $minuteOfDay"
+        }, hour, minute, false)
+        timePicker.show()
+        return time
     }
 
 }
