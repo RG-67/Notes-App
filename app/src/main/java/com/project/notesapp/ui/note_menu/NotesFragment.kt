@@ -4,16 +4,12 @@ import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
-import android.text.Layout
 import android.text.Spannable
-import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.TypefaceSpan
@@ -30,24 +26,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.project.notesapp.R
 import com.project.notesapp.databinding.FragmentNotesBinding
-import com.project.notesapp.databinding.PaletteLayoutBinding
 import com.project.notesapp.model.NoteModel
 import com.project.notesapp.ui.authentication.AuthViewModel
 import com.project.notesapp.utils.Helper
 import com.project.notesapp.utils.ItemClickListener
 import com.skydoves.balloon.ArrowOrientation
-import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloon.balloon
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -115,6 +105,9 @@ class NotesFragment : Fragment(), ItemClickListener {
 
     private var underlineFlag = 1
     private var noteBackImg = 0
+
+    private var reminderDate = ""
+    private var reminderTime = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -211,6 +204,7 @@ class NotesFragment : Fragment(), ItemClickListener {
             .setArrowPosition(0.5f)
             .setWidthRatio(0.5f)
             .setHeight(BalloonSizeSpec.WRAP)
+            .setMarginTop(5)
             .setCornerRadius(5f)
             .setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
             .setArrowColor(
@@ -268,6 +262,9 @@ class NotesFragment : Fragment(), ItemClickListener {
         binding.fabBtn.setOnClickListener {
             flag = 1
             noteBackImg = 0
+            binding.dateTimeLin.visibility = View.GONE
+            binding.dateReminder.text = ""
+            binding.timeReminder.text = ""
             showHide()
         }
         binding.cancelBtn.setOnClickListener {
@@ -375,11 +372,16 @@ class NotesFragment : Fragment(), ItemClickListener {
             fontBalloon?.dismiss()
         }
 
+        binding.reminder.setOnClickListener {
+            showPopUp("reminder", it)
+        }
         dateBtn?.setOnClickListener {
-
+            noteViewModel.getDate(requireContext(), it, this)
+            reminderBalloon?.dismiss()
         }
         timeBtn?.setOnClickListener {
-
+            noteViewModel.getTime(requireContext(), it, this)
+            reminderBalloon?.dismiss()
         }
 
     }
@@ -445,19 +447,38 @@ class NotesFragment : Fragment(), ItemClickListener {
         note: String,
         noteBackImage: Int
     ) {
-        noteItemPosition = position
-        userNoteId = noteId.toString()
-        title = noteTitle
-        noteContent = note
-        noteBackImg = noteBackImage
-        if (noteBackImage != 0) {
-            binding.noteRel.background = ContextCompat.getDrawable(requireContext(), noteBackImg)
-            binding.note.setTextColor(Color.WHITE)
-        } else {
-            binding.noteRel.background = null
-            binding.note.setTextColor(Color.BLACK)
+        Log.d("Note ==>", note)
+        when (note) {
+            "dateReminder" -> {
+                reminderDate = "Date: $noteTitle"
+                binding.dateTimeLin.visibility = View.VISIBLE
+                binding.dateReminder.text = reminderDate
+            }
+
+            "timeReminder" -> {
+                reminderTime = "Time: $noteTitle"
+                binding.dateTimeLin.visibility = View.VISIBLE
+                binding.timeReminder.text = reminderTime
+            }
+
+            else -> {
+                noteItemPosition = position
+                userNoteId = noteId.toString()
+                title = noteTitle
+                noteContent = note
+                noteBackImg = noteBackImage
+                if (noteBackImage != 0) {
+                    binding.noteRel.background =
+                        ContextCompat.getDrawable(requireContext(), noteBackImg)
+                    binding.note.setTextColor(Color.WHITE)
+                } else {
+                    binding.noteRel.background = null
+                    binding.note.setTextColor(Color.BLACK)
+                }
+                showPopUp("note", view)
+            }
         }
-        showPopUp("note", view)
+
     }
 
     private fun showPopUp(from: String, view: View) {
@@ -472,6 +493,10 @@ class NotesFragment : Fragment(), ItemClickListener {
 
             "font" -> {
                 fontBalloon?.showAlignBottom(view)
+            }
+
+            "reminder" -> {
+                reminderBalloon?.showAlignBottom(view)
             }
 
             else -> Toast.makeText(context, "Invalid selection", Toast.LENGTH_SHORT).show()

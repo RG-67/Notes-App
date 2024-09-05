@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.graphics.Typeface
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
@@ -14,6 +15,7 @@ import androidx.lifecycle.viewModelScope
 import com.project.notesapp.R
 import com.project.notesapp.model.NoteModel
 import com.project.notesapp.repository.NoteRepo
+import com.project.notesapp.utils.ItemClickListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -217,30 +219,28 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         }
     }
 
-    fun getDate(context: Context): String {
-        var date = ""
+    fun getDate(context: Context, view: View, itemClickListener: ItemClickListener) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val datePickerDialog =
             DatePickerDialog(context, { _, calendarYear, calendarMonth, calendarDay ->
-                date = "$calendarDay - $calendarMonth - $calendarYear"
+                val date = "$calendarDay-$calendarMonth-$calendarYear"
+                itemClickListener.onItemClick(view, 0, 0, date, "dateReminder", 0)
             }, year, month, day)
         datePickerDialog.show()
-        return date
     }
 
-    fun getTime(context: Context, view: View): String {
-        var time = ""
+    fun getTime(context: Context, view: View, itemClickListener: ItemClickListener) {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
         val timePicker = TimePickerDialog(context, { _, hourOfDay, minuteOfDay ->
-            time = "$hourOfDay : $minuteOfDay"
+            val time = "$hourOfDay:$minuteOfDay"
+            itemClickListener.onItemClick(view, 0, 0, time, "timeReminder", 0)
         }, hour, minute, false)
         timePicker.show()
-        return time
     }
 
 }

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="100dp"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/transparent_green"
-    app:cardUseCompatPadding="true">
+    app:cardBackgroundColor="@color/transparent_green">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -15,13 +14,12 @@
             android:id="@+id/dateBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:clickable="true"
-            android:focusable="true"
             android:fontFamily="sans-serif"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
             android:text="@string/select_date"
             android:textColor="@color/colorOnPrimary"
             android:textSize="12sp"
@@ -36,13 +34,12 @@
             android:id="@+id/timeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:clickable="true"
-            android:focusable="true"
             android:fontFamily="sans-serif"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
             android:text="@string/select_time"
             android:textColor="@color/colorOnPrimary"
             android:textSize="12sp"

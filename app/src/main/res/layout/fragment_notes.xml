@@ -12,7 +12,7 @@
         android:id="@+id/noteListRel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <EditText
             android:id="@+id/edtSearch"
@@ -59,7 +59,7 @@
         android:id="@+id/addNoteRel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,20 +71,24 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="2"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_weight="0.8"
                     android:background="@drawable/edt_bg"
                     android:backgroundTint="@color/transparent_green"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="10dp">
 
                     <ImageView
                         android:id="@+id/palette"
@@ -121,46 +125,42 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/dateTimeLin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.2"
                     android:orientation="horizontal"
-                    android:weightSum="4"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
-                    android:layout_marginStart="5dp">
-
+                    android:layout_marginStart="5dp"
+                    android:visibility="gone">
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_weight="0.5"
-                        android:contentDescription="@string/image_description"
-                        android:src="@drawable/calendar"
-                        app:tint="@color/red" />
-
-                    <TextView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/notification_active"
+                        app:tint="@color/red"
+                        android:contentDescription="@string/image_description"/>
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_weight="0.5"
-                        android:contentDescription="@string/image_description"
-                        android:src="@drawable/clock"
-                        app:tint="@color/red" />
-
+                        android:orientation="vertical"
+                        android:layout_marginStart="10dp">
                     <TextView
+                        android:id="@+id/dateReminder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/timeReminder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
