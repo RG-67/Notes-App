@@ -305,6 +305,8 @@ class NotesFragment : Fragment(), ItemClickListener {
             }
         }
 
+
+
         binding.note.addTextChangedListener(textWatcher)
 
         binding.underline.setOnClickListener {
