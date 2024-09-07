@@ -232,6 +232,8 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         datePickerDialog.show()
     }
 
+
+
     fun getTime(context: Context, view: View, itemClickListener: ItemClickListener) {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
