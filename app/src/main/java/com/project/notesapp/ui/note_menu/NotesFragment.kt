@@ -96,8 +96,7 @@ class NotesFragment : Fragment(), ItemClickListener {
     private var titilliItalic: RadioButton? = null
 
     private var reminderBalloon: Balloon? = null
-    private var dateBtn: TextView? = null
-    private var timeBtn: TextView? = null
+    private var dateTimeReminder: TextView? = null
     private var noteReminderOption: View? = null
 
     private var selectedFaceType: Typeface? = null
@@ -215,8 +214,7 @@ class NotesFragment : Fragment(), ItemClickListener {
             )
             .setBalloonAnimation(BalloonAnimation.ELASTIC)
             .build()
-        dateBtn = reminderBalloon!!.getContentView().findViewById(R.id.dateBtn)
-        timeBtn = reminderBalloon!!.getContentView().findViewById(R.id.timeBtn)
+        dateTimeReminder = reminderBalloon!!.getContentView().findViewById(R.id.dateTimeReminder)
 
         return binding.root
     }
@@ -377,13 +375,14 @@ class NotesFragment : Fragment(), ItemClickListener {
         binding.reminder.setOnClickListener {
             showPopUp("reminder", it)
         }
-        dateBtn?.setOnClickListener {
-            noteViewModel.getDate(requireContext(), it, this)
-            reminderBalloon?.dismiss()
-        }
-        timeBtn?.setOnClickListener {
-            noteViewModel.getTime(requireContext(), it, this)
-            reminderBalloon?.dismiss()
+        dateTimeReminder?.setOnClickListener {
+            val getValidation = getValidation()
+            if (getValidation.second) {
+                noteViewModel.getDateTime(requireContext(), it, this)
+                reminderBalloon?.dismiss()
+            } else {
+                showError(getValidation.first)
+            }
         }
 
     }
@@ -451,15 +450,12 @@ class NotesFragment : Fragment(), ItemClickListener {
     ) {
         Log.d("Note ==>", note)
         when (note) {
-            "dateReminder" -> {
-                reminderDate = "Date: $noteTitle"
+            "dateTimeReminder" -> {
+                val dateTime = noteTitle.split("#")
+                reminderDate = "Date: " + dateTime[0]
+                reminderTime = "Time: " + dateTime[1]
                 binding.dateTimeLin.visibility = View.VISIBLE
                 binding.dateReminder.text = reminderDate
-            }
-
-            "timeReminder" -> {
-                reminderTime = "Time: $noteTitle"
-                binding.dateTimeLin.visibility = View.VISIBLE
                 binding.timeReminder.text = reminderTime
             }
 

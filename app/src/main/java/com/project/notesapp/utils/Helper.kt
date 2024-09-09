@@ -1,6 +1,7 @@
 package com.project.notesapp.utils
 
 import android.content.Context
+import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
@@ -55,6 +56,27 @@ class Helper {
             val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
             return timeFormat.format(currentTime)
         }
+
+        fun getSdkVersionCheck(): Boolean {
+            return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        }
+
+        fun getSdkVersionCheckForAlarm(): Boolean {
+            return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+        }
+
+        fun convertTimeTo12Hour(time: String): String? {
+            return try {
+                val inputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+                val outputFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+                val currentTime = inputFormat.parse(time)
+                outputFormat.format(currentTime!!)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
 
     }
 

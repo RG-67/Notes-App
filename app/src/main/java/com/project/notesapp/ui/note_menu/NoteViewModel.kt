@@ -1,20 +1,31 @@
 package com.project.notesapp.ui.note_menu
 
+import android.app.AlarmManager
 import android.app.DatePickerDialog
+import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.project.notesapp.R
+import com.project.notesapp.model.AlarmReceiver
+import com.project.notesapp.model.AlarmService
 import com.project.notesapp.model.NoteModel
 import com.project.notesapp.repository.NoteRepo
+import com.project.notesapp.utils.Helper
 import com.project.notesapp.utils.ItemClickListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -75,7 +86,10 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         }
     }
 
-    fun validateNoteData(title: String, note: String): Pair<String, Boolean> {
+    fun validateNoteData(
+        title: String,
+        note: String,
+    ): Pair<String, Boolean> {
         var result = Pair("", true)
         if (TextUtils.isEmpty(title)) {
             result = Pair("Enter title", false)
@@ -219,28 +233,79 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         }
     }
 
-    fun getDate(context: Context, view: View, itemClickListener: ItemClickListener) {
+    fun getDateTime(context: Context, view: View, itemClickListener: ItemClickListener) {
         val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val datePickerDialog =
-            DatePickerDialog(context, { _, calendarYear, calendarMonth, calendarDay ->
-                val date = "$calendarDay-$calendarMonth-$calendarYear"
-                itemClickListener.onItemClick(view, 0, 0, date, "dateReminder", 0)
-            }, year, month, day)
-        datePickerDialog.show()
+        DatePickerDialog(
+            context,
+            { _, calendarYear, calendarMonth, calendarDay ->
+                TimePickerDialog(context, { _, calendarHour, calendarMinute ->
+                    if (canScheduleAlarm(context)) {
+                        val date = "$calendarDay-$calendarMonth-$calendarYear"
+                        val time = "$calendarHour:$calendarMinute"
+                        calendar.set(
+                            calendarYear,
+                            calendarMonth,
+                            calendarDay,
+                            calendarHour,
+                            calendarMinute
+                        )
+                        setAlarm(
+                            context,
+                            calendar,
+                            date,
+                            Helper.convertTimeTo12Hour(time)!!,
+                            itemClickListener,
+                            view
+                        )
+                    } else {
+                        if (Helper.getSdkVersionCheckForAlarm()) requestExactAlarmPermission(
+                            context
+                        )
+                    }
+                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show()
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
     }
 
-    fun getTime(context: Context, view: View, itemClickListener: ItemClickListener) {
-        val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-        val timePicker = TimePickerDialog(context, { _, hourOfDay, minuteOfDay ->
-            val time = "$hourOfDay:$minuteOfDay"
-            itemClickListener.onItemClick(view, 0, 0, time, "timeReminder", 0)
-        }, hour, minute, false)
-        timePicker.show()
+    private fun canScheduleAlarm(context: Context): Boolean {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        return if (Helper.getSdkVersionCheckForAlarm()) alarmManager.canScheduleExactAlarms()
+        else true
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun requestExactAlarmPermission(context: Context) {
+        val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+        intent.data = Uri.parse("package: ${context.packageName}")
+        context.startActivity(intent)
+    }
+
+    private fun setAlarm(
+        context: Context,
+        calendar: Calendar,
+        date: String,
+        time: String,
+        itemClickListener: ItemClickListener,
+        view: View
+    ) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, AlarmReceiver::class.java)
+        val pendingIntent =
+            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        try {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+            Toast.makeText(context, "Reminder set successfully", Toast.LENGTH_SHORT).show()
+            itemClickListener.onItemClick(
+                view, 0, 0,
+                "$date#$time", "dateTimeReminder", 0
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "Permission required", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

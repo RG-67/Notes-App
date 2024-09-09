@@ -81,12 +81,12 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center_vertical|center"
                     android:layout_marginEnd="10dp"
-                    android:layout_weight="0.8"
+                    android:layout_weight="1"
                     android:background="@drawable/edt_bg"
                     android:backgroundTint="@color/transparent_green"
-                    android:gravity="center_vertical"
+                    android:gravity="center_vertical|center"
                     android:orientation="horizontal"
                     android:padding="10dp">
 
@@ -128,10 +128,10 @@
                     android:id="@+id/dateTimeLin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center_vertical|end"
                     android:layout_marginStart="5dp"
-                    android:layout_weight="1.2"
-                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|end"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
@@ -154,7 +154,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:id="@+id/timeReminder"
@@ -162,7 +162,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
