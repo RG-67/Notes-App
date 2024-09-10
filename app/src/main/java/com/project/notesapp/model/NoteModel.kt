@@ -18,5 +18,7 @@ data class NoteModel(
     val noteDate: String,
     val noteTime: String,
     val isDelete: Int,
-    val noteBackImage: Int
+    val noteBackImage: Int,
+    val reminderDate: String,
+    val reminderTime: String
 )

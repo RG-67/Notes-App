@@ -260,9 +260,11 @@ class NotesFragment : Fragment(), ItemClickListener {
         binding.fabBtn.setOnClickListener {
             flag = 1
             noteBackImg = 0
-            binding.dateTimeLin.visibility = View.GONE
+            reminderDate = ""
+            reminderTime = ""
             binding.dateReminder.text = ""
             binding.timeReminder.text = ""
+            binding.dateTimeLin.visibility = View.GONE
             showHide()
         }
         binding.cancelBtn.setOnClickListener {
@@ -292,7 +294,9 @@ class NotesFragment : Fragment(), ItemClickListener {
                             binding.note.text.toString(),
                             authViewModel.getUserId()!!.toInt(),
                             userNoteId.toInt(),
-                            noteBackImg
+                            noteBackImg,
+                            reminderDate,
+                            reminderTime
                         )
                         showHide()
                         Helper.hideKeyboard(binding.root)
@@ -405,7 +409,9 @@ class NotesFragment : Fragment(), ItemClickListener {
                 Helper.getDate(),
                 Helper.getCurrentTime(),
                 0,
-                noteBackImg
+                noteBackImg,
+                reminderDate,
+                reminderTime
             )
         }
     }
@@ -428,6 +434,10 @@ class NotesFragment : Fragment(), ItemClickListener {
                 val updateText = "Update"
                 binding.saveBtn.text = updateText
                 binding.saveBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.update, 0, 0, 0)
+                reminderDate = ""
+                reminderTime = ""
+                binding.dateReminder.text = ""
+                binding.timeReminder.text = ""
             }
         } else {
             binding.addNoteRel.visibility = View.GONE

@@ -20,17 +20,16 @@ class AlarmService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("AlarmService ==>", "Alarm service start")
-        startForeground(1, createNotification())
+        createNotification()
         val wakeLock = (getSystemService(Context.POWER_SERVICE) as PowerManager).newWakeLock(
             PowerManager.FULL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP or PowerManager.ON_AFTER_RELEASE,
             "Note::AlarmService"
         )
         wakeLock.acquire(1 * 60 * 1000L)
-//        showDialog()
         return START_NOT_STICKY
     }
 
-    private fun createNotification(): Notification {
+    private fun createNotification() {
         val notificationChannelId = "ALARM_SERVICE_CHANNEL"
         if (Helper.getSdkVersionCheck()) {
             val notificationChannel = NotificationChannel(
@@ -46,7 +45,9 @@ class AlarmService : Service() {
             .setContentText("Check your note in the reminder")
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setPriority(Notification.PRIORITY_HIGH)
-        return notificationBuilder.build()
+            .setAutoCancel(true)
+        val noticeManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        noticeManager.notify(1, notificationBuilder.build())
     }
 
     private fun showDialog() {

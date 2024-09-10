@@ -1,60 +1,85 @@
 package com.project.notesapp.ui.reminder_menu
 
+import android.content.ContentValues
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.project.notesapp.R
+import com.project.notesapp.databinding.FragmentReminderBinding
+import com.project.notesapp.model.NoteModel
+import com.project.notesapp.ui.authentication.AuthViewModel
+import com.project.notesapp.ui.bin_menu.BinAdapter
+import com.project.notesapp.ui.note_menu.NoteViewModel
+import com.project.notesapp.utils.ItemClickListener
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class RemindersFragment : Fragment(), ItemClickListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RemindersFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class RemindersFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentReminderBinding? = null
+    private val binding get() = _binding!!
+    private val noteViewModel by activityViewModels<NoteViewModel>()
+    private var context: Context? = null
+    private val authViewModel by activityViewModels<AuthViewModel>()
+    private var reminderAdapter: ReminderAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        this.context = context
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reminder, container, false)
+    ): View {
+        _binding = FragmentReminderBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RemindersFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RemindersFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            noteViewModel.getReminderNotes(
+                authViewModel.getUserId()?.toInt()!!,
+                authViewModel.getUserEmail()!!
+            )
+                .observe(requireActivity()) {
+                    reminderAdapter = ReminderAdapter(it, this@RemindersFragment)
+                    val noteList = it as ArrayList<NoteModel>
+                    binding.notesRecycler.adapter = reminderAdapter
+                    binding.notesRecycler.smoothScrollToPosition(reminderAdapter!!.itemCount)
+                    if (noteList.size > 0) {
+                        Log.d(ContentValues.TAG, noteList.toString())
+                    } else {
+                        Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
+        }
+        binding.backBtn.setOnClickListener {
+            binding.noteView.visibility = View.GONE
+            binding.notesRecycler.visibility = View.VISIBLE
+        }
     }
+
+    override fun onItemClick(
+        view: View,
+        position: Int,
+        noteId: Int,
+        noteTitle: String,
+        note: String,
+        noteBackImage: Int
+    ) {
+        binding.notesRecycler.visibility = View.GONE
+        binding.noteView.visibility = View.VISIBLE
+        binding.title.text = noteTitle
+        binding.note.text = note
+    }
+
+
 }

@@ -17,7 +17,7 @@ interface NoteDao {
     @Query("Select * from notes where userId = :userId and userEmail = :userEmail and isDelete = 0")
     fun getNotes(userId: Int, userEmail: String): Flow<List<NoteModel>>
 
-    @Query("Update notes set noteDate = :noteDate, noteTime = :noteTime, noteTitle = :noteTitle, note = :note, noteBackImage = :noteBackImage where userId = :userId and noteId = :noteId")
+    @Query("Update notes set noteDate = :noteDate, noteTime = :noteTime, noteTitle = :noteTitle, note = :note, noteBackImage = :noteBackImage, reminderDate =:reminderDate, reminderTime =:reminderTime where userId = :userId and noteId = :noteId")
     suspend fun updateNote(
         noteDate: String,
         noteTime: String,
@@ -25,7 +25,9 @@ interface NoteDao {
         note: String,
         userId: Int,
         noteId: Int,
-        noteBackImage: Int
+        noteBackImage: Int,
+        reminderDate: String,
+        reminderTime: String
     )
 
     @Query("Update notes set isDelete = :isDelete where userId = :userId and noteId = :noteId")
@@ -38,6 +40,9 @@ interface NoteDao {
     suspend fun deleteNote(noteId: Int, userId: Int)
 
     @Query("Update notes set isDelete = :isDelete where noteId = :noteId and userId =:userId")
-    suspend fun restoreBinNote(isDelete: Int, userId: Int, noteId: Int,)
+    suspend fun restoreBinNote(isDelete: Int, userId: Int, noteId: Int)
+
+    @Query("Select * from notes where userId =:userId and userEmail = :userEmail and reminderDate != '' and reminderTime != ''")
+    fun getReminderNotes(userId: Int, userEmail: String): Flow<List<NoteModel>>
 
 }

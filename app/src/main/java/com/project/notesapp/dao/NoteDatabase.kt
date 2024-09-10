@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.project.notesapp.model.AuthModel
 import com.project.notesapp.model.NoteModel
 
-@Database(entities = [AuthModel::class, NoteModel::class], version = 3)
+@Database(entities = [AuthModel::class, NoteModel::class], version = 4)
 abstract class NoteDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao

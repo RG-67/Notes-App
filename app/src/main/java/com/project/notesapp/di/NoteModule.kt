@@ -25,12 +25,13 @@ object NoteModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): NoteDatabase =
         Room.databaseBuilder(context, NoteDatabase::class.java, "NoteDatabase")
-            .addMigrations(MIGRATION_2_3)
+            .addMigrations(MIGRATION_3_4)
             .build()
 
-    private val MIGRATION_2_3 = object : Migration(2, 3) {
+    private val MIGRATION_3_4 = object : Migration(3, 4) {
         override fun migrate(db: SupportSQLiteDatabase) {
-            db.execSQL("ALTER TABLE notes ADD COLUMN noteBackImage INTEGER NOT NULL DEFAULT 0")
+            db.execSQL("ALTER TABLE notes ADD COLUMN reminderDate TEXT")
+            db.execSQL("ALTER TABLE notes ADD COLUMN reminderTime TEXT")
         }
     }
 

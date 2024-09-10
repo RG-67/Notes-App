@@ -56,10 +56,12 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         note: String,
         userId: Int,
         noteId: Int,
-        noteBackImage: Int
+        noteBackImage: Int,
+        reminderDate: String,
+        reminderTime: String
     ) {
         viewModelScope.launch {
-            noteRepo.updateNotes(noteDate, noteTime, noteTitle, note, userId, noteId, noteBackImage)
+            noteRepo.updateNotes(noteDate, noteTime, noteTitle, note, userId, noteId, noteBackImage, reminderDate, reminderTime)
         }
     }
 
@@ -84,6 +86,11 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         viewModelScope.launch {
             noteRepo.restoreBinNote(isDelete, userId, noteId)
         }
+    }
+
+    suspend fun getReminderNotes(userId: Int, userEmail: String): LiveData<List<NoteModel>> {
+        return noteRepo.getReminderNotes(userId, userEmail).flowOn(Dispatchers.Main)
+            .asLiveData(context = coroutineContext)
     }
 
     fun validateNoteData(

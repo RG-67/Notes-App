@@ -28,10 +28,22 @@ class NoteRepo @Inject constructor(
         note: String,
         userId: Int,
         noteId: Int,
-        noteBackImage: Int
+        noteBackImage: Int,
+        reminderDate: String,
+        reminderTime: String
     ) {
         withContext(Dispatchers.IO) {
-            noteDao.updateNote(noteDate, noteTime, noteTitle, note, userId, noteId, noteBackImage)
+            noteDao.updateNote(
+                noteDate,
+                noteTime,
+                noteTitle,
+                note,
+                userId,
+                noteId,
+                noteBackImage,
+                reminderDate,
+                reminderTime
+            )
         }
     }
 
@@ -57,5 +69,11 @@ class NoteRepo @Inject constructor(
             noteDao.restoreBinNote(isDelete, userId, noteId)
         }
     }
+
+    suspend fun getReminderNotes(userId: Int, userEmail: String): Flow<List<NoteModel>> =
+        withContext(Dispatchers.IO) {
+            noteDao.getReminderNotes(userId, userEmail)
+        }
+
 
 }
