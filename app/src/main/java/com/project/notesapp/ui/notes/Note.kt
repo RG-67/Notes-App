@@ -17,6 +17,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -25,6 +26,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.project.notesapp.R
 import com.project.notesapp.databinding.NoteBinding
+import com.project.notesapp.ui.authentication.AuthViewModel
 import com.project.notesapp.ui.bin_menu.BinFragment
 import com.project.notesapp.ui.note_menu.NotesFragment
 import com.project.notesapp.ui.reminder_menu.RemindersFragment
@@ -36,7 +38,7 @@ class Note : Fragment() {
     private var _binding: NoteBinding? = null
     private val binding get() = _binding!!
     private lateinit var context: Context
-
+    private val authViewModel by activityViewModels<AuthViewModel>()
     private var flag = 1
 
     override fun onAttach(context: Context) {
@@ -74,6 +76,11 @@ class Note : Fragment() {
                 R.id.bin -> {
                     flag = 3
                     fragmentTransaction.replace(R.id.frameLayout, BinFragment())
+                    true
+                }
+
+                R.id.logOut -> {
+                    authViewModel.logOut(requireActivity())
                     true
                 }
 

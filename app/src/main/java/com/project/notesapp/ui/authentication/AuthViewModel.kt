@@ -1,5 +1,9 @@
 package com.project.notesapp.ui.authentication
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -69,4 +73,19 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
         return result
     }
 
+    fun logOut(activity: Activity) {
+        val builder = AlertDialog.Builder(activity)
+        builder.setMessage("Do you want to log out?")
+        builder.setTitle("Alert !!")
+        builder.setCancelable(false)
+        builder.setPositiveButton("Yes") { _, _ ->
+            userRepo.clearPreference()
+            activity.finish()
+        }
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.cancel()
+        }
+        val alertDialog = builder.create()
+        alertDialog.show()
+    }
 }

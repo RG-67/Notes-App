@@ -16,4 +16,14 @@
             android:icon="@drawable/bin"
             android:title="@string/bin"/>
     </group>
+
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/logOut"
+            android:icon="@drawable/log_out"
+            android:title="@string/log_out"/>
+    </group>
+
 </menu>

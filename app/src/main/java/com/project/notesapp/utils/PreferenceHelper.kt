@@ -42,4 +42,8 @@ class PreferenceHelper @Inject constructor(@ApplicationContext context: Context)
         sharedPreferences.edit().putString(USER_EMAIL, userEmail).apply()
     }
 
+    fun clearSharedPreference() {
+        sharedPreferences.edit().clear().apply()
+    }
+
 }

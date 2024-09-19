@@ -54,4 +54,8 @@ class UserRepo @Inject constructor(
         preferenceHelper.setUserEmail(userEmail)
     }
 
+    fun clearPreference() {
+        preferenceHelper.clearSharedPreference()
+    }
+
 }

@@ -55,16 +55,6 @@ class Login : Fragment() {
             activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }
         binding.loginBtn.setOnClickListener {
-//            findNavController().navigate(R.id.note)
-            /*            authViewModel.getUser.observe(requireActivity()) { response ->
-                            val userList = response as ArrayList<AuthModel>
-                            if (userList.size > 0) {
-                                Log.d("UserListData ==>", userList.toString())
-                            } else {
-                                Snackbar.make(binding.root, userList.size.toString(), Snackbar.LENGTH_SHORT)
-                                    .show()
-                            }
-                        }*/
             hideKeyboard(it)
             val validationResult = validation()
             if (validationResult.first) {
