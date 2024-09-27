@@ -14,7 +14,7 @@
             android:id="@+id/action_login_to_note"
             app:destination="@id/note"
             app:popUpTo="@id/login"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_login_to_registration"
             app:destination="@id/registration" />

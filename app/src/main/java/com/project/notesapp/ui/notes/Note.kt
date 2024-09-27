@@ -30,10 +30,11 @@ import com.project.notesapp.ui.authentication.AuthViewModel
 import com.project.notesapp.ui.bin_menu.BinFragment
 import com.project.notesapp.ui.note_menu.NotesFragment
 import com.project.notesapp.ui.reminder_menu.RemindersFragment
+import com.project.notesapp.utils.ItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class Note : Fragment() {
+class Note : Fragment(), ItemClickListener {
 
     private var _binding: NoteBinding? = null
     private val binding get() = _binding!!
@@ -80,7 +81,7 @@ class Note : Fragment() {
                 }
 
                 R.id.logOut -> {
-                    authViewModel.logOut(requireActivity())
+                    authViewModel.logOut(requireActivity(), findNavController())
                     true
                 }
 
@@ -158,6 +159,17 @@ class Note : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onItemClick(
+        view: View,
+        position: Int,
+        noteId: Int,
+        noteTitle: String,
+        note: String,
+        noteBackImage: Int
+    ) {
+        findNavController().popBackStack()
     }
 
 }

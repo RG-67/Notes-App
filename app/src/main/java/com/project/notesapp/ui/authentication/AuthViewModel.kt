@@ -6,13 +6,19 @@ import android.content.Context
 import android.content.DialogInterface
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import com.project.notesapp.R
 import com.project.notesapp.model.AuthModel
 import com.project.notesapp.repository.UserRepo
+import com.project.notesapp.ui.note_menu.NotesFragment
+import com.project.notesapp.ui.notes.Note
 import com.project.notesapp.utils.Helper
+import com.project.notesapp.utils.ItemClickListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -73,14 +79,15 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
         return result
     }
 
-    fun logOut(activity: Activity) {
+    fun logOut(activity: Activity, navController: NavController) {
         val builder = AlertDialog.Builder(activity)
         builder.setMessage("Do you want to log out?")
         builder.setTitle("Alert !!")
         builder.setCancelable(false)
         builder.setPositiveButton("Yes") { _, _ ->
             userRepo.clearPreference()
-            activity.finish()
+            navController.popBackStack()
+//            navController.navigate(R.id.login)
         }
         builder.setNegativeButton("No") { dialog, _ ->
             dialog.cancel()
