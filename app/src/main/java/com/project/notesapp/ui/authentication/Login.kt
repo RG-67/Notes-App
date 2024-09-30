@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Display
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -54,6 +55,19 @@ class Login : Fragment() {
         binding.signBtn.setOnClickListener {
             activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }
+        binding.password.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                // Check if the touch is within the bounds of the drawableEnd
+                if (event.rawX >= (binding.password.right - binding.password.compoundDrawables[2]?.bounds?.width()!!
+                        ?: 0)) {
+                    // Perform your action here
+
+                    return@setOnTouchListener true
+                }
+            }
+            return@setOnTouchListener false
+        }
+
         binding.loginBtn.setOnClickListener {
             hideKeyboard(it)
             val validationResult = validation()
