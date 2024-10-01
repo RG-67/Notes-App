@@ -101,17 +101,21 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edt_bg">
             <EditText
                 android:id="@+id/password"
+                android:layout_toStartOf="@+id/passwordToggle"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="50dp"
-                android:layout_marginTop="20dp"
                 android:autofillHints="true"
                 android:background="@drawable/edt_bg"
                 android:drawableStart="@drawable/lock"
-                android:drawableEnd="@drawable/open_eye"
                 android:drawablePadding="10dp"
                 android:drawableTint="#075B2C"
                 android:fontFamily="sans-serif"
@@ -124,18 +128,33 @@
                 android:textColorHint="@color/colorOnPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/passwordToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/close_eye"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:tint="#075B2C"
+                    android:layout_marginHorizontal="10dp"
+                    android:contentDescription="@string/image_description"/>
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edt_bg">
             <EditText
                 android:id="@+id/confirmPass"
+                android:layout_toStartOf="@+id/conPasswordToggle"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="50dp"
-                android:layout_marginTop="20dp"
                 android:autofillHints="true"
                 android:background="@drawable/edt_bg"
                 android:drawableStart="@drawable/lock"
-                android:drawableEnd="@drawable/open_eye"
                 android:drawablePadding="10dp"
                 android:drawableTint="#075B2C"
                 android:fontFamily="sans-serif"
@@ -148,6 +167,17 @@
                 android:textColorHint="@color/colorOnPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/conPasswordToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/close_eye"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:tint="#075B2C"
+                    android:layout_marginHorizontal="10dp"
+                    android:contentDescription="@string/image_description"/>
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/registerBtn"

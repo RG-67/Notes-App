@@ -3,6 +3,7 @@ package com.project.notesapp.ui.authentication
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.Display
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -55,17 +57,15 @@ class Login : Fragment() {
         binding.signBtn.setOnClickListener {
             activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }
-        binding.password.setOnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                // Check if the touch is within the bounds of the drawableEnd
-                if (event.rawX >= (binding.password.right - binding.password.compoundDrawables[2]?.bounds?.width()!!
-                        ?: 0)) {
-                    // Perform your action here
-
-                    return@setOnTouchListener true
-                }
+        binding.passwordToggle.setOnClickListener {
+            if (binding.password.inputType == InputType.TYPE_CLASS_TEXT) {
+                binding.password.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.passwordToggle.setImageResource(R.drawable.close_eye)
+            } else {
+                binding.password.inputType = InputType.TYPE_CLASS_TEXT
+                binding.passwordToggle.setImageResource(R.drawable.open_eye)
             }
-            return@setOnTouchListener false
+            binding.password.setSelection(binding.password.text.length)
         }
 
         binding.loginBtn.setOnClickListener {

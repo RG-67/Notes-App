@@ -2,6 +2,7 @@ package com.project.notesapp.ui.authentication
 
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -63,6 +64,29 @@ class Registration : Fragment() {
         binding.signInBtn.setOnClickListener {
             findNavController().navigate(R.id.action_registration_to_login)
         }
+
+        binding.passwordToggle.setOnClickListener {
+            if (binding.password.inputType == InputType.TYPE_CLASS_TEXT) {
+                binding.password.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.passwordToggle.setImageResource(R.drawable.close_eye)
+            } else {
+                binding.password.inputType = InputType.TYPE_CLASS_TEXT
+                binding.passwordToggle.setImageResource(R.drawable.open_eye)
+            }
+            binding.password.setSelection(binding.password.text.length)
+        }
+
+        binding.conPasswordToggle.setOnClickListener {
+            if (binding.confirmPass.inputType == InputType.TYPE_CLASS_TEXT) {
+                binding.confirmPass.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.conPasswordToggle.setImageResource(R.drawable.close_eye)
+            } else {
+                binding.confirmPass.inputType = InputType.TYPE_CLASS_TEXT
+                binding.conPasswordToggle.setImageResource(R.drawable.open_eye)
+            }
+            binding.confirmPass.setSelection(binding.password.text.length)
+        }
+
     }
 
     private fun getUserCred(): AuthModel {
