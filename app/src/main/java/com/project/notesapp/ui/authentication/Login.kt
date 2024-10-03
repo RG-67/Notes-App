@@ -11,6 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -59,7 +60,8 @@ class Login : Fragment() {
         }
         binding.passwordToggle.setOnClickListener {
             if (binding.password.inputType == InputType.TYPE_CLASS_TEXT) {
-                binding.password.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.password.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 binding.passwordToggle.setImageResource(R.drawable.close_eye)
             } else {
                 binding.password.inputType = InputType.TYPE_CLASS_TEXT
@@ -78,6 +80,9 @@ class Login : Fragment() {
                         binding.password.text.toString()
                     )
                     if (user.isNotEmpty()) {
+                        if (binding.checkRemember.isChecked) {
+                            authViewModel.setLoginEmail(binding.email.text.toString())
+                        }
                         authViewModel.setUserId(user[0].id.toString())
                         authViewModel.setUserName(user[0].name)
                         authViewModel.setUserEmail(user[0].userName)
@@ -94,6 +99,18 @@ class Login : Fragment() {
         binding.signUpBtn.setOnClickListener {
             findNavController().navigate(R.id.action_login_to_registration)
         }
+
+        if (authViewModel.getLoginEmail() != "") {
+            val emailList: ArrayList<String> = ArrayList()
+            emailList.add(authViewModel.getLoginEmail().toString())
+            val adapter = ArrayAdapter(
+                requireContext(),
+                com.google.android.material.R.layout.support_simple_spinner_dropdown_item,
+                emailList
+            )
+            binding.email.setAdapter(adapter)
+        }
+
     }
 
     override fun onDestroyView() {

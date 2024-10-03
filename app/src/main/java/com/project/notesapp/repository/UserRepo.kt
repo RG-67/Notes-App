@@ -54,6 +54,14 @@ class UserRepo @Inject constructor(
         preferenceHelper.setUserEmail(userEmail)
     }
 
+    fun getLoginEmail(): String? {
+        return preferenceHelper.getLoginEmail()
+    }
+
+    fun setLoginEmail(loginEmail: String) {
+        preferenceHelper.setLoginEmail(loginEmail)
+    }
+
     fun clearPreference() {
         preferenceHelper.clearSharedPreference()
     }

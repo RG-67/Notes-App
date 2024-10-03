@@ -12,10 +12,14 @@ class PreferenceHelper @Inject constructor(@ApplicationContext context: Context)
         private const val USER_ID = "userId"
         private const val USER_NAME = "userName"
         private const val USER_EMAIL = "userEmail"
+        private const val LOGIN_USER_EMAIL = "loginUserEmail"
     }
 
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("note_preferences", Context.MODE_PRIVATE)
+
+    private val loginPreferences: SharedPreferences =
+        context.getSharedPreferences("login_preferences", Context.MODE_PRIVATE)
 
 
     fun getUserId(): String? {
@@ -40,6 +44,14 @@ class PreferenceHelper @Inject constructor(@ApplicationContext context: Context)
 
     fun setUserEmail(userEmail: String) {
         sharedPreferences.edit().putString(USER_EMAIL, userEmail).apply()
+    }
+
+    fun getLoginEmail(): String? {
+        return loginPreferences.getString(LOGIN_USER_EMAIL, null)
+    }
+
+    fun setLoginEmail(loginEmail: String) {
+        loginPreferences.edit().putString(LOGIN_USER_EMAIL, loginEmail).apply()
     }
 
     fun clearSharedPreference() {

@@ -56,6 +56,10 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
 
     fun setUserEmail(userEmail: String) = userRepo.setUserEmail(userEmail)
 
+    fun getLoginEmail() = userRepo.getLoginEmail()
+
+    fun setLoginEmail(loginEmail: String) = userRepo.setLoginEmail(loginEmail)
+
     fun validateRegister(
         name: String,
         email: String,
@@ -87,7 +91,6 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
         builder.setPositiveButton("Yes") { _, _ ->
             userRepo.clearPreference()
             navController.popBackStack()
-//            navController.navigate(R.id.login)
         }
         builder.setNegativeButton("No") { dialog, _ ->
             dialog.cancel()

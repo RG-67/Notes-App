@@ -67,7 +67,8 @@ class Registration : Fragment() {
 
         binding.passwordToggle.setOnClickListener {
             if (binding.password.inputType == InputType.TYPE_CLASS_TEXT) {
-                binding.password.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.password.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 binding.passwordToggle.setImageResource(R.drawable.close_eye)
             } else {
                 binding.password.inputType = InputType.TYPE_CLASS_TEXT
@@ -78,7 +79,8 @@ class Registration : Fragment() {
 
         binding.conPasswordToggle.setOnClickListener {
             if (binding.confirmPass.inputType == InputType.TYPE_CLASS_TEXT) {
-                binding.confirmPass.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.confirmPass.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 binding.conPasswordToggle.setImageResource(R.drawable.close_eye)
             } else {
                 binding.confirmPass.inputType = InputType.TYPE_CLASS_TEXT
