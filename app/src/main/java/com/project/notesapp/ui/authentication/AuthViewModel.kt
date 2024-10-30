@@ -14,11 +14,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.project.notesapp.R
 import com.project.notesapp.model.AuthModel
+import com.project.notesapp.model.userRequestModel.UserRequest
+import com.project.notesapp.model.userResponseModel.UserResponse
 import com.project.notesapp.repository.UserRepo
 import com.project.notesapp.ui.note_menu.NotesFragment
 import com.project.notesapp.ui.notes.Note
 import com.project.notesapp.utils.Helper
 import com.project.notesapp.utils.ItemClickListener
+import com.project.notesapp.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -29,11 +32,19 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewModel() {
 
+    val userResponseLiveData: LiveData<NetworkResult<UserResponse>> get() = userRepo.userResponseLiveData
+
     suspend fun checkUserExists(userName: String): Int = userRepo.isExists(userName)
 
     fun register(authModel: AuthModel) {
         viewModelScope.launch {
             userRepo.insertUser(authModel)
+        }
+    }
+
+    fun registerUser(userRequest: UserRequest) {
+        viewModelScope.launch {
+            userRepo.createUser(userRequest)
         }
     }
 
@@ -62,17 +73,22 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
 
     fun validateRegister(
         name: String,
+        phone: String,
         email: String,
         password: String,
         confirmPass: String,
         isLogin: Boolean
     ): Pair<Boolean, String> {
         var result = Pair(true, "")
-        if ((!isLogin && TextUtils.isEmpty(name)) || TextUtils.isEmpty(email) || TextUtils.isEmpty(
+        if ((!isLogin && TextUtils.isEmpty(name)) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(
+                email
+            ) || TextUtils.isEmpty(
                 password
             ) || (!isLogin && TextUtils.isEmpty(confirmPass))
         ) {
             result = Pair(false, "Enter all credentials")
+        } else if (!Helper.isValidPhone(phone)) {
+            result = Pair(false, "Enter valid phone number")
         } else if (!Helper.isValidEmail(email)) {
             result = Pair(false, "Enter valid email")
         } else if (!isLogin && password.length < 5) {

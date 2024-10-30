@@ -80,6 +80,28 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="20dp"
+                android:autofillHints="true"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/phone"
+                android:drawablePadding="10dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:hint="@string/number"
+                android:inputType="phone"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/colorOnPrimary"
+                android:textColorHint="@color/colorOnPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -275,5 +297,19 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/pBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#66FFFFFF"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:progressTint="@color/colorOnPrimary" />
+    </LinearLayout>
 
 </RelativeLayout>

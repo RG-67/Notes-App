@@ -7,15 +7,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.project.notesapp.R
 import com.project.notesapp.databinding.RegistrationBinding
 import com.project.notesapp.model.AuthModel
+import com.project.notesapp.model.userRequestModel.UserRequest
 import com.project.notesapp.utils.Helper.Companion.hideKeyboard
+import com.project.notesapp.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -46,16 +51,19 @@ class Registration : Fragment() {
             hideKeyboard(it)
             val validationResult = validation()
             if (validationResult.first) {
-                val getUserData = getUserCred()
+//                val getUserData = getUserCred()
+                val getUserData = getCredForUser()
                 lifecycleScope.launch {
-                    val isExists = authViewModel.checkUserExists(binding.email.text.toString())
+                    authViewModel.registerUser(getUserData)
+                    bindObserver()
+                    /*val isExists = authViewModel.checkUserExists(binding.email.text.toString())
                     if (isExists == 0) {
                         authViewModel.register(getUserData)
                         findNavController().navigate(R.id.action_registration_to_login)
                     } else {
                         Snackbar.make(binding.root, "Email already exists", Snackbar.LENGTH_SHORT)
                             .show()
-                    }
+                    }*/
                 }
             } else {
                 showError(validationResult.second)
@@ -102,16 +110,59 @@ class Registration : Fragment() {
         }
     }
 
+    private fun getCredForUser(): UserRequest {
+        return binding.run {
+            UserRequest(
+                email.text.toString(),
+                name.text.toString(),
+                password.text.toString(),
+                phone.text.toString().toLong()
+            )
+        }
+    }
+
     private fun validation(): Pair<Boolean, String> {
         val name = binding.name.text.toString()
+        val phone = binding.phone.text.toString()
         val email = binding.email.text.toString()
         val password = binding.password.text.toString()
         val conPassword = binding.confirmPass.text.toString()
-        return authViewModel.validateRegister(name, email, password, conPassword, false)
+        return authViewModel.validateRegister(name, phone, email, password, conPassword, false)
     }
 
     private fun showError(error: String) {
         Snackbar.make(binding.root, error, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun bindObserver() {
+        try {
+            authViewModel.userResponseLiveData.observe(viewLifecycleOwner, Observer {
+                binding.pBar.visibility = View.GONE
+                when (it) {
+                    is NetworkResult.Success -> {
+                        Log.d("Message1 ==>", it.toString())
+                        findNavController().navigate(R.id.action_registration_to_login)
+                    }
+
+                    is NetworkResult.Error -> {
+                        Log.d("Message2 ==>", it.toString())
+                        showUserCreateError(it.message.toString())
+                    }
+
+                    is NetworkResult.Loading -> {
+                        Log.d("Message3 ==>", it.toString())
+                        binding.pBar.visibility = View.VISIBLE
+                    }
+                }
+            })
+        } catch (e: Exception) {
+            Log.d("ExceptionMsg ==>", "${e.message}")
+            e.printStackTrace()
+        }
+    }
+
+    private fun showUserCreateError(error: String) {
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

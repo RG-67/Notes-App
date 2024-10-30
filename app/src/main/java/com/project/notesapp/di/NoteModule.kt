@@ -38,9 +38,9 @@ object NoteModule {
     @Provides
     fun provideUserDao(noteDatabase: NoteDatabase): UserDao = noteDatabase.userDao()
 
-    @Provides
+/*    @Provides
     fun provideUserRepo(userDao: UserDao, preferenceHelper: PreferenceHelper): UserRepo =
-        UserRepo(preferenceHelper, userDao)
+        UserRepo(preferenceHelper, userDao)*/
 
     @Provides
     fun provideNoteDao(noteDatabase: NoteDatabase): NoteDao = noteDatabase.noteDao()

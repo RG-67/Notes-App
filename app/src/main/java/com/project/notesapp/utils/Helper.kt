@@ -2,6 +2,7 @@ package com.project.notesapp.utils
 
 import android.content.Context
 import android.os.Build
+import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
@@ -19,6 +20,10 @@ class Helper {
 
         fun isValidEmail(email: String): Boolean {
             return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        }
+
+        fun isValidPhone(phone: String): Boolean {
+            return !TextUtils.isEmpty(phone) && Patterns.PHONE.matcher(phone).matches()
         }
 
         fun hideKeyboard(view: View) {

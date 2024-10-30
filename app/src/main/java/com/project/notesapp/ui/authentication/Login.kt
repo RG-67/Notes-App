@@ -121,7 +121,7 @@ class Login : Fragment() {
     private fun validation(): Pair<Boolean, String> {
         val userName = binding.email.text.toString()
         val password = binding.password.text.toString()
-        return authViewModel.validateRegister("", userName, password, "", true)
+        return authViewModel.validateRegister("", "", userName, password, "", true)
     }
 
     private fun showError(error: String) {
