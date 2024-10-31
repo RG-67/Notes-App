@@ -53,6 +53,7 @@ class Registration : Fragment() {
             if (validationResult.first) {
 //                val getUserData = getUserCred()
                 val getUserData = getCredForUser()
+                Log.d("UserReq ==>", getUserData.toString())
                 lifecycleScope.launch {
                     authViewModel.registerUser(getUserData)
                     bindObserver()
@@ -136,7 +137,7 @@ class Registration : Fragment() {
 
     private fun bindObserver() {
         try {
-            authViewModel.userResponseLiveData.observe(viewLifecycleOwner, Observer {
+            authViewModel.userResponseLiveData.observe(viewLifecycleOwner) {
                 binding.pBar.visibility = View.GONE
                 when (it) {
                     is NetworkResult.Success -> {
@@ -145,8 +146,8 @@ class Registration : Fragment() {
                     }
 
                     is NetworkResult.Error -> {
-                        Log.d("Message2 ==>", it.toString())
-                        showUserCreateError(it.message.toString())
+                        Log.d("Message2 ==>", it.msg.toString())
+                        showUserCreateError(it.msg.toString())
                     }
 
                     is NetworkResult.Loading -> {
@@ -154,7 +155,7 @@ class Registration : Fragment() {
                         binding.pBar.visibility = View.VISIBLE
                     }
                 }
-            })
+            }
         } catch (e: Exception) {
             Log.d("ExceptionMsg ==>", "${e.message}")
             e.printStackTrace()
