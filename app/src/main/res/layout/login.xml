@@ -238,6 +238,22 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
+        <!-- Progress bar design start -->
+        <LinearLayout
+            android:id="@+id/pBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/transparent_bar_bg_color"
+            android:visibility="gone">
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:progressTint="@color/colorOnPrimary" />
+        </LinearLayout>
+        <!-- Progress bar design end -->
+
     </RelativeLayout>
     <!-- Login page design end -->
 

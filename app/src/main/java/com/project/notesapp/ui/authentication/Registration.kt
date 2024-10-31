@@ -8,17 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.project.notesapp.R
 import com.project.notesapp.databinding.RegistrationBinding
 import com.project.notesapp.model.AuthModel
-import com.project.notesapp.model.userRequestModel.UserRequest
+import com.project.notesapp.model.userRequestModel.UserRegisterRequest
 import com.project.notesapp.utils.Helper.Companion.hideKeyboard
 import com.project.notesapp.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
@@ -111,9 +109,9 @@ class Registration : Fragment() {
         }
     }
 
-    private fun getCredForUser(): UserRequest {
+    private fun getCredForUser(): UserRegisterRequest {
         return binding.run {
-            UserRequest(
+            UserRegisterRequest(
                 email.text.toString(),
                 name.text.toString(),
                 password.text.toString(),

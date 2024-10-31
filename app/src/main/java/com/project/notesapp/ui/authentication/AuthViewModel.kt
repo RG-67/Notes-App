@@ -2,29 +2,22 @@ package com.project.notesapp.ui.authentication
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.text.TextUtils
-import android.util.Log
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.project.notesapp.R
 import com.project.notesapp.model.AuthModel
-import com.project.notesapp.model.userRequestModel.UserRequest
-import com.project.notesapp.model.userResponseModel.UserResponse
+import com.project.notesapp.model.userRequestModel.UserLoginRequest
+import com.project.notesapp.model.userRequestModel.UserRegisterRequest
+import com.project.notesapp.model.userResponseModel.UserLoginResponse
+import com.project.notesapp.model.userResponseModel.UserRegisterResponse
 import com.project.notesapp.repository.UserRepo
-import com.project.notesapp.ui.note_menu.NotesFragment
-import com.project.notesapp.ui.notes.Note
 import com.project.notesapp.utils.Helper
-import com.project.notesapp.utils.ItemClickListener
 import com.project.notesapp.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +25,9 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewModel() {
 
-    val userResponseLiveData: LiveData<NetworkResult<UserResponse>> get() = userRepo.userResponseLiveData
+    val userResponseLiveData: LiveData<NetworkResult<UserRegisterResponse>> get() = userRepo.userResponseLiveData
+    val userLoginResponseData: LiveData<NetworkResult<UserLoginResponse>> get() = userRepo.userLoginResponseData
+
 
     suspend fun checkUserExists(userName: String): Int = userRepo.isExists(userName)
 
@@ -42,7 +37,7 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
         }
     }
 
-    fun registerUser(userRequest: UserRequest) {
+    fun registerUser(userRequest: UserRegisterRequest) {
         viewModelScope.launch {
             userRepo.createUser(userRequest)
         }
@@ -54,6 +49,12 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
 
     suspend fun getUserLogin(userName: String, password: String): List<AuthModel> =
         userRepo.getUserLogin(userName, password)
+
+    fun getLoginUser(userLoginRequest: UserLoginRequest) {
+        viewModelScope.launch {
+            userRepo.loginUser(userLoginRequest)
+        }
+    }
 
     fun getUserId() = userRepo.getUserId()
 
@@ -80,14 +81,14 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
         isLogin: Boolean
     ): Pair<Boolean, String> {
         var result = Pair(true, "")
-        if ((!isLogin && TextUtils.isEmpty(name)) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(
+        if ((!isLogin && TextUtils.isEmpty(name)) || (!isLogin && TextUtils.isEmpty(phone)) || TextUtils.isEmpty(
                 email
             ) || TextUtils.isEmpty(
                 password
             ) || (!isLogin && TextUtils.isEmpty(confirmPass))
         ) {
             result = Pair(false, "Enter all credentials")
-        } else if (!Helper.isValidPhone(phone)) {
+        } else if ((!isLogin && !Helper.isValidPhone(phone))) {
             result = Pair(false, "Enter valid phone number")
         } else if (!Helper.isValidEmail(email)) {
             result = Pair(false, "Enter valid email")

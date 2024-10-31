@@ -1,20 +1,19 @@
 package com.project.notesapp.repository
 
 import android.util.Log
-import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.project.notesapp.api.UserApi
 import com.project.notesapp.dao.UserDao
 import com.project.notesapp.model.AuthModel
-import com.project.notesapp.model.userRequestModel.UserRequest
-import com.project.notesapp.model.userResponseModel.UserResponse
-import com.project.notesapp.ui.authentication.AuthViewModel
+import com.project.notesapp.model.userRequestModel.UserLoginRequest
+import com.project.notesapp.model.userRequestModel.UserRegisterRequest
+import com.project.notesapp.model.userResponseModel.UserLoginResponse
+import com.project.notesapp.model.userResponseModel.UserRegisterResponse
 import com.project.notesapp.utils.NetworkResult
 import com.project.notesapp.utils.PreferenceHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.invoke
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import retrofit2.Response
@@ -26,8 +25,10 @@ class UserRepo @Inject constructor(
     private val userApi: UserApi
 ) {
 
-    private val _userResponseLiveData = MutableLiveData<NetworkResult<UserResponse>>()
-    val userResponseLiveData: LiveData<NetworkResult<UserResponse>> get() = _userResponseLiveData
+    private val _userResponseLiveData = MutableLiveData<NetworkResult<UserRegisterResponse>>()
+    private val _userLoginResponseData = MutableLiveData<NetworkResult<UserLoginResponse>>()
+    val userResponseLiveData: LiveData<NetworkResult<UserRegisterResponse>> get() = _userResponseLiveData
+    val userLoginResponseData: LiveData<NetworkResult<UserLoginResponse>> get() = _userLoginResponseData
 
     suspend fun isExists(userName: String): Int = userDao.checkIsExists(userName)
 
@@ -79,7 +80,7 @@ class UserRepo @Inject constructor(
     }
 
     /*set api*/
-    suspend fun createUser(userRequest: UserRequest) {
+    suspend fun createUser(userRequest: UserRegisterRequest) {
         try {
             _userResponseLiveData.postValue(NetworkResult.Loading())
             val response = userApi.createUser(userRequest)
@@ -90,7 +91,30 @@ class UserRepo @Inject constructor(
         }
     }
 
-    private fun handleResponse(userResponse: Response<UserResponse>) {
+    suspend fun loginUser(userLoginRequest: UserLoginRequest) {
+        try {
+            _userLoginResponseData.postValue(NetworkResult.Loading())
+            val response = userApi.loginUser(userLoginRequest)
+            Log.d("UserLoginBodySuccess ==>", response.toString())
+            handleLoginResponse(response)
+        } catch (e: Exception) {
+            Log.d("UserLoginBodyError ==>", "${e.message}")
+            e.printStackTrace()
+        }
+    }
+
+    private fun handleLoginResponse(response: Response<UserLoginResponse>) {
+        if (response.isSuccessful && response.body() != null) {
+            _userLoginResponseData.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _userLoginResponseData.postValue(NetworkResult.Error(errorObj.getString("msg")))
+        } else {
+            _userLoginResponseData.postValue(NetworkResult.Error("msg"))
+        }
+    }
+
+    private fun handleResponse(userResponse: Response<UserRegisterResponse>) {
         if (userResponse.isSuccessful && userResponse.body() != null) {
             Log.d("UserBodyHandleSuccess ==>", userResponse.body().toString())
             _userResponseLiveData.postValue(NetworkResult.Success(userResponse.body()!!))

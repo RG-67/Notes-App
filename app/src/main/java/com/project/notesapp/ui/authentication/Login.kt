@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -22,7 +23,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.project.notesapp.R
 import com.project.notesapp.databinding.LoginBinding
 import com.project.notesapp.model.AuthModel
+import com.project.notesapp.model.userRequestModel.UserLoginRequest
 import com.project.notesapp.utils.Helper.Companion.hideKeyboard
+import com.project.notesapp.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -75,11 +78,16 @@ class Login : Fragment() {
             val validationResult = validation()
             if (validationResult.first) {
                 lifecycleScope.launch {
-                    val user = authViewModel.getUserLogin(
+                    /*val user = authViewModel.getUserLogin(
+                        binding.email.text.toString(),
+                        binding.password.text.toString()*/
+                    val userReq = UserLoginRequest(
                         binding.email.text.toString(),
                         binding.password.text.toString()
                     )
-                    if (user.isNotEmpty()) {
+                    authViewModel.getLoginUser(userReq)
+                    bindLoginObserver()
+                    /*if (user.isNotEmpty()) {
                         if (binding.checkRemember.isChecked) {
                             authViewModel.setLoginEmail(binding.email.text.toString())
                         }
@@ -90,7 +98,7 @@ class Login : Fragment() {
                     } else {
                         Snackbar.make(binding.root, "Invalid credentials", Snackbar.LENGTH_SHORT)
                             .show()
-                    }
+                    }*/
                 }
             } else {
                 showError(validationResult.second)
@@ -111,6 +119,41 @@ class Login : Fragment() {
             binding.email.setAdapter(adapter)
         }
 
+    }
+
+    private fun bindLoginObserver() {
+        try {
+            authViewModel.userLoginResponseData.observe(viewLifecycleOwner) {
+                binding.pBar.visibility = View.GONE
+                when (it) {
+                    is NetworkResult.Success -> {
+                        Toast.makeText(context, "Login Successfully", Toast.LENGTH_SHORT).show()
+                        /*if (binding.checkRemember.isChecked) {
+                            authViewModel.setLoginEmail(binding.email.text.toString())
+                        }
+                        authViewModel.setUserId(user[0].id.toString())
+                        authViewModel.setUserName(user[0].name)
+                        authViewModel.setUserEmail(user[0].userName)
+                        findNavController().navigate(R.id.action_login_to_note)*/
+                    }
+
+                    is NetworkResult.Error -> {
+                        showUserLoginError(it.msg.toString())
+                    }
+
+                    is NetworkResult.Loading -> {
+                        binding.pBar.visibility = View.VISIBLE
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("LoginExceptionMsg ==>", "${e.message}")
+            e.printStackTrace()
+        }
+    }
+
+    private fun showUserLoginError(errMsg: String) {
+        Toast.makeText(context, errMsg, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

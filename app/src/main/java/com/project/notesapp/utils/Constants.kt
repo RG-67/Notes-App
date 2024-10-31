@@ -6,5 +6,6 @@ object Constants {
 
     /*endpoint*/
     const val CREATE_USER = "user/createUser"
+    const val LOGIN_USER = "user/loginUser"
 
 }
