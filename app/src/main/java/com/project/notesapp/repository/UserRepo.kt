@@ -75,6 +75,22 @@ class UserRepo @Inject constructor(
         preferenceHelper.setLoginEmail(loginEmail)
     }
 
+    fun getUserPhone(): String? {
+        return preferenceHelper.getUserPhone()
+    }
+
+    fun setUserPhone(userPhone: String) {
+        preferenceHelper.setUserPhone(userPhone)
+    }
+
+    fun getDBGenerateId(): String? {
+        return preferenceHelper.getDBGenerateId()
+    }
+
+    fun setDBGenerateId(dbGenerateId: String) {
+        preferenceHelper.setDBGenerateId(dbGenerateId)
+    }
+
     fun clearPreference() {
         preferenceHelper.clearSharedPreference()
     }

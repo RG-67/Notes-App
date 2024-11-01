@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.project.notesapp.R
 import com.project.notesapp.model.AuthModel
 import com.project.notesapp.model.userRequestModel.UserLoginRequest
 import com.project.notesapp.model.userRequestModel.UserRegisterRequest
@@ -72,6 +73,14 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
 
     fun setLoginEmail(loginEmail: String) = userRepo.setLoginEmail(loginEmail)
 
+    fun getUserPhone() = userRepo.getUserPhone()
+
+    fun setUserPhone(userPhone: String) = userRepo.setUserPhone(userPhone)
+
+    fun getDBGenerateId() = userRepo.getDBGenerateId()
+
+    fun setDBGenerateId(dbGenerateId: String) = userRepo.setDBGenerateId(dbGenerateId)
+
     fun validateRegister(
         name: String,
         phone: String,
@@ -107,7 +116,7 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
         builder.setCancelable(false)
         builder.setPositiveButton("Yes") { _, _ ->
             userRepo.clearPreference()
-            navController.popBackStack()
+            navController.navigate(R.id.login)
         }
         builder.setNegativeButton("No") { dialog, _ ->
             dialog.cancel()

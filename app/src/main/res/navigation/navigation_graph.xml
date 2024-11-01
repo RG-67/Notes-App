@@ -12,9 +12,9 @@
         tools:layout="@layout/login">
         <action
             android:id="@+id/action_login_to_note"
-            app:destination="@id/note"
+            app:destination="@id/userNote"
             app:popUpTo="@id/login"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_login_to_registration"
             app:destination="@id/registration" />
@@ -31,7 +31,7 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/note"
+        android:id="@+id/userNote"
         android:name="com.project.notesapp.ui.notes.Note"
         android:label="note"
         tools:layout="@layout/note" />

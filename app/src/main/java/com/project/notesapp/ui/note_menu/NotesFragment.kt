@@ -221,7 +221,7 @@ class NotesFragment : Fragment(), ItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
+        /*lifecycleScope.launch {
             noteViewModel.getNotes(
                 authViewModel.getUserId()?.toInt()!!,
                 authViewModel.getUserEmail()!!
@@ -237,7 +237,7 @@ class NotesFragment : Fragment(), ItemClickListener {
                         Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
                     }
                 }
-        }
+        }*/
         editBtn?.setOnClickListener {
             balloon?.dismiss()
             flag = 2

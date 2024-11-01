@@ -140,7 +140,7 @@ class Registration : Fragment() {
                 when (it) {
                     is NetworkResult.Success -> {
                         Log.d("Message1 ==>", it.toString())
-                        findNavController().navigate(R.id.action_registration_to_login)
+                        findNavController().navigate(R.id.login)
                     }
 
                     is NetworkResult.Error -> {

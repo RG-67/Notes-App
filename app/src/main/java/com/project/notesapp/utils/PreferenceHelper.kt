@@ -13,6 +13,8 @@ class PreferenceHelper @Inject constructor(@ApplicationContext context: Context)
         private const val USER_NAME = "userName"
         private const val USER_EMAIL = "userEmail"
         private const val LOGIN_USER_EMAIL = "loginUserEmail"
+        private const val USER_PHONE = "userPhone"
+        private const val DB_GENERATE_ID = "_id"
     }
 
     private val sharedPreferences: SharedPreferences =
@@ -52,6 +54,22 @@ class PreferenceHelper @Inject constructor(@ApplicationContext context: Context)
 
     fun setLoginEmail(loginEmail: String) {
         loginPreferences.edit().putString(LOGIN_USER_EMAIL, loginEmail).apply()
+    }
+
+    fun getUserPhone(): String? {
+        return sharedPreferences.getString(USER_PHONE, null)
+    }
+
+    fun setUserPhone(userPhone: String) {
+        sharedPreferences.edit().putString(USER_PHONE, userPhone).apply()
+    }
+
+    fun getDBGenerateId(): String? {
+        return sharedPreferences.getString(DB_GENERATE_ID, null)
+    }
+
+    fun setDBGenerateId(dbGenerateId: String) {
+        sharedPreferences.edit().putString(DB_GENERATE_ID, dbGenerateId).apply()
     }
 
     fun clearSharedPreference() {

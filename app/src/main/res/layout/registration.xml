@@ -99,7 +99,8 @@
                 android:textColor="@color/colorOnPrimary"
                 android:textColorHint="@color/colorOnPrimary"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:maxLength="10"/>
 
             <EditText
                 android:id="@+id/email"

@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -53,6 +54,10 @@ class Login : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            requireActivity().finish()
+        }
 
         if (authViewModel.getUserId() != "" && authViewModel.getUserId() != null) {
             findNavController().navigate(R.id.action_login_to_note)
@@ -128,13 +133,17 @@ class Login : Fragment() {
                 when (it) {
                     is NetworkResult.Success -> {
                         Toast.makeText(context, "Login Successfully", Toast.LENGTH_SHORT).show()
-                        /*if (binding.checkRemember.isChecked) {
+                        val userData = it.data!!
+                        if (binding.checkRemember.isChecked) {
                             authViewModel.setLoginEmail(binding.email.text.toString())
                         }
-                        authViewModel.setUserId(user[0].id.toString())
-                        authViewModel.setUserName(user[0].name)
-                        authViewModel.setUserEmail(user[0].userName)
-                        findNavController().navigate(R.id.action_login_to_note)*/
+                        authViewModel.setUserId(userData.data.userId)
+                        authViewModel.setUserName(userData.data.name)
+                        authViewModel.setUserEmail(userData.data.emailId)
+                        authViewModel.setUserPhone(userData.data.phoneNumber.toString())
+                        authViewModel.setDBGenerateId(userData.data._id)
+                        Log.d("UserDataTAG ==>", "${userData.data._id}, ${userData.data.userId}")
+                        findNavController().navigate(R.id.userNote)
                     }
 
                     is NetworkResult.Error -> {
