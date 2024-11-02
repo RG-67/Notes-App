@@ -1,16 +1,29 @@
 package com.project.notesapp.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.project.notesapp.api.NoteApi
 import com.project.notesapp.dao.NoteDao
 import com.project.notesapp.model.NoteModel
+import com.project.notesapp.model.NoteRequestModel.CreateNoteRequest
+import com.project.notesapp.model.NoteResponseModel.CreateNoteResponse
+import com.project.notesapp.model.NoteResponseModel.NoteUpdateResponse
+import com.project.notesapp.utils.NetworkResult
 import com.project.notesapp.utils.PreferenceHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import retrofit2.Response
 import javax.inject.Inject
 
 class NoteRepo @Inject constructor(
-    private val noteDao: NoteDao
+    private val noteDao: NoteDao,
+    private val noteApi: NoteApi
 ) {
+
+    private val _noteResponseLiveData = MutableLiveData<NetworkResult<CreateNoteResponse>>()
+    val noteResponseLiveData: LiveData<NetworkResult<CreateNoteResponse>> get() = _noteResponseLiveData
 
     suspend fun insertNoteData(noteModel: NoteModel) = withContext(Dispatchers.IO) {
         noteDao.insertNoteData(noteModel)
@@ -74,6 +87,28 @@ class NoteRepo @Inject constructor(
         withContext(Dispatchers.IO) {
             noteDao.getReminderNotes(userId, userEmail)
         }
+
+    /* set note api */
+    suspend fun createNote(createNoteRequest: CreateNoteRequest) {
+        try {
+            _noteResponseLiveData.postValue(NetworkResult.Loading())
+            val response = noteApi.createNote(createNoteRequest)
+            handleCreateResponse(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun handleCreateResponse(response: Response<CreateNoteResponse>) {
+        if (response.isSuccessful && response.body() != null) {
+            _noteResponseLiveData.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _noteResponseLiveData.postValue(NetworkResult.Error(errObj.getString("msg")))
+        } else {
+            _noteResponseLiveData.postValue(NetworkResult.Error("msg"))
+        }
+    }
 
 
 }

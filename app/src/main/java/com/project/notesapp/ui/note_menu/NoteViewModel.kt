@@ -24,9 +24,12 @@ import com.project.notesapp.R
 import com.project.notesapp.model.AlarmReceiver
 import com.project.notesapp.model.AlarmService
 import com.project.notesapp.model.NoteModel
+import com.project.notesapp.model.NoteRequestModel.CreateNoteRequest
+import com.project.notesapp.model.NoteResponseModel.CreateNoteResponse
 import com.project.notesapp.repository.NoteRepo
 import com.project.notesapp.utils.Helper
 import com.project.notesapp.utils.ItemClickListener
+import com.project.notesapp.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -38,9 +41,17 @@ import kotlin.coroutines.coroutineContext
 @HiltViewModel
 class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewModel() {
 
+    val noteCreateResponseLiveData: LiveData<NetworkResult<CreateNoteResponse>> get() = noteRepo.noteResponseLiveData
+
     suspend fun insertNoteData(noteModel: NoteModel) {
         viewModelScope.launch {
             noteRepo.insertNoteData(noteModel)
+        }
+    }
+
+    suspend fun createNote(createNoteRequest: CreateNoteRequest) {
+        viewModelScope.launch {
+            noteRepo.createNote(createNoteRequest)
         }
     }
 
@@ -61,7 +72,17 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         reminderTime: String
     ) {
         viewModelScope.launch {
-            noteRepo.updateNotes(noteDate, noteTime, noteTitle, note, userId, noteId, noteBackImage, reminderDate, reminderTime)
+            noteRepo.updateNotes(
+                noteDate,
+                noteTime,
+                noteTitle,
+                note,
+                userId,
+                noteId,
+                noteBackImage,
+                reminderDate,
+                reminderTime
+            )
         }
     }
 

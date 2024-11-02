@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.project.notesapp.api.NoteApi
 import com.project.notesapp.dao.NoteDao
 import com.project.notesapp.dao.NoteDatabase
 import com.project.notesapp.dao.UserDao
@@ -38,14 +39,14 @@ object NoteModule {
     @Provides
     fun provideUserDao(noteDatabase: NoteDatabase): UserDao = noteDatabase.userDao()
 
-/*    @Provides
-    fun provideUserRepo(userDao: UserDao, preferenceHelper: PreferenceHelper): UserRepo =
-        UserRepo(preferenceHelper, userDao)*/
+    /*    @Provides
+        fun provideUserRepo(userDao: UserDao, preferenceHelper: PreferenceHelper): UserRepo =
+            UserRepo(preferenceHelper, userDao)*/
 
     @Provides
     fun provideNoteDao(noteDatabase: NoteDatabase): NoteDao = noteDatabase.noteDao()
 
-    @Provides
-    fun provideNoteRepo(noteDao: NoteDao): NoteRepo = NoteRepo(noteDao)
+    /*@Provides
+    fun provideNoteRepo(noteDao: NoteDao, noteApi: NoteApi): NoteRepo = NoteRepo(noteDao)*/
 
 }

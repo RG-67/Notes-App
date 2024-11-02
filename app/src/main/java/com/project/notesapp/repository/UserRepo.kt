@@ -95,7 +95,7 @@ class UserRepo @Inject constructor(
         preferenceHelper.clearSharedPreference()
     }
 
-    /*set api*/
+    /*set user api*/
     suspend fun createUser(userRequest: UserRegisterRequest) {
         try {
             _userResponseLiveData.postValue(NetworkResult.Loading())

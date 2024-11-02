@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
+import android.net.Network
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -31,9 +32,11 @@ import androidx.lifecycle.lifecycleScope
 import com.project.notesapp.R
 import com.project.notesapp.databinding.FragmentNotesBinding
 import com.project.notesapp.model.NoteModel
+import com.project.notesapp.model.NoteRequestModel.CreateNoteRequest
 import com.project.notesapp.ui.authentication.AuthViewModel
 import com.project.notesapp.utils.Helper
 import com.project.notesapp.utils.ItemClickListener
+import com.project.notesapp.utils.NetworkResult
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
@@ -276,9 +279,10 @@ class NotesFragment : Fragment(), ItemClickListener {
                 val getNoteData = getNoteData()
                 if (getValidation.second) {
                     lifecycleScope.launch {
-                        Log.d(TAG, getNoteData.toString())
-                        noteViewModel.insertNoteData(getNoteData)
-                        showHide()
+                        /*Log.d(TAG, getNoteData.toString())
+                        noteViewModel.insertNoteData(getNoteData)*/
+                        noteViewModel.createNote(getNoteData)
+                        bindObserver()
                         Helper.hideKeyboard(binding.root)
                     }
                 } else {
@@ -397,7 +401,7 @@ class NotesFragment : Fragment(), ItemClickListener {
         return noteViewModel.validateNoteData(title, note)
     }
 
-    private fun getNoteData(): NoteModel {
+    /*private fun getNoteData(): NoteModel {
         return binding.run {
             NoteModel(
                 0,
@@ -412,6 +416,17 @@ class NotesFragment : Fragment(), ItemClickListener {
                 noteBackImg,
                 reminderDate,
                 reminderTime
+            )
+        }
+    }*/
+
+    private fun getNoteData(): CreateNoteRequest {
+        return binding.run {
+            CreateNoteRequest(
+                authViewModel.getDBGenerateId()!!,
+                binding.note.text.toString(),
+                binding.title.text.toString(),
+                authViewModel.getUserId()!!
             )
         }
     }
@@ -568,6 +583,34 @@ class NotesFragment : Fragment(), ItemClickListener {
             }
         }
 
+    }
+
+    private fun bindObserver() {
+        try {
+            noteViewModel.noteCreateResponseLiveData.observe(viewLifecycleOwner) {
+                binding.pBar.visibility = View.GONE
+                when (it) {
+                    is NetworkResult.Success -> {
+                        Log.d("CreateNote ==>", "${it.data!!.data.title}, ${it.data.data.note}")
+                        showHide()
+                    }
+
+                    is NetworkResult.Error -> {
+                        showNoteErr(it.msg.toString())
+                    }
+
+                    is NetworkResult.Loading -> {
+                        binding.pBar.visibility = View.VISIBLE
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun showNoteErr(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
 
