@@ -166,7 +166,7 @@ class Note : Fragment(), ItemClickListener {
         _binding = null
     }
 
-    override fun onItemClick(
+    /*override fun onItemClick(
         view: View,
         position: Int,
         noteId: Int,
@@ -175,6 +175,18 @@ class Note : Fragment(), ItemClickListener {
         noteBackImage: Int
     ) {
         findNavController().popBackStack()
+    }*/
+
+    override fun onItemClick(
+        view: View,
+        position: Int,
+        noteDatabaseId: String,
+        noteId: String,
+        title: String,
+        note: String,
+        from: String
+    ) {
+
     }
 
 }

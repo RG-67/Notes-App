@@ -25,7 +25,15 @@ import com.project.notesapp.model.AlarmReceiver
 import com.project.notesapp.model.AlarmService
 import com.project.notesapp.model.NoteModel
 import com.project.notesapp.model.NoteRequestModel.CreateNoteRequest
+import com.project.notesapp.model.NoteRequestModel.DeleteNoteRequest
+import com.project.notesapp.model.NoteRequestModel.GetAllNotesRequest
+import com.project.notesapp.model.NoteRequestModel.ReadNote
+import com.project.notesapp.model.NoteRequestModel.UpdateNoteRequest
 import com.project.notesapp.model.NoteResponseModel.CreateNoteResponse
+import com.project.notesapp.model.NoteResponseModel.DeleteNoteResponse
+import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
+import com.project.notesapp.model.NoteResponseModel.NoteUpdateResponse
+import com.project.notesapp.model.NoteResponseModel.ReadNoteResponse
 import com.project.notesapp.repository.NoteRepo
 import com.project.notesapp.utils.Helper
 import com.project.notesapp.utils.ItemClickListener
@@ -42,6 +50,10 @@ import kotlin.coroutines.coroutineContext
 class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewModel() {
 
     val noteCreateResponseLiveData: LiveData<NetworkResult<CreateNoteResponse>> get() = noteRepo.noteResponseLiveData
+    val noteGetAllNotesLiveData: LiveData<NetworkResult<GetAllNotesResponse>> get() = noteRepo.getAllNotesLiveData
+    val noteGetSingleNoteLiveData: LiveData<NetworkResult<ReadNoteResponse>> get() = noteRepo.getSingleNoteLiveData
+    val noteUpdateLiveData: LiveData<NetworkResult<NoteUpdateResponse>> get() = noteRepo.updateNoteLiveData
+    val noteDeleteLiveData: LiveData<NetworkResult<DeleteNoteResponse>> get() = noteRepo.deleteNoteLiveData
 
     suspend fun insertNoteData(noteModel: NoteModel) {
         viewModelScope.launch {
@@ -58,6 +70,30 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
     suspend fun getNotes(userId: Int, userEmail: String): LiveData<List<NoteModel>> {
         return noteRepo.getNotes(userId, userEmail).flowOn(Dispatchers.Main)
             .asLiveData(context = coroutineContext)
+    }
+
+    suspend fun getAllNotes(getAllNotesRequest: GetAllNotesRequest) {
+        viewModelScope.launch {
+            noteRepo.getAllNotes(getAllNotesRequest)
+        }
+    }
+
+    suspend fun getSingleNote(readNote: ReadNote) {
+        viewModelScope.launch {
+            noteRepo.getSingleNote(readNote)
+        }
+    }
+
+    suspend fun updateNote(updateNoteRequest: UpdateNoteRequest) {
+        viewModelScope.launch {
+            noteRepo.updateNote(updateNoteRequest)
+        }
+    }
+
+    suspend fun deleteNote(deleteNoteRequest: DeleteNoteRequest) {
+        viewModelScope.launch {
+            noteRepo.deleteNote(deleteNoteRequest)
+        }
     }
 
     suspend fun updateNotes(
@@ -277,14 +313,14 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
                             calendarHour,
                             calendarMinute
                         )
-                        setAlarm(
+                        /*setAlarm(
                             context,
                             calendar,
                             date,
                             Helper.convertTimeTo12Hour(time)!!,
                             itemClickListener,
                             view
-                        )
+                        )*/
                     } else {
                         if (Helper.getSdkVersionCheckForAlarm()) requestExactAlarmPermission(
                             context
@@ -311,7 +347,7 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         context.startActivity(intent)
     }
 
-    private fun setAlarm(
+    /*private fun setAlarm(
         context: Context,
         calendar: Calendar,
         date: String,
@@ -334,6 +370,6 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
             e.printStackTrace()
             Toast.makeText(context, "Permission required", Toast.LENGTH_SHORT).show()
         }
-    }
+    }*/
 
 }

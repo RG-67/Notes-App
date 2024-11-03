@@ -67,7 +67,7 @@ class RemindersFragment : Fragment(), ItemClickListener {
         }
     }
 
-    override fun onItemClick(
+    /*override fun onItemClick(
         view: View,
         position: Int,
         noteId: Int,
@@ -79,6 +79,18 @@ class RemindersFragment : Fragment(), ItemClickListener {
         binding.noteView.visibility = View.VISIBLE
         binding.title.text = noteTitle
         binding.note.text = note
+    }*/
+
+    override fun onItemClick(
+        view: View,
+        position: Int,
+        noteDatabaseId: String,
+        noteId: String,
+        title: String,
+        note: String,
+        from: String
+    ) {
+
     }
 
 

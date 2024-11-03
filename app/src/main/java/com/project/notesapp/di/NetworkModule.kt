@@ -22,8 +22,8 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun getRetrofit(client: OkHttpClient): Retrofit.Builder {
-        return Retrofit.Builder().baseUrl(Constants.BASE_URL)
+    fun getRetrofit(client: OkHttpClient): Builder {
+        return Builder().baseUrl(Constants.BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
     }
@@ -36,7 +36,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun getUserApi(retrofitBuilder: Retrofit.Builder): UserApi {
+    fun getUserApi(retrofitBuilder: Builder): UserApi {
         return retrofitBuilder.build().create(UserApi::class.java)
     }
 

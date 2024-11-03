@@ -29,10 +29,15 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.gson.Gson
 import com.project.notesapp.R
 import com.project.notesapp.databinding.FragmentNotesBinding
 import com.project.notesapp.model.NoteModel
 import com.project.notesapp.model.NoteRequestModel.CreateNoteRequest
+import com.project.notesapp.model.NoteRequestModel.DeleteNoteRequest
+import com.project.notesapp.model.NoteRequestModel.GetAllNotesRequest
+import com.project.notesapp.model.NoteRequestModel.UpdateNoteRequest
+import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
 import com.project.notesapp.ui.authentication.AuthViewModel
 import com.project.notesapp.utils.Helper
 import com.project.notesapp.utils.ItemClickListener
@@ -43,6 +48,8 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import retrofit2.Response
 
 @AndroidEntryPoint
 class NotesFragment : Fragment(), ItemClickListener {
@@ -54,8 +61,9 @@ class NotesFragment : Fragment(), ItemClickListener {
     private val authViewModel by activityViewModels<AuthViewModel>()
     private var noteAdapter: NoteAdapter? = null
     private var noteItemPosition = 0
-    private var userNoteId = ""
-    private var title = ""
+    private var noteDBId = ""
+    private var ntId = ""
+    private var noteTitle = ""
     private var noteContent = ""
     private var flag = 0
 
@@ -224,39 +232,32 @@ class NotesFragment : Fragment(), ItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /*lifecycleScope.launch {
-            noteViewModel.getNotes(
-                authViewModel.getUserId()?.toInt()!!,
-                authViewModel.getUserEmail()!!
-            )
-                .observe(requireActivity()) {
-                    noteAdapter = NoteAdapter(it, this@NotesFragment)
-                    val noteList = it as ArrayList<NoteModel>
-                    binding.notesRecycler.adapter = noteAdapter
-                    binding.notesRecycler.smoothScrollToPosition(noteAdapter!!.itemCount)
-                    if (noteList.size > 0) {
-                        Log.d(TAG, noteList.toString())
-                    } else {
-                        Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
-                    }
-                }
-        }*/
+        getAllNotes()
         editBtn?.setOnClickListener {
             balloon?.dismiss()
             flag = 2
             showHide()
-            binding.title.setText(title)
+            binding.title.setText(noteTitle)
             binding.note.setText(noteContent)
         }
 
         deleteBtn?.setOnClickListener {
             balloon?.dismiss()
             lifecycleScope.launch {
-                noteViewModel.updateIsDelete(
+                /*noteViewModel.updateIsDelete(
                     1,
                     authViewModel.getUserId()?.toInt()!!,
                     userNoteId.toInt()
+                )*/
+                noteViewModel.deleteNote(
+                    DeleteNoteRequest(
+                        authViewModel.getDBGenerateId()!!,
+                        noteDBId,
+                        ntId,
+                        authViewModel.getUserId()!!
+                    )
                 )
+                bindDeleteObserver()
             }
         }
 
@@ -291,7 +292,7 @@ class NotesFragment : Fragment(), ItemClickListener {
             } else {
                 if (getValidation.second) {
                     lifecycleScope.launch {
-                        noteViewModel.updateNotes(
+                        /*noteViewModel.updateNotes(
                             Helper.getDate(),
                             Helper.getCurrentTime(),
                             binding.title.text.toString(),
@@ -301,7 +302,18 @@ class NotesFragment : Fragment(), ItemClickListener {
                             noteBackImg,
                             reminderDate,
                             reminderTime
+                        )*/
+                        noteViewModel.updateNote(
+                            UpdateNoteRequest(
+                                authViewModel.getDBGenerateId()!!,
+                                binding.note.text.toString(),
+                                noteDBId,
+                                ntId,
+                                binding.title.text.toString(),
+                                authViewModel.getUserId()!!
+                            )
                         )
+                        bindUpdateNoteObserver()
                         showHide()
                         Helper.hideKeyboard(binding.root)
                     }
@@ -395,6 +407,86 @@ class NotesFragment : Fragment(), ItemClickListener {
 
     }
 
+    private fun getAllNotes() {
+        lifecycleScope.launch {
+            noteViewModel.getAllNotes(
+                GetAllNotesRequest(
+                    authViewModel.getDBGenerateId()!!,
+                    authViewModel.getUserId()!!
+                )
+            )
+            bindGetAllNotesObserver()
+        }
+    }
+
+    private fun bindDeleteObserver() {
+        noteViewModel.noteDeleteLiveData.observe(viewLifecycleOwner) {
+            binding.pBar.visibility = View.GONE
+            when (it) {
+                is NetworkResult.Success -> {
+                    Toast.makeText(context, it.data!!.msg, Toast.LENGTH_SHORT).show()
+                    getAllNotes()
+                }
+
+                is NetworkResult.Error -> {
+                    showNoteErr(it.msg.toString())
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pBar.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun bindUpdateNoteObserver() {
+        noteViewModel.noteUpdateLiveData.observe(viewLifecycleOwner) {
+            binding.pBar.visibility = View.GONE
+            when (it) {
+                is NetworkResult.Success -> {
+                    Toast.makeText(context, it.data!!.msg, Toast.LENGTH_SHORT).show()
+                    getAllNotes()
+                }
+
+                is NetworkResult.Error -> {
+                    showNoteErr(it.msg.toString())
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pBar.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun bindGetAllNotesObserver() {
+        noteViewModel.noteGetAllNotesLiveData.observe(viewLifecycleOwner) {
+            binding.pBar.visibility = View.GONE
+            when (it) {
+                is NetworkResult.Success -> {
+                    val notes = GetAllNotesResponse(it.data!!.data, it.data.msg, it.data.status)
+                    noteAdapter = NoteAdapter(notes, this@NotesFragment)
+                    val noteList = notes.data
+                    binding.notesRecycler.adapter = noteAdapter
+                    binding.notesRecycler.smoothScrollToPosition(noteAdapter!!.itemCount)
+                    if (noteList.isNotEmpty()) {
+                        Log.d(TAG, noteList.toString())
+                    } else {
+                        Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                is NetworkResult.Error -> {
+                    showNoteErr(it.msg.toString())
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pBar.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
     private fun getValidation(): Pair<String, Boolean> {
         val title = binding.title.text.toString()
         val note = binding.note.text.toString()
@@ -468,36 +560,38 @@ class NotesFragment : Fragment(), ItemClickListener {
     override fun onItemClick(
         view: View,
         position: Int,
-        noteId: Int,
-        noteTitle: String,
+        noteDatabaseId: String,
+        noteId: String,
+        title: String,
         note: String,
-        noteBackImage: Int
+        from: String
     ) {
         Log.d("Note ==>", note)
-        when (note) {
+        when (from) {
             "dateTimeReminder" -> {
-                val dateTime = noteTitle.split("#")
+                /*val dateTime = noteTitle.split("#")
                 reminderDate = "Date: " + dateTime[0]
                 reminderTime = "Time: " + dateTime[1]
                 binding.dateTimeLin.visibility = View.VISIBLE
                 binding.dateReminder.text = reminderDate
-                binding.timeReminder.text = reminderTime
+                binding.timeReminder.text = reminderTime*/
             }
 
             else -> {
                 noteItemPosition = position
-                userNoteId = noteId.toString()
-                title = noteTitle
+                noteDBId = noteDatabaseId
+                ntId = noteId
+                noteTitle = title
                 noteContent = note
-                noteBackImg = noteBackImage
-                if (noteBackImage != 0) {
+//                noteBackImg = noteBackImage
+                /*if (noteBackImage != 0) {
                     binding.noteRel.background =
                         ContextCompat.getDrawable(requireContext(), noteBackImg)
                     binding.note.setTextColor(Color.WHITE)
                 } else {
                     binding.noteRel.background = null
                     binding.note.setTextColor(Color.BLACK)
-                }
+                }*/
                 showPopUp("note", view)
             }
         }
@@ -593,6 +687,7 @@ class NotesFragment : Fragment(), ItemClickListener {
                     is NetworkResult.Success -> {
                         Log.d("CreateNote ==>", "${it.data!!.data.title}, ${it.data.data.note}")
                         showHide()
+                        getAllNotes()
                     }
 
                     is NetworkResult.Error -> {

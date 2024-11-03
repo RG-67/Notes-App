@@ -32,7 +32,7 @@ class ReminderAdapter(
             binding.note.text = noteModel.note
             binding.reminderDate.text = noteModel.reminderDate
             binding.reminderTime.text = noteModel.reminderTime
-            binding.root.setOnClickListener {
+            /*binding.root.setOnClickListener {
                 itemClickListener.onItemClick(
                     it,
                     position,
@@ -41,7 +41,7 @@ class ReminderAdapter(
                     noteModel.note,
                     noteModel.noteBackImage
                 )
-            }
+            }*/
         }
     }
 

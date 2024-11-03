@@ -10,6 +10,7 @@ object Constants {
 
     /* note api endpoint */
     const val CREATE_NOTE = "note/createNote"
+    const val GET_ALL_NOTES = "note/getAllNotes"
     const val READ_NOTE = "note/getNote"
     const val UPDATE_NOTE = "note/updateNote"
     const val DELETE_NOTE = "note/deleteNote"

@@ -6,8 +6,15 @@ import com.project.notesapp.api.NoteApi
 import com.project.notesapp.dao.NoteDao
 import com.project.notesapp.model.NoteModel
 import com.project.notesapp.model.NoteRequestModel.CreateNoteRequest
+import com.project.notesapp.model.NoteRequestModel.DeleteNoteRequest
+import com.project.notesapp.model.NoteRequestModel.GetAllNotesRequest
+import com.project.notesapp.model.NoteRequestModel.ReadNote
+import com.project.notesapp.model.NoteRequestModel.UpdateNoteRequest
 import com.project.notesapp.model.NoteResponseModel.CreateNoteResponse
+import com.project.notesapp.model.NoteResponseModel.DeleteNoteResponse
+import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
 import com.project.notesapp.model.NoteResponseModel.NoteUpdateResponse
+import com.project.notesapp.model.NoteResponseModel.ReadNoteResponse
 import com.project.notesapp.utils.NetworkResult
 import com.project.notesapp.utils.PreferenceHelper
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +30,15 @@ class NoteRepo @Inject constructor(
 ) {
 
     private val _noteResponseLiveData = MutableLiveData<NetworkResult<CreateNoteResponse>>()
+    private val _noteGetAllNoteLiveData = MutableLiveData<NetworkResult<GetAllNotesResponse>>()
+    private val _noteGetSingleNoteLiveData = MutableLiveData<NetworkResult<ReadNoteResponse>>()
+    private val _noteUpdateNoteLiveData = MutableLiveData<NetworkResult<NoteUpdateResponse>>()
+    private val _noteDeleteNoteLiveData = MutableLiveData<NetworkResult<DeleteNoteResponse>>()
     val noteResponseLiveData: LiveData<NetworkResult<CreateNoteResponse>> get() = _noteResponseLiveData
+    val getAllNotesLiveData: LiveData<NetworkResult<GetAllNotesResponse>> get() = _noteGetAllNoteLiveData
+    val getSingleNoteLiveData: LiveData<NetworkResult<ReadNoteResponse>> get() = _noteGetSingleNoteLiveData
+    val updateNoteLiveData: LiveData<NetworkResult<NoteUpdateResponse>> get() = _noteUpdateNoteLiveData
+    val deleteNoteLiveData: LiveData<NetworkResult<DeleteNoteResponse>> get() = _noteDeleteNoteLiveData
 
     suspend fun insertNoteData(noteModel: NoteModel) = withContext(Dispatchers.IO) {
         noteDao.insertNoteData(noteModel)
@@ -96,6 +111,90 @@ class NoteRepo @Inject constructor(
             handleCreateResponse(response)
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    suspend fun getAllNotes(getAllNotesRequest: GetAllNotesRequest) {
+        try {
+            _noteGetAllNoteLiveData.postValue(NetworkResult.Loading())
+            val response = noteApi.getAlNotes(getAllNotesRequest)
+            handleGetAllNotesResponse(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun getSingleNote(readNote: ReadNote) {
+        try {
+            _noteGetSingleNoteLiveData.postValue(NetworkResult.Loading())
+            val response = noteApi.readNote(readNote)
+            handleGetSingleNoteResponse(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun updateNote(updateNoteRequest: UpdateNoteRequest) {
+        try {
+            _noteUpdateNoteLiveData.postValue(NetworkResult.Loading())
+            val response = noteApi.updateNote(updateNoteRequest)
+            handleUpdateNote(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun deleteNote(deleteNoteRequest: DeleteNoteRequest) {
+        try {
+            _noteDeleteNoteLiveData.postValue(NetworkResult.Loading())
+            val response = noteApi.deleteNote(deleteNoteRequest)
+            handleDeleteNoteResponse(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun handleDeleteNoteResponse(response: Response<DeleteNoteResponse>) {
+        if (response.isSuccessful && response.body() != null) {
+            _noteDeleteNoteLiveData.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _noteDeleteNoteLiveData.postValue(NetworkResult.Error(errObj.getString("msg")))
+        } else {
+            _noteDeleteNoteLiveData.postValue(NetworkResult.Error("msg"))
+        }
+    }
+
+    private fun handleUpdateNote(response: Response<NoteUpdateResponse>) {
+        if (response.isSuccessful && response.body() != null) {
+            _noteUpdateNoteLiveData.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _noteUpdateNoteLiveData.postValue(NetworkResult.Error(errObj.getString("msg")))
+        } else {
+            _noteUpdateNoteLiveData.postValue(NetworkResult.Error("msg"))
+        }
+    }
+
+    private fun handleGetSingleNoteResponse(response: Response<ReadNoteResponse>) {
+        if (response.isSuccessful && response.body() != null) {
+            _noteGetSingleNoteLiveData.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _noteGetSingleNoteLiveData.postValue(NetworkResult.Error(errObj.getString("msg")))
+        } else {
+            _noteGetSingleNoteLiveData.postValue(NetworkResult.Error("msg"))
+        }
+    }
+
+    private fun handleGetAllNotesResponse(response: Response<GetAllNotesResponse>) {
+        if (response.isSuccessful && response.body() != null) {
+            _noteGetAllNoteLiveData.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _noteGetAllNoteLiveData.postValue(NetworkResult.Error(errObj.getString("msg")))
+        } else {
+            _noteGetAllNoteLiveData.postValue(NetworkResult.Error("msg"))
         }
     }
 

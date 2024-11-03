@@ -124,7 +124,7 @@ class BinFragment : Fragment(), ItemClickListener {
         _binding = null
     }*/
 
-    override fun onItemClick(
+    /*override fun onItemClick(
         view: View,
         position: Int,
         noteId: Int,
@@ -134,6 +134,18 @@ class BinFragment : Fragment(), ItemClickListener {
     ) {
         userNoteId = noteId.toString()
         balloon?.showAlignBottom(view)
+    }*/
+
+    override fun onItemClick(
+        view: View,
+        position: Int,
+        noteDatabaseId: String,
+        noteId: String,
+        title: String,
+        note: String,
+        from: String
+    ) {
+
     }
 
 }

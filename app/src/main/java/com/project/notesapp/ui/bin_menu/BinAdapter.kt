@@ -28,7 +28,7 @@ class BinAdapter(
             binding.time.text = noteModel.noteTime
             binding.title.text = noteModel.noteTitle
             binding.note.text = noteModel.note
-            binding.root.setOnClickListener {
+            /*binding.root.setOnClickListener {
                 itemClickListener.onItemClick(
                     it,
                     position,
@@ -37,7 +37,7 @@ class BinAdapter(
                     noteModel.note,
                     noteModel.noteBackImage
                 )
-            }
+            }*/
         }
     }
 
