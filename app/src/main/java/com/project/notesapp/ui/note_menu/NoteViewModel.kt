@@ -28,12 +28,14 @@ import com.project.notesapp.model.NoteRequestModel.CreateNoteRequest
 import com.project.notesapp.model.NoteRequestModel.DeleteNoteRequest
 import com.project.notesapp.model.NoteRequestModel.GetAllNotesRequest
 import com.project.notesapp.model.NoteRequestModel.ReadNote
+import com.project.notesapp.model.NoteRequestModel.SetAndRestoreRequest
 import com.project.notesapp.model.NoteRequestModel.UpdateNoteRequest
 import com.project.notesapp.model.NoteResponseModel.CreateNoteResponse
 import com.project.notesapp.model.NoteResponseModel.DeleteNoteResponse
 import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
 import com.project.notesapp.model.NoteResponseModel.NoteUpdateResponse
 import com.project.notesapp.model.NoteResponseModel.ReadNoteResponse
+import com.project.notesapp.model.NoteResponseModel.SetAndRestoreResponse
 import com.project.notesapp.repository.NoteRepo
 import com.project.notesapp.utils.Helper
 import com.project.notesapp.utils.ItemClickListener
@@ -54,6 +56,7 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
     val noteGetSingleNoteLiveData: LiveData<NetworkResult<ReadNoteResponse>> get() = noteRepo.getSingleNoteLiveData
     val noteUpdateLiveData: LiveData<NetworkResult<NoteUpdateResponse>> get() = noteRepo.updateNoteLiveData
     val noteDeleteLiveData: LiveData<NetworkResult<DeleteNoteResponse>> get() = noteRepo.deleteNoteLiveData
+    val setAndRestore: LiveData<NetworkResult<SetAndRestoreResponse>> get() = noteRepo.setAndRestoreLiveData
 
     suspend fun insertNoteData(noteModel: NoteModel) {
         viewModelScope.launch {
@@ -87,6 +90,24 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
     suspend fun updateNote(updateNoteRequest: UpdateNoteRequest) {
         viewModelScope.launch {
             noteRepo.updateNote(updateNoteRequest)
+        }
+    }
+
+    suspend fun setBinNote(setAndRestoreRequest: SetAndRestoreRequest) {
+        viewModelScope.launch {
+            noteRepo.setBinNotes(setAndRestoreRequest)
+        }
+    }
+
+    suspend fun getBinNote(getAllNotesRequest: GetAllNotesRequest) {
+        viewModelScope.launch {
+            noteRepo.getBinNotes(getAllNotesRequest)
+        }
+    }
+
+    suspend fun restoreNote(setAndRestoreRequest: SetAndRestoreRequest) {
+        viewModelScope.launch {
+            noteRepo.restoreNote(setAndRestoreRequest)
         }
     }
 

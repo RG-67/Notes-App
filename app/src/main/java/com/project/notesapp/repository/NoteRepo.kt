@@ -9,12 +9,14 @@ import com.project.notesapp.model.NoteRequestModel.CreateNoteRequest
 import com.project.notesapp.model.NoteRequestModel.DeleteNoteRequest
 import com.project.notesapp.model.NoteRequestModel.GetAllNotesRequest
 import com.project.notesapp.model.NoteRequestModel.ReadNote
+import com.project.notesapp.model.NoteRequestModel.SetAndRestoreRequest
 import com.project.notesapp.model.NoteRequestModel.UpdateNoteRequest
 import com.project.notesapp.model.NoteResponseModel.CreateNoteResponse
 import com.project.notesapp.model.NoteResponseModel.DeleteNoteResponse
 import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
 import com.project.notesapp.model.NoteResponseModel.NoteUpdateResponse
 import com.project.notesapp.model.NoteResponseModel.ReadNoteResponse
+import com.project.notesapp.model.NoteResponseModel.SetAndRestoreResponse
 import com.project.notesapp.utils.NetworkResult
 import com.project.notesapp.utils.PreferenceHelper
 import kotlinx.coroutines.Dispatchers
@@ -34,11 +36,13 @@ class NoteRepo @Inject constructor(
     private val _noteGetSingleNoteLiveData = MutableLiveData<NetworkResult<ReadNoteResponse>>()
     private val _noteUpdateNoteLiveData = MutableLiveData<NetworkResult<NoteUpdateResponse>>()
     private val _noteDeleteNoteLiveData = MutableLiveData<NetworkResult<DeleteNoteResponse>>()
+    private val _noteSetAndRestoreLiveData = MutableLiveData<NetworkResult<SetAndRestoreResponse>>()
     val noteResponseLiveData: LiveData<NetworkResult<CreateNoteResponse>> get() = _noteResponseLiveData
     val getAllNotesLiveData: LiveData<NetworkResult<GetAllNotesResponse>> get() = _noteGetAllNoteLiveData
     val getSingleNoteLiveData: LiveData<NetworkResult<ReadNoteResponse>> get() = _noteGetSingleNoteLiveData
     val updateNoteLiveData: LiveData<NetworkResult<NoteUpdateResponse>> get() = _noteUpdateNoteLiveData
     val deleteNoteLiveData: LiveData<NetworkResult<DeleteNoteResponse>> get() = _noteDeleteNoteLiveData
+    val setAndRestoreLiveData: LiveData<NetworkResult<SetAndRestoreResponse>> get() = _noteSetAndRestoreLiveData
 
     suspend fun insertNoteData(noteModel: NoteModel) = withContext(Dispatchers.IO) {
         noteDao.insertNoteData(noteModel)
@@ -139,6 +143,47 @@ class NoteRepo @Inject constructor(
             _noteUpdateNoteLiveData.postValue(NetworkResult.Loading())
             val response = noteApi.updateNote(updateNoteRequest)
             handleUpdateNote(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun setBinNotes(setAndRestoreRequest: SetAndRestoreRequest) {
+        try {
+            _noteUpdateNoteLiveData.postValue(NetworkResult.Loading())
+            val response = noteApi.setBinNotes(setAndRestoreRequest)
+            handleSetAndRestoreNote(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun handleSetAndRestoreNote(response: Response<SetAndRestoreResponse>) {
+        if (response.isSuccessful && response.body() != null) {
+            _noteSetAndRestoreLiveData.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _noteSetAndRestoreLiveData.postValue(NetworkResult.Error(errObj.getString("msg")))
+        } else {
+            _noteSetAndRestoreLiveData.postValue(NetworkResult.Error("msg"))
+        }
+    }
+
+    suspend fun getBinNotes(getAllNotesRequest: GetAllNotesRequest) {
+        try {
+            _noteGetAllNoteLiveData.postValue(NetworkResult.Loading())
+            val response = noteApi.getBinNotes(getAllNotesRequest)
+            handleGetAllNotesResponse(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun restoreNote(setAndRestoreRequest: SetAndRestoreRequest) {
+        try {
+            _noteUpdateNoteLiveData.postValue(NetworkResult.Loading())
+            val response = noteApi.restoreNote(setAndRestoreRequest)
+            handleSetAndRestoreNote(response)
         } catch (e: Exception) {
             e.printStackTrace()
         }

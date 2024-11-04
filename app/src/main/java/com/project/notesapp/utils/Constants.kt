@@ -14,5 +14,8 @@ object Constants {
     const val READ_NOTE = "note/getNote"
     const val UPDATE_NOTE = "note/updateNote"
     const val DELETE_NOTE = "note/deleteNote"
+    const val SET_BIN_NOTES = "note/setBinNote"
+    const val GET_BIN_NOTES = "note/getBinNote"
+    const val RESTORE_NOTE = "note/restoreNote"
 
 }

@@ -6,38 +6,42 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.project.notesapp.databinding.NoteItemLayoutBinding
 import com.project.notesapp.model.NoteModel
+import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
 import com.project.notesapp.utils.ItemClickListener
 
 class BinAdapter(
-    private val noteList: List<NoteModel>,
+//    private val noteList: List<NoteModel>,
+    private val notesResponse: GetAllNotesResponse,
     private val itemClickListener: ItemClickListener
 ) : RecyclerView.Adapter<BinAdapter.BinViewHolder>() {
 
     inner class BinViewHolder(private val binding: NoteItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(noteModel: NoteModel, position: Int) {
-            if (noteModel.noteBackImage != 0) {
+        fun bind(getAllNotesResponse: GetAllNotesResponse, position: Int) {
+            /*if (noteModel.noteBackImage != 0) {
                 binding.noteBackImg.setImageResource(noteModel.noteBackImage)
                 binding.title.setTextColor(Color.WHITE)
                 binding.note.setTextColor(Color.WHITE)
             } else {
                 binding.title.setTextColor(Color.BLACK)
                 binding.note.setTextColor(Color.BLACK)
-            }
-            binding.date.text = noteModel.noteDate
-            binding.time.text = noteModel.noteTime
-            binding.title.text = noteModel.noteTitle
-            binding.note.text = noteModel.note
-            /*binding.root.setOnClickListener {
+            }*/
+            val data = getAllNotesResponse.data[position]
+            binding.date.text = data.date.toString()
+            binding.time.text = data.time
+            binding.title.text = data.title
+            binding.note.text = data.note
+            binding.root.setOnClickListener {
                 itemClickListener.onItemClick(
                     it,
                     position,
-                    noteModel.noteId,
-                    noteModel.noteTitle,
-                    noteModel.note,
-                    noteModel.noteBackImage
+                    data._id,
+                    data.noteId,
+                    data.title,
+                    data.note,
+                    "binAdapter"
                 )
-            }*/
+            }
         }
     }
 
@@ -52,13 +56,13 @@ class BinAdapter(
     }
 
     override fun onBindViewHolder(holder: BinAdapter.BinViewHolder, position: Int) {
-        val note = noteList[position]
+        val note = notesResponse.data[position]
         note.let {
-            holder.bind(it, position)
+            holder.bind(notesResponse, position)
         }
     }
 
-    override fun getItemCount(): Int = noteList.size
+    override fun getItemCount(): Int = notesResponse.data.size
 
 
 }

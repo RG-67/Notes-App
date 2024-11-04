@@ -17,10 +17,15 @@ import androidx.lifecycle.lifecycleScope
 import com.project.notesapp.R
 import com.project.notesapp.databinding.FragmentBinBinding
 import com.project.notesapp.model.NoteModel
+import com.project.notesapp.model.NoteRequestModel.DeleteNoteRequest
+import com.project.notesapp.model.NoteRequestModel.GetAllNotesRequest
+import com.project.notesapp.model.NoteRequestModel.SetAndRestoreRequest
+import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
 import com.project.notesapp.ui.authentication.AuthViewModel
 import com.project.notesapp.ui.note_menu.NoteAdapter
 import com.project.notesapp.ui.note_menu.NoteViewModel
 import com.project.notesapp.utils.ItemClickListener
+import com.project.notesapp.utils.NetworkResult
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
@@ -42,6 +47,8 @@ class BinFragment : Fragment(), ItemClickListener {
     private var deleteBinBtn: LinearLayout? = null
     private var balloonBinNoteLayout: View? = null
     private var userNoteId = ""
+    private var noteDBId = ""
+    private var ntId = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -82,7 +89,7 @@ class BinFragment : Fragment(), ItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            noteViewModel.getBinNotes(
+            /*noteViewModel.getBinNotes(
                 authViewModel.getUserId()?.toInt()!!,
                 authViewModel.getUserEmail()!!
             )
@@ -96,27 +103,131 @@ class BinFragment : Fragment(), ItemClickListener {
                     } else {
                         Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
                     }
-                }
+                }*/
         }
+        getBinNotes()
 
         deleteBinBtn?.setOnClickListener {
             balloon?.dismiss()
             lifecycleScope.launch {
-                noteViewModel.deleteNote(userNoteId.toInt(), authViewModel.getUserId()?.toInt()!!)
+//                noteViewModel.deleteNote(userNoteId.toInt(), authViewModel.getUserId()?.toInt()!!)
+                noteViewModel.deleteNote(
+                    DeleteNoteRequest(
+                        authViewModel.getDBGenerateId()!!,
+                        noteDBId,
+                        ntId,
+                        authViewModel.getUserId()!!
+                    )
+                )
+                bindDeleteObserver()
             }
         }
 
         restoreBtn?.setOnClickListener {
             balloon?.dismiss()
             lifecycleScope.launch {
-                noteViewModel.restoreBinNote(
+                /*noteViewModel.restoreBinNote(
                     0,
                     authViewModel.getUserId()?.toInt()!!,
                     userNoteId.toInt()
+                )*/
+                noteViewModel.restoreNote(
+                    SetAndRestoreRequest(
+                        authViewModel.getDBGenerateId()!!,
+                        noteDBId,
+                        ntId,
+                        authViewModel.getUserId()!!
+                    )
                 )
+                bindRestoreObserver()
             }
         }
 
+    }
+
+    private fun bindDeleteObserver() {
+        noteViewModel.noteDeleteLiveData.observe(viewLifecycleOwner) {
+            binding.pBar.visibility = View.GONE
+            when (it) {
+                is NetworkResult.Success -> {
+                    Toast.makeText(context, it.data!!.msg, Toast.LENGTH_SHORT).show()
+                    getBinNotes()
+                }
+
+                is NetworkResult.Error -> {
+                    showError(it.msg.toString())
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pBar.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun getBinNotes() {
+        lifecycleScope.launch {
+            noteViewModel.getBinNote(
+                GetAllNotesRequest(
+                    authViewModel.getDBGenerateId()!!,
+                    authViewModel.getUserId()!!
+                )
+            )
+            bindBinNoteObserver()
+        }
+    }
+
+    private fun bindRestoreObserver() {
+        noteViewModel.setAndRestore.observe(viewLifecycleOwner) {
+            binding.pBar.visibility = View.GONE
+            when (it) {
+                is NetworkResult.Success -> {
+                    getBinNotes()
+                }
+
+                is NetworkResult.Error -> {
+                    showError(it.msg.toString())
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pBar.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun bindBinNoteObserver() {
+        noteViewModel.noteGetAllNotesLiveData.observe(viewLifecycleOwner) {
+            binding.pBar.visibility = View.GONE
+            when (it) {
+                is NetworkResult.Success -> {
+                    binAdapter = BinAdapter(
+                        GetAllNotesResponse(it.data!!.data, it.data.msg, it.data.status),
+                        this@BinFragment
+                    )
+                    val noteList = it.data.data
+                    binding.notesRecycler.adapter = binAdapter
+                    binding.notesRecycler.smoothScrollToPosition(binAdapter!!.itemCount)
+                    if (noteList.isNotEmpty()) {
+                        Log.d(ContentValues.TAG, noteList.toString())
+                    } else {
+                        Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                is NetworkResult.Error -> {
+                    showError(it.msg)
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pBar.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun showError(msg: String?) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
     /*override fun onDestroyView() {
@@ -145,7 +256,9 @@ class BinFragment : Fragment(), ItemClickListener {
         note: String,
         from: String
     ) {
-
+        noteDBId = noteDatabaseId
+        ntId = noteId
+        balloon?.showAlignBottom(view)
     }
 
 }

@@ -36,6 +36,7 @@ import com.project.notesapp.model.NoteModel
 import com.project.notesapp.model.NoteRequestModel.CreateNoteRequest
 import com.project.notesapp.model.NoteRequestModel.DeleteNoteRequest
 import com.project.notesapp.model.NoteRequestModel.GetAllNotesRequest
+import com.project.notesapp.model.NoteRequestModel.SetAndRestoreRequest
 import com.project.notesapp.model.NoteRequestModel.UpdateNoteRequest
 import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
 import com.project.notesapp.ui.authentication.AuthViewModel
@@ -249,7 +250,8 @@ class NotesFragment : Fragment(), ItemClickListener {
                     authViewModel.getUserId()?.toInt()!!,
                     userNoteId.toInt()
                 )*/
-                noteViewModel.deleteNote(
+
+                /*noteViewModel.deleteNote(
                     DeleteNoteRequest(
                         authViewModel.getDBGenerateId()!!,
                         noteDBId,
@@ -257,7 +259,17 @@ class NotesFragment : Fragment(), ItemClickListener {
                         authViewModel.getUserId()!!
                     )
                 )
-                bindDeleteObserver()
+                bindDeleteObserver()*/
+
+                noteViewModel.setBinNote(
+                    SetAndRestoreRequest(
+                        authViewModel.getDBGenerateId()!!,
+                        noteDBId,
+                        ntId,
+                        authViewModel.getUserId()!!
+                    )
+                )
+                bindSetObserver()
             }
         }
 
@@ -405,6 +417,25 @@ class NotesFragment : Fragment(), ItemClickListener {
             }
         }
 
+    }
+
+    private fun bindSetObserver() {
+        noteViewModel.setAndRestore.observe(viewLifecycleOwner) {
+            binding.pBar.visibility = View.GONE
+            when (it) {
+                is NetworkResult.Success -> {
+                    getAllNotes()
+                }
+
+                is NetworkResult.Error -> {
+                    showNoteErr(it.msg.toString())
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pBar.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun getAllNotes() {
