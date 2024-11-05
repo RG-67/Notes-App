@@ -155,6 +155,7 @@ class BinFragment : Fragment(), ItemClickListener {
                 }
 
                 is NetworkResult.Error -> {
+                    getBinNotes()
                     showError(it.msg.toString())
                 }
 
@@ -186,6 +187,7 @@ class BinFragment : Fragment(), ItemClickListener {
                 }
 
                 is NetworkResult.Error -> {
+                    getBinNotes()
                     showError(it.msg.toString())
                 }
 

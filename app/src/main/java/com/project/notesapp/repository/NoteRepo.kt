@@ -14,6 +14,7 @@ import com.project.notesapp.model.NoteRequestModel.UpdateNoteRequest
 import com.project.notesapp.model.NoteResponseModel.CreateNoteResponse
 import com.project.notesapp.model.NoteResponseModel.DeleteNoteResponse
 import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
+import com.project.notesapp.model.NoteResponseModel.GetBinNoteResponse
 import com.project.notesapp.model.NoteResponseModel.NoteUpdateResponse
 import com.project.notesapp.model.NoteResponseModel.ReadNoteResponse
 import com.project.notesapp.model.NoteResponseModel.SetAndRestoreResponse
@@ -33,12 +34,14 @@ class NoteRepo @Inject constructor(
 
     private val _noteResponseLiveData = MutableLiveData<NetworkResult<CreateNoteResponse>>()
     private val _noteGetAllNoteLiveData = MutableLiveData<NetworkResult<GetAllNotesResponse>>()
+    private val _noteGetBinNoteLiveData = MutableLiveData<NetworkResult<GetBinNoteResponse>>()
     private val _noteGetSingleNoteLiveData = MutableLiveData<NetworkResult<ReadNoteResponse>>()
     private val _noteUpdateNoteLiveData = MutableLiveData<NetworkResult<NoteUpdateResponse>>()
     private val _noteDeleteNoteLiveData = MutableLiveData<NetworkResult<DeleteNoteResponse>>()
     private val _noteSetAndRestoreLiveData = MutableLiveData<NetworkResult<SetAndRestoreResponse>>()
     val noteResponseLiveData: LiveData<NetworkResult<CreateNoteResponse>> get() = _noteResponseLiveData
     val getAllNotesLiveData: LiveData<NetworkResult<GetAllNotesResponse>> get() = _noteGetAllNoteLiveData
+    val getBinNotesLiveData: LiveData<NetworkResult<GetBinNoteResponse>> get() = _noteGetBinNoteLiveData
     val getSingleNoteLiveData: LiveData<NetworkResult<ReadNoteResponse>> get() = _noteGetSingleNoteLiveData
     val updateNoteLiveData: LiveData<NetworkResult<NoteUpdateResponse>> get() = _noteUpdateNoteLiveData
     val deleteNoteLiveData: LiveData<NetworkResult<DeleteNoteResponse>> get() = _noteDeleteNoteLiveData
@@ -173,9 +176,20 @@ class NoteRepo @Inject constructor(
         try {
             _noteGetAllNoteLiveData.postValue(NetworkResult.Loading())
             val response = noteApi.getBinNotes(getAllNotesRequest)
-            handleGetAllNotesResponse(response)
+            handleGetBinNoteResponse(response)
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    private fun handleGetBinNoteResponse(response: Response<GetBinNoteResponse>) {
+        if (response.isSuccessful && response.body() != null) {
+            _noteGetBinNoteLiveData.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _noteGetBinNoteLiveData.postValue(NetworkResult.Error(errObj.getString("msg")))
+        } else {
+            _noteGetBinNoteLiveData.postValue(NetworkResult.Error("msg"))
         }
     }
 

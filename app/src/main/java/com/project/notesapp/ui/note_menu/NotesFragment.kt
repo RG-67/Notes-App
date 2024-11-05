@@ -428,6 +428,7 @@ class NotesFragment : Fragment(), ItemClickListener {
                 }
 
                 is NetworkResult.Error -> {
+                    getAllNotes()
                     showNoteErr(it.msg.toString())
                 }
 
@@ -501,6 +502,7 @@ class NotesFragment : Fragment(), ItemClickListener {
                     binding.notesRecycler.adapter = noteAdapter
                     binding.notesRecycler.smoothScrollToPosition(noteAdapter!!.itemCount)
                     if (noteList.isNotEmpty()) {
+                        binding.notesRecycler.visibility = View.VISIBLE
                         Log.d(TAG, noteList.toString())
                     } else {
                         Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
@@ -508,6 +510,13 @@ class NotesFragment : Fragment(), ItemClickListener {
                 }
 
                 is NetworkResult.Error -> {
+//                    val notes = GetAllNotesResponse(it.data!!.data, it.data.msg, it.data.status)
+                    if (it.data == null) {
+                        binding.notesRecycler.visibility = View.GONE
+                    }
+                    /*noteAdapter = NoteAdapter(notes, this@NotesFragment)
+                    binding.notesRecycler.adapter = noteAdapter
+                    binding.notesRecycler.smoothScrollToPosition(noteAdapter!!.itemCount)*/
                     showNoteErr(it.msg.toString())
                 }
 
