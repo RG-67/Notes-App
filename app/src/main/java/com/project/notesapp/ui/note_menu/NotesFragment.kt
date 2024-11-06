@@ -510,6 +510,7 @@ class NotesFragment : Fragment(), ItemClickListener {
                 }
 
                 is NetworkResult.Error -> {
+                    Log.d("NoteFrag ==>", it.data?.msg.toString())
 //                    val notes = GetAllNotesResponse(it.data!!.data, it.data.msg, it.data.status)
                     if (it.data == null) {
                         binding.notesRecycler.visibility = View.GONE

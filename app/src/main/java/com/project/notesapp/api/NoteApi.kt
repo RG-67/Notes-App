@@ -12,6 +12,7 @@ import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
 import com.project.notesapp.model.NoteResponseModel.GetBinNoteResponse
 import com.project.notesapp.model.NoteResponseModel.NoteUpdateResponse
 import com.project.notesapp.model.NoteResponseModel.ReadNoteResponse
+import com.project.notesapp.model.NoteResponseModel.RestoreBinResponse
 import com.project.notesapp.model.NoteResponseModel.SetAndRestoreResponse
 import com.project.notesapp.utils.Constants
 import retrofit2.Response
@@ -43,6 +44,6 @@ interface NoteApi {
     suspend fun getBinNotes(@Body getAllNotesRequest: GetAllNotesRequest): Response<GetBinNoteResponse>
 
     @PATCH(Constants.RESTORE_NOTE)
-    suspend fun restoreNote(@Body setAndRestoreRequest: SetAndRestoreRequest): Response<SetAndRestoreResponse>
+    suspend fun restoreNote(@Body setAndRestoreRequest: SetAndRestoreRequest): Response<RestoreBinResponse>
 
 }

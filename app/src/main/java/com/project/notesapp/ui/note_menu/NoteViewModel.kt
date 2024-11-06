@@ -33,6 +33,7 @@ import com.project.notesapp.model.NoteRequestModel.UpdateNoteRequest
 import com.project.notesapp.model.NoteResponseModel.CreateNoteResponse
 import com.project.notesapp.model.NoteResponseModel.DeleteNoteResponse
 import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
+import com.project.notesapp.model.NoteResponseModel.GetBinNoteResponse
 import com.project.notesapp.model.NoteResponseModel.NoteUpdateResponse
 import com.project.notesapp.model.NoteResponseModel.ReadNoteResponse
 import com.project.notesapp.model.NoteResponseModel.SetAndRestoreResponse
@@ -57,6 +58,7 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
     val noteUpdateLiveData: LiveData<NetworkResult<NoteUpdateResponse>> get() = noteRepo.updateNoteLiveData
     val noteDeleteLiveData: LiveData<NetworkResult<DeleteNoteResponse>> get() = noteRepo.deleteNoteLiveData
     val setAndRestore: LiveData<NetworkResult<SetAndRestoreResponse>> get() = noteRepo.setAndRestoreLiveData
+    val getAllBinNotesLiveData: LiveData<NetworkResult<GetBinNoteResponse>> get() = noteRepo.getBinNotesLiveData
 
     suspend fun insertNoteData(noteModel: NoteModel) {
         viewModelScope.launch {

@@ -21,6 +21,7 @@ import com.project.notesapp.model.NoteRequestModel.DeleteNoteRequest
 import com.project.notesapp.model.NoteRequestModel.GetAllNotesRequest
 import com.project.notesapp.model.NoteRequestModel.SetAndRestoreRequest
 import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
+import com.project.notesapp.model.NoteResponseModel.GetBinNoteResponse
 import com.project.notesapp.ui.authentication.AuthViewModel
 import com.project.notesapp.ui.note_menu.NoteAdapter
 import com.project.notesapp.ui.note_menu.NoteViewModel
@@ -88,23 +89,7 @@ class BinFragment : Fragment(), ItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
-            /*noteViewModel.getBinNotes(
-                authViewModel.getUserId()?.toInt()!!,
-                authViewModel.getUserEmail()!!
-            )
-                .observe(requireActivity()) {
-                    binAdapter = BinAdapter(it, this@BinFragment)
-                    val noteList = it as ArrayList<NoteModel>
-                    binding.notesRecycler.adapter = binAdapter
-                    binding.notesRecycler.smoothScrollToPosition(binAdapter!!.itemCount)
-                    if (noteList.size > 0) {
-                        Log.d(ContentValues.TAG, noteList.toString())
-                    } else {
-                        Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
-                    }
-                }*/
-        }
+
         getBinNotes()
 
         deleteBinBtn?.setOnClickListener {
@@ -155,7 +140,6 @@ class BinFragment : Fragment(), ItemClickListener {
                 }
 
                 is NetworkResult.Error -> {
-                    getBinNotes()
                     showError(it.msg.toString())
                 }
 
@@ -187,7 +171,6 @@ class BinFragment : Fragment(), ItemClickListener {
                 }
 
                 is NetworkResult.Error -> {
-                    getBinNotes()
                     showError(it.msg.toString())
                 }
 
@@ -199,12 +182,13 @@ class BinFragment : Fragment(), ItemClickListener {
     }
 
     private fun bindBinNoteObserver() {
-        noteViewModel.noteGetAllNotesLiveData.observe(viewLifecycleOwner) {
+        noteViewModel.getAllBinNotesLiveData.observe(viewLifecycleOwner) {
             binding.pBar.visibility = View.GONE
             when (it) {
                 is NetworkResult.Success -> {
+                    binding.notesRecycler.visibility = View.VISIBLE
                     binAdapter = BinAdapter(
-                        GetAllNotesResponse(it.data!!.data, it.data.msg, it.data.status),
+                        GetBinNoteResponse(it.data!!.data, it.data.msg, it.data.status),
                         this@BinFragment
                     )
                     val noteList = it.data.data
@@ -218,6 +202,10 @@ class BinFragment : Fragment(), ItemClickListener {
                 }
 
                 is NetworkResult.Error -> {
+                    Log.d("BinFrag ==>", it.data?.msg.toString())
+                    if (it.data == null) {
+                        binding.notesRecycler.visibility = View.GONE
+                    }
                     showError(it.msg)
                 }
 
