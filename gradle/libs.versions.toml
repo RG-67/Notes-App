@@ -1,6 +1,7 @@
 [versions]
 agp = "8.3.2"
 balloon = "1.6.6"
+firebaseMessaging = "24.0.3"
 gradle = "7.0.4"
 hiltAndroid = "2.48.1"
 kotlin = "1.9.20"
@@ -35,6 +36,7 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging", version.ref = "firebaseMessaging" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroid" }

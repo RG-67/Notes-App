@@ -233,6 +233,7 @@ class NotesFragment : Fragment(), ItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        authViewModel.getServiceKeyToken()
         getAllNotes()
         editBtn?.setOnClickListener {
             balloon?.dismiss()

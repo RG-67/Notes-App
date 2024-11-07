@@ -6,6 +6,7 @@ plugins {
     id("kotlin-android")
     id("dagger.hilt.android.plugin")
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -91,6 +92,9 @@ dependencies {
 
     /*balloon*/
     implementation(libs.balloon)
+
+    /*FCM(Firebase Cloud Messaging)*/
+    implementation (libs.firebase.messaging)
 }
 
 kotlin {

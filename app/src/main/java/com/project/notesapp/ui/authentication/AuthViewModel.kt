@@ -3,11 +3,13 @@ package com.project.notesapp.ui.authentication
 import android.app.Activity
 import android.app.AlertDialog
 import android.text.TextUtils
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.google.firebase.messaging.FirebaseMessaging
 import com.project.notesapp.R
 import com.project.notesapp.model.AuthModel
 import com.project.notesapp.model.userRequestModel.UserLoginRequest
@@ -124,4 +126,17 @@ class AuthViewModel @Inject constructor(private val userRepo: UserRepo) : ViewMo
         val alertDialog = builder.create()
         alertDialog.show()
     }
+
+    fun getServiceKeyToken(): String {
+        var token = ""
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            if (!it.isSuccessful) {
+                Log.w("FCM", "Fetching FCM registration failed", it.exception)
+            }
+            token = it.result
+            Log.d("FCM", "Token: $token")
+        }
+        return token
+    }
+
 }
