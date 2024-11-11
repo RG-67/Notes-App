@@ -45,6 +45,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
@@ -320,6 +323,7 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getDateTime(context: Context, view: View, itemClickListener: ItemClickListener) {
         val calendar = Calendar.getInstance()
         DatePickerDialog(
@@ -335,6 +339,16 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
                             calendarDay,
                             calendarHour,
                             calendarMinute
+                        )
+                        val dateTime = getIsoDateTime("$date, $time")
+                        itemClickListener.onItemClick(
+                            view,
+                            0,
+                            "",
+                            "",
+                            "",
+                            dateTime.toString(),
+                            "dateTimeReminder"
                         )
                         /*setAlarm(
                             context,
@@ -355,6 +369,15 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         ).show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getIsoDateTime(dateTime: String): Any {
+        val inputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm")
+        val localDateTime = LocalDateTime.parse(dateTime, inputFormatter)
+        val zoneDateTime = localDateTime.atZone(ZoneOffset.UTC)
+        val outputFormat = DateTimeFormatter.ISO_INSTANT
+        return outputFormat.format(zoneDateTime)
     }
 
     private fun canScheduleAlarm(context: Context): Boolean {

@@ -119,6 +119,7 @@ class NotesFragment : Fragment(), ItemClickListener {
 
     private var reminderDate = ""
     private var reminderTime = ""
+    private var reminderDateTime = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -231,6 +232,7 @@ class NotesFragment : Fragment(), ItemClickListener {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         authViewModel.getServiceKeyToken()
@@ -295,6 +297,7 @@ class NotesFragment : Fragment(), ItemClickListener {
                     lifecycleScope.launch {
                         /*Log.d(TAG, getNoteData.toString())
                         noteViewModel.insertNoteData(getNoteData)*/
+                        Log.d(TAG, getNoteData.toString())
                         noteViewModel.createNote(getNoteData)
                         bindObserver()
                         Helper.hideKeyboard(binding.root)
@@ -560,7 +563,8 @@ class NotesFragment : Fragment(), ItemClickListener {
                 authViewModel.getDBGenerateId()!!,
                 binding.note.text.toString(),
                 binding.title.text.toString(),
-                authViewModel.getUserId()!!
+                authViewModel.getUserId()!!,
+                reminderDateTime
             )
         }
     }
@@ -570,6 +574,7 @@ class NotesFragment : Fragment(), ItemClickListener {
     }
 
     private fun showHide() {
+        reminderDateTime = ""
         if (binding.noteListRel.visibility == View.VISIBLE) {
             binding.noteListRel.visibility = View.GONE
             binding.addNoteRel.visibility = View.VISIBLE
@@ -611,6 +616,8 @@ class NotesFragment : Fragment(), ItemClickListener {
         Log.d("Note ==>", note)
         when (from) {
             "dateTimeReminder" -> {
+                reminderDateTime = note
+                Log.d("DateTime ==>", "DateTime: $reminderDateTime")
                 /*val dateTime = noteTitle.split("#")
                 reminderDate = "Date: " + dateTime[0]
                 reminderTime = "Time: " + dateTime[1]
@@ -733,6 +740,7 @@ class NotesFragment : Fragment(), ItemClickListener {
                     }
 
                     is NetworkResult.Error -> {
+                        reminderDateTime = ""
                         showNoteErr(it.msg.toString())
                     }
 
