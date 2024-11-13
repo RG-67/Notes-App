@@ -2,17 +2,17 @@ package com.project.notesapp.utils
 
 import android.content.Context
 import android.os.Build
-import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
-import java.util.regex.Pattern
 
 class Helper {
 
@@ -36,17 +36,32 @@ class Helper {
             }
         }
 
-        fun getDate(): String {
-            val currentDate = Calendar.getInstance().time
-            val dayWithSuffix = getDayWithSuffix(currentDate)
-            val simpleDateFormat = SimpleDateFormat("MMMM, yyyy", Locale.getDefault())
-            val dateWithoutDay = simpleDateFormat.format(currentDate)
-            return "$dayWithSuffix $dateWithoutDay"
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun getDateTime(dateTime: String): Pair<String, String> {
+            val dt = ZonedDateTime.parse(dateTime)
+            val day = dt.dayOfMonth
+            val dayFormat = "$day${getDayWithSuffix(day)}"
+            val monthFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH)
+            val month = dt.format(monthFormatter)
+            val year = dt.year
+
+            val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH)
+            val formattedTime = dt.format(timeFormatter)
+
+            val formattedDate = "$dayFormat $month, $year"
+            return Pair(formattedDate, formattedTime)
         }
 
-        private fun getDayWithSuffix(date: Date): String {
-            val calendar = Calendar.getInstance().apply { time = date }
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
+        fun getNoteCreateDate(date: String): String {
+            val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.ENGLISH)
+            val dateObj = dateFormat.parse(date)
+            val calendar = Calendar.getInstance().apply { time = dateObj!! }
+            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+            val dateInString = SimpleDateFormat("d MMMM, yyyy", Locale.ENGLISH).format(dateObj!!)
+            return "${dateInString.replaceFirstChar { it.uppercase() }}${getDayWithSuffix(dayOfMonth)}"
+        }
+
+        private fun getDayWithSuffix(day: Int): String {
             return when {
                 day in 11..13 -> "${day}th"
                 day % 10 == 1 -> "${day}st"

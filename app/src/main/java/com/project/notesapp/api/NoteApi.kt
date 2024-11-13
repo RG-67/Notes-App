@@ -12,6 +12,7 @@ import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
 import com.project.notesapp.model.NoteResponseModel.GetBinNoteResponse
 import com.project.notesapp.model.NoteResponseModel.NoteUpdateResponse
 import com.project.notesapp.model.NoteResponseModel.ReadNoteResponse
+import com.project.notesapp.model.NoteResponseModel.ReminderNoteResponse
 import com.project.notesapp.model.NoteResponseModel.RestoreBinResponse
 import com.project.notesapp.model.NoteResponseModel.SetAndRestoreResponse
 import com.project.notesapp.utils.Constants
@@ -45,5 +46,8 @@ interface NoteApi {
 
     @PATCH(Constants.RESTORE_NOTE)
     suspend fun restoreNote(@Body setAndRestoreRequest: SetAndRestoreRequest): Response<RestoreBinResponse>
+
+    @POST(Constants.GET_REMINDER_NOTE)
+    suspend fun getReminderNotes(@Body getAllNotesRequest: GetAllNotesRequest): Response<ReminderNoteResponse>
 
 }

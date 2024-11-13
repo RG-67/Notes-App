@@ -14,10 +14,14 @@ import androidx.lifecycle.lifecycleScope
 import com.project.notesapp.R
 import com.project.notesapp.databinding.FragmentReminderBinding
 import com.project.notesapp.model.NoteModel
+import com.project.notesapp.model.NoteRequestModel.GetAllNotesRequest
+import com.project.notesapp.model.NoteResponseModel.GetBinNoteResponse
+import com.project.notesapp.model.NoteResponseModel.ReminderNoteResponse
 import com.project.notesapp.ui.authentication.AuthViewModel
 import com.project.notesapp.ui.bin_menu.BinAdapter
 import com.project.notesapp.ui.note_menu.NoteViewModel
 import com.project.notesapp.utils.ItemClickListener
+import com.project.notesapp.utils.NetworkResult
 import kotlinx.coroutines.launch
 
 class RemindersFragment : Fragment(), ItemClickListener {
@@ -45,7 +49,7 @@ class RemindersFragment : Fragment(), ItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            noteViewModel.getReminderNotes(
+            /*noteViewModel.getReminderNotes(
                 authViewModel.getUserId()?.toInt()!!,
                 authViewModel.getUserEmail()!!
             )
@@ -59,12 +63,58 @@ class RemindersFragment : Fragment(), ItemClickListener {
                     } else {
                         Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
                     }
-                }
+                }*/
+            noteViewModel.getReminderNote(
+                GetAllNotesRequest(
+                    authViewModel.getUserId()!!,
+                    authViewModel.getDBGenerateId()!!
+                )
+            )
+            bindReminderNoteObserver()
         }
         binding.backBtn.setOnClickListener {
             binding.noteView.visibility = View.GONE
             binding.notesRecycler.visibility = View.VISIBLE
         }
+    }
+
+    private fun bindReminderNoteObserver() {
+        noteViewModel.getNoteReminder.observe(viewLifecycleOwner) {
+            binding.pBar.visibility = View.GONE
+            when (it) {
+                is NetworkResult.Success -> {
+                    binding.notesRecycler.visibility = View.VISIBLE
+                    reminderAdapter = ReminderAdapter(
+                        ReminderNoteResponse(it.data!!.data, it.data.msg, it.data.status),
+                        this@RemindersFragment
+                    )
+                    val noteList = it.data.data
+                    binding.notesRecycler.adapter = reminderAdapter
+                    binding.notesRecycler.smoothScrollToPosition(reminderAdapter!!.itemCount)
+                    if (noteList.isNotEmpty()) {
+                        Log.d(ContentValues.TAG, noteList.toString())
+                    } else {
+                        Toast.makeText(context, "Empty notes", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                is NetworkResult.Error -> {
+                    Log.d("ReminderFrag ==>", it.data?.msg.toString())
+                    if (it.data == null) {
+                        binding.notesRecycler.visibility = View.GONE
+                    }
+                    showError(it.msg)
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.pBar.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun showError(msg: String?) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
     /*override fun onItemClick(

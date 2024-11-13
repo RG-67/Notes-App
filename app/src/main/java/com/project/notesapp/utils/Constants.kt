@@ -2,7 +2,7 @@ package com.project.notesapp.utils
 
 object Constants {
 
-    const val BASE_URL = "http://192.168.0.103:5000/api/v1/"
+    const val BASE_URL = "http://192.168.0.103:3000/api/v1/"
 
     /* user api endpoint */
     const val CREATE_USER = "user/createUser"
@@ -17,5 +17,6 @@ object Constants {
     const val SET_BIN_NOTES = "note/setBinNote"
     const val GET_BIN_NOTES = "note/getBinNote"
     const val RESTORE_NOTE = "note/restoreNote"
+    const val GET_REMINDER_NOTE = "note/getReminderNote"
 
 }

@@ -17,6 +17,7 @@ import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
 import com.project.notesapp.model.NoteResponseModel.GetBinNoteResponse
 import com.project.notesapp.model.NoteResponseModel.NoteUpdateResponse
 import com.project.notesapp.model.NoteResponseModel.ReadNoteResponse
+import com.project.notesapp.model.NoteResponseModel.ReminderNoteResponse
 import com.project.notesapp.model.NoteResponseModel.RestoreBinResponse
 import com.project.notesapp.model.NoteResponseModel.SetAndRestoreResponse
 import com.project.notesapp.utils.NetworkResult
@@ -41,6 +42,7 @@ class NoteRepo @Inject constructor(
     private val _noteDeleteNoteLiveData = MutableLiveData<NetworkResult<DeleteNoteResponse>>()
     private val _noteSetAndRestoreLiveData = MutableLiveData<NetworkResult<SetAndRestoreResponse>>()
     private val _noteRestoreBinLiveData = MutableLiveData<NetworkResult<RestoreBinResponse>>()
+    private val _noteReminderNoteLiveData = MutableLiveData<NetworkResult<ReminderNoteResponse>>()
     val noteResponseLiveData: LiveData<NetworkResult<CreateNoteResponse>> get() = _noteResponseLiveData
     val getAllNotesLiveData: LiveData<NetworkResult<GetAllNotesResponse>> get() = _noteGetAllNoteLiveData
     val getBinNotesLiveData: LiveData<NetworkResult<GetBinNoteResponse>> get() = _noteGetBinNoteLiveData
@@ -49,6 +51,7 @@ class NoteRepo @Inject constructor(
     val deleteNoteLiveData: LiveData<NetworkResult<DeleteNoteResponse>> get() = _noteDeleteNoteLiveData
     val setAndRestoreLiveData: LiveData<NetworkResult<SetAndRestoreResponse>> get() = _noteSetAndRestoreLiveData
     val restoreBinLiveData: LiveData<NetworkResult<RestoreBinResponse>> get() = _noteRestoreBinLiveData
+    val reminderNoteLiveData: LiveData<NetworkResult<ReminderNoteResponse>> get() = _noteReminderNoteLiveData
 
     suspend fun insertNoteData(noteModel: NoteModel) = withContext(Dispatchers.IO) {
         noteDao.insertNoteData(noteModel)
@@ -161,6 +164,27 @@ class NoteRepo @Inject constructor(
             handleSetAndRestoreNote(response)
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    suspend fun getReminderNote(getAllNotesRequest: GetAllNotesRequest) {
+        try {
+            _noteReminderNoteLiveData.postValue(NetworkResult.Loading())
+            val response = noteApi.getReminderNotes(getAllNotesRequest)
+            handleReminderNote(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun handleReminderNote(response: Response<ReminderNoteResponse>) {
+        if (response.isSuccessful && response.body() != null) {
+            _noteReminderNoteLiveData.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _noteReminderNoteLiveData.postValue(NetworkResult.Error(errObj.getString("msg")))
+        } else {
+            _noteReminderNoteLiveData.postValue(NetworkResult.Error("msg"))
         }
     }
 

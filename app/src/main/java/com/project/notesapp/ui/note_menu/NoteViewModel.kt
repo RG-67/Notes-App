@@ -36,6 +36,7 @@ import com.project.notesapp.model.NoteResponseModel.GetAllNotesResponse
 import com.project.notesapp.model.NoteResponseModel.GetBinNoteResponse
 import com.project.notesapp.model.NoteResponseModel.NoteUpdateResponse
 import com.project.notesapp.model.NoteResponseModel.ReadNoteResponse
+import com.project.notesapp.model.NoteResponseModel.ReminderNoteResponse
 import com.project.notesapp.model.NoteResponseModel.SetAndRestoreResponse
 import com.project.notesapp.repository.NoteRepo
 import com.project.notesapp.utils.Helper
@@ -62,6 +63,7 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
     val noteDeleteLiveData: LiveData<NetworkResult<DeleteNoteResponse>> get() = noteRepo.deleteNoteLiveData
     val setAndRestore: LiveData<NetworkResult<SetAndRestoreResponse>> get() = noteRepo.setAndRestoreLiveData
     val getAllBinNotesLiveData: LiveData<NetworkResult<GetBinNoteResponse>> get() = noteRepo.getBinNotesLiveData
+    val getNoteReminder: LiveData<NetworkResult<ReminderNoteResponse>> get() = noteRepo.reminderNoteLiveData
 
     suspend fun insertNoteData(noteModel: NoteModel) {
         viewModelScope.launch {
@@ -119,6 +121,12 @@ class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
     suspend fun deleteNote(deleteNoteRequest: DeleteNoteRequest) {
         viewModelScope.launch {
             noteRepo.deleteNote(deleteNoteRequest)
+        }
+    }
+
+    suspend fun getReminderNote(getAllNotesRequest: GetAllNotesRequest) {
+        viewModelScope.launch {
+            noteRepo.getReminderNote(getAllNotesRequest)
         }
     }
 

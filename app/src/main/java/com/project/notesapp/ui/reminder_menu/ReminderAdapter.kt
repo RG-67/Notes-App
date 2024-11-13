@@ -1,23 +1,28 @@
 package com.project.notesapp.ui.reminder_menu
 
 import android.graphics.Color
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.project.notesapp.databinding.NoteItemLayoutBinding
 import com.project.notesapp.databinding.ReminderItemLayoutBinding
 import com.project.notesapp.model.NoteModel
+import com.project.notesapp.model.NoteResponseModel.DataXXXXXXXX
+import com.project.notesapp.model.NoteResponseModel.ReminderNoteResponse
 import com.project.notesapp.ui.bin_menu.BinAdapter
+import com.project.notesapp.utils.Helper
 import com.project.notesapp.utils.ItemClickListener
 
 class ReminderAdapter(
-    private val noteList: List<NoteModel>,
+    private val noteList: ReminderNoteResponse,
     private val itemClickListener: ItemClickListener
 ) : RecyclerView.Adapter<ReminderAdapter.ReminderViewHolder>() {
 
     inner class ReminderViewHolder(private val binding: ReminderItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(noteModel: NoteModel, position: Int) {
+        /*fun bind(noteModel: NoteModel, position: Int) {
             if (noteModel.noteBackImage != 0) {
                 binding.noteBackImg.setImageResource(noteModel.noteBackImage)
                 binding.title.setTextColor(Color.WHITE)
@@ -32,7 +37,7 @@ class ReminderAdapter(
             binding.note.text = noteModel.note
             binding.reminderDate.text = noteModel.reminderDate
             binding.reminderTime.text = noteModel.reminderTime
-            /*binding.root.setOnClickListener {
+            *//*binding.root.setOnClickListener {
                 itemClickListener.onItemClick(
                     it,
                     position,
@@ -41,7 +46,18 @@ class ReminderAdapter(
                     noteModel.note,
                     noteModel.noteBackImage
                 )
-            }*/
+            }*//*
+        }*/
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun bind(it: DataXXXXXXXX, position: Int) {
+            val date = Helper.getDateTime(it.reminderDateTime).first
+            val time = Helper.getDateTime(it.reminderDateTime).second
+            binding.date.text = Helper.getNoteCreateDate(it.date.toString())
+            binding.time.text = Helper.convertTimeTo12Hour(it.time)
+            binding.title.text = it.title
+            binding.note.text = it.note
+            binding.reminderDate.text = date
+            binding.reminderTime.text = time
         }
     }
 
@@ -58,12 +74,13 @@ class ReminderAdapter(
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ReminderAdapter.ReminderViewHolder, position: Int) {
-        val note = noteList[position]
+        val note = noteList.data[position]
         note.let {
             holder.bind(it, position)
         }
     }
 
-    override fun getItemCount(): Int = noteList.size
+    override fun getItemCount(): Int = noteList.data.size
 }
