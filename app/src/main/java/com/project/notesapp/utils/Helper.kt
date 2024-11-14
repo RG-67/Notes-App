@@ -40,7 +40,7 @@ class Helper {
         fun getDateTime(dateTime: String): Pair<String, String> {
             val dt = ZonedDateTime.parse(dateTime)
             val day = dt.dayOfMonth
-            val dayFormat = "$day${getDayWithSuffix(day)}"
+            val dayFormat = getDayWithSuffix(day)
             val monthFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH)
             val month = dt.format(monthFormatter)
             val year = dt.year
@@ -55,10 +55,8 @@ class Helper {
         fun getNoteCreateDate(date: String): String {
             val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.ENGLISH)
             val dateObj = dateFormat.parse(date)
-            val calendar = Calendar.getInstance().apply { time = dateObj!! }
-            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
             val dateInString = SimpleDateFormat("d MMMM, yyyy", Locale.ENGLISH).format(dateObj!!)
-            return "${dateInString.replaceFirstChar { it.uppercase() }}${getDayWithSuffix(dayOfMonth)}"
+            return dateInString.replaceFirstChar { it.uppercase() }
         }
 
         private fun getDayWithSuffix(day: Int): String {

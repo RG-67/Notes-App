@@ -66,8 +66,8 @@ class RemindersFragment : Fragment(), ItemClickListener {
                 }*/
             noteViewModel.getReminderNote(
                 GetAllNotesRequest(
-                    authViewModel.getUserId()!!,
-                    authViewModel.getDBGenerateId()!!
+                    authViewModel.getDBGenerateId()!!,
+                    authViewModel.getUserId()!!
                 )
             )
             bindReminderNoteObserver()

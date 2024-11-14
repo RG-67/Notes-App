@@ -48,37 +48,37 @@
                 android:text="@string/reminder_date_and_time"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/reminderDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawablePadding="5dp"
                 android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
                 android:text="@string/sample_date"
-                android:textColor="@color/red"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:drawableStartCompat="@drawable/calendar"
-                android:drawablePadding="5dp"
-                app:drawableTint="@color/white"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"/>
+                app:drawableTint="@color/white" />
 
             <TextView
                 android:id="@+id/reminderTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawablePadding="5dp"
                 android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
                 android:text="@string/sample_time"
-                android:textColor="@color/red"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:drawableStartCompat="@drawable/notification_active"
-                android:drawablePadding="5dp"
-                app:drawableTint="@color/white"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"/>
+                app:drawableTint="@color/white" />
 
 
         </LinearLayout>
