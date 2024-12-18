@@ -18,6 +18,8 @@ import com.project.notesapp.model.NoteResponseModel.SetAndRestoreResponse
 import com.project.notesapp.utils.Constants
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.HTTP
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 
@@ -35,7 +37,10 @@ interface NoteApi {
     @PATCH(Constants.UPDATE_NOTE)
     suspend fun updateNote(@Body updateNoteRequest: UpdateNoteRequest): Response<NoteUpdateResponse>
 
-    @POST(Constants.DELETE_NOTE)
+    /*@POST(Constants.DELETE_NOTE)
+    suspend fun deleteNote(@Body deleteNoteRequest: DeleteNoteRequest): Response<DeleteNoteResponse>*/
+
+    @HTTP(method = "DELETE", path = Constants.DELETE_NOTE, hasBody = true)
     suspend fun deleteNote(@Body deleteNoteRequest: DeleteNoteRequest): Response<DeleteNoteResponse>
 
     @PATCH(Constants.SET_BIN_NOTES)

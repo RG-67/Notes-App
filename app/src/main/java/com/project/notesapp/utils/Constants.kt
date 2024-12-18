@@ -2,7 +2,8 @@ package com.project.notesapp.utils
 
 object Constants {
 
-    const val BASE_URL = "http://192.168.0.103:5000/api/v1/"
+//    const val BASE_URL = "http://192.168.0.103:5000/api/v1/"
+    const val BASE_URL = "https://testnodeapi-7d49.onrender.com/api/v1/"
 
     /* user api endpoint */
     const val CREATE_USER = "user/createUser"

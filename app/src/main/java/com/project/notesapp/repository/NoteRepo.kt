@@ -21,6 +21,7 @@ import com.project.notesapp.model.NoteResponseModel.ReadNoteResponse
 import com.project.notesapp.model.NoteResponseModel.ReminderNoteResponse
 import com.project.notesapp.model.NoteResponseModel.RestoreBinResponse
 import com.project.notesapp.model.NoteResponseModel.SetAndRestoreResponse
+import com.project.notesapp.utils.Constants
 import com.project.notesapp.utils.NetworkResult
 import com.project.notesapp.utils.PreferenceHelper
 import kotlinx.coroutines.Dispatchers
@@ -244,6 +245,7 @@ class NoteRepo @Inject constructor(
 
     suspend fun deleteNote(deleteNoteRequest: DeleteNoteRequest) {
         try {
+            Log.d("API Request", "URL: ${Constants.DELETE_NOTE}, Body: $deleteNoteRequest")
             _noteDeleteNoteLiveData.postValue(NetworkResult.Loading())
             val response = noteApi.deleteNote(deleteNoteRequest)
             handleDeleteNoteResponse(response)
@@ -252,7 +254,7 @@ class NoteRepo @Inject constructor(
         }
     }
 
-    private fun handleDeleteNoteResponse(response: Response<DeleteNoteResponse>) {
+    /*private fun handleDeleteNoteResponse(response: Response<DeleteNoteResponse>) {
         if (response.isSuccessful && response.body() != null) {
             _noteDeleteNoteLiveData.postValue(NetworkResult.Success(response.body()!!))
         } else if (response.errorBody() != null) {
@@ -260,6 +262,28 @@ class NoteRepo @Inject constructor(
             _noteDeleteNoteLiveData.postValue(NetworkResult.Error(errObj.getString("msg")))
         } else {
             _noteDeleteNoteLiveData.postValue(NetworkResult.Error("msg"))
+        }
+    }*/
+
+    private fun handleDeleteNoteResponse(response: Response<DeleteNoteResponse>) {
+        try {
+            Log.d("DeleteNoteResponse", "Response: ${response.raw()}")
+            if (response.isSuccessful && response.body() != null) {
+                _noteDeleteNoteLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val contentType = response.headers()["Content-Type"]
+                if (contentType?.contains("application/json") == true) {
+                    val errObj = JSONObject(response.errorBody()!!.charStream().readText())
+                    _noteDeleteNoteLiveData.postValue(NetworkResult.Error(errObj.getString("msg")))
+                } else {
+                    // Handle non-JSON response
+                    _noteDeleteNoteLiveData.postValue(NetworkResult.Error("Unexpected server response"))
+                }
+            } else {
+                _noteDeleteNoteLiveData.postValue(NetworkResult.Error("Unknown error occurred"))
+            }
+        } catch (e: Exception) {
+            _noteDeleteNoteLiveData.postValue(NetworkResult.Error("Error: ${e.message}"))
         }
     }
 
